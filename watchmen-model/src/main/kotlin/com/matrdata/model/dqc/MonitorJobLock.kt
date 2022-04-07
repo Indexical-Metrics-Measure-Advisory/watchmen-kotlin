@@ -10,12 +10,12 @@ enum class MonitorJobLockStatus(val code: String) {
 }
 
 class MonitorJobLock(
-	lockId: MonitorJobLockId?=null,
-	tenantId : TenantId?=null,
-	topicId: TopicId?=null,
-	frequency : MonitorRuleStatisticalInterval?=null,
-	processDate: Date?=null,
-	status : MonitorJobLockStatus?=null,
-	userId: UserId?=null,
-	createdAt: Date?=null,
+	var lockId: MonitorJobLockId?=null,
+	var tenantId : TenantId?=null,
+	var topicId: TopicId?=null,
+	var frequency : MonitorRuleStatisticalInterval?=null,
+	var processDate: Date?=null,
+	var status : MonitorJobLockStatus?=null,
+	var userId: UserId?=null,
+	var createdAt: Date?=null,
 ) : Storable

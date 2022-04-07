@@ -32,4 +32,9 @@ typealias CatalogId = String
 typealias MonitorRuleId = String
 typealias MonitorJobLockId = String
 
+typealias BucketId = String
+typealias IndicatorId = String
+typealias InspectionId = String
+typealias NavigationId = String
+
 typealias StandardTupleName = String
