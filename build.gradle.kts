@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") version "1.6.20"
+	kotlin("jvm") version "1.7.10"
 }
 
 allprojects {
-	group = "com.matrdata"
+	group = "com.matrdata.watchmen"
 	version = "1.0.0-SNAPSHOT"
 
 	apply {
@@ -17,13 +17,13 @@ allprojects {
 	}
 
 	java {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 	}
 }
 
 subprojects {
-	group = "com.matrdata"
+	group = "com.matrdata.watchmen"
 	version = "1.0.0-SNAPSHOT"
 
 	configure<SourceSetContainer> {
@@ -43,7 +43,7 @@ subprojects {
 
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
-		implementation("org.slf4j:slf4j-api:2.0.0-alpha")
+		implementation("org.slf4j:slf4j-api:2.0.0")
 		testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
 		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 	}
@@ -54,11 +54,11 @@ subprojects {
 
 	val compileKotlin: KotlinCompile by tasks
 	compileKotlin.kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "17"
 	}
 	val compileTestKotlin: KotlinCompile by tasks
 	compileTestKotlin.kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "17"
 	}
 }
 
