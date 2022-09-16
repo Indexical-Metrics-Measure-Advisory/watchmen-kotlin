@@ -28,3 +28,5 @@ build
 gradle
 
 */build
+
+.DS_store
