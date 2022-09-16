@@ -22,6 +22,7 @@ sealed class TopicFactorParameter(
 	open var topicId: TopicId? = null,
 	open var factorId: FactorId? = null
 ) : Parameter {
+	@Suppress("UNUSED_PARAMETER")
 	override var kind: ParameterKind?
 		get() = ParameterKind.TOPIC
 		set(value) {}
@@ -56,6 +57,7 @@ enum class VariablePredefineFunctions(val code: String) {
 sealed class ConstantParameter(
 	open var value: String? = null
 ) : Parameter {
+	@Suppress("UNUSED_PARAMETER")
 	override var kind: ParameterKind?
 		get() = ParameterKind.CONSTANT
 		set(value) {}
@@ -79,6 +81,7 @@ sealed class ComputedParameter<T : ParameterComputeType, P : Parameter>(
 	open var type: T? = null,
 	open var parameters: List<P>? = null
 ) : Parameter {
+	@Suppress("UNUSED_PARAMETER")
 	override var kind: ParameterKind?
 		get() = ParameterKind.COMPUTED
 		set(value) {}
@@ -113,6 +116,7 @@ data class StandardComputedNonConditionalParameter(
 data class StandardComputedConditionalParameter(
 	override var parameters: List<ConditionalParameter>? = null
 ) : ComputedParameter<ConditionalParameterComputeType, ConditionalParameter>() {
+	@Suppress("UNUSED_PARAMETER")
 	override var type: ConditionalParameterComputeType?
 		get() = ConditionalParameterComputeType.CASE_THEN
 		set(value) {}
@@ -130,6 +134,7 @@ data class ConditionalComputedConditionalParameter(
 	override var conditional: Boolean? = false,
 	override var on: ParameterJoint? = null
 ) : ComputedParameter<ConditionalParameterComputeType, ConditionalParameter>(), ConditionalParameter {
+	@Suppress("UNUSED_PARAMETER")
 	override var type: ConditionalParameterComputeType?
 		get() = ConditionalParameterComputeType.CASE_THEN
 		set(value) {}
