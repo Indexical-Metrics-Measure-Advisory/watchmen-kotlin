@@ -8,23 +8,19 @@ allprojects {
 	group = "com.matrdata.watchmen"
 	version = "1.0.0-SNAPSHOT"
 
-	apply {
-		plugin("java")
-	}
-
 	repositories {
 		mavenCentral()
-	}
-
-	java {
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_17
 	}
 }
 
 subprojects {
 	group = "com.matrdata.watchmen"
 	version = "1.0.0-SNAPSHOT"
+
+	apply {
+		plugin("kotlin")
+		plugin("java")
+	}
 
 	configure<SourceSetContainer> {
 		named("main") {
@@ -36,20 +32,20 @@ subprojects {
 		mavenCentral()
 	}
 
-	apply {
-		plugin("kotlin")
-		plugin("java")
-	}
-
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
-		implementation("org.slf4j:slf4j-api:2.0.0")
-		testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+//		implementation("org.slf4j:slf4j-api:2.0.0")
+		testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 	}
 
 	tasks.getByName<Test>("test") {
 		useJUnitPlatform()
+	}
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 	}
 
 	val compileKotlin: KotlinCompile by tasks
