@@ -3,9 +3,7 @@ package com.matrdata.watchmen.model.runtime.monitor
 import com.matrdata.watchmen.model.admin.*
 
 val RAW_PIPELINE_MONITOR_LOG = Topic(
-	name = "raw_pipeline_monitor_log",
-	kind = TopicKind.SYSTEM,
-	type = TopicType.RAW,
+	name = "raw_pipeline_monitor_log", kind = TopicKind.SYSTEM, type = TopicType.RAW,
 	factors = listOf(
 		Factor(factorId = "rpml-f-1", name = "uid", type = FactorType.TEXT),
 		Factor(
@@ -59,10 +57,7 @@ val RAW_PIPELINE_MONITOR_LOG = Topic(
 		Factor(factorId = "rpml-f-41", name = "stages.units.actions.findBy", type = FactorType.OBJECT),
 		Factor(factorId = "rpml-f-42", name = "stages.units.actions.touched", type = FactorType.OBJECT),
 		Factor(factorId = "rpml-f-43", name = "stages.units.actions.status", type = FactorType.TEXT),
-		Factor(
-			factorId = "rpml-f-44", name = "stages.units.actions.startTime",
-			type = FactorType.FULL_DATETIME
-		),
+		Factor(factorId = "rpml-f-44", name = "stages.units.actions.startTime", type = FactorType.FULL_DATETIME),
 		Factor(factorId = "rpml-f-45", name = "stages.units.actions.spentInMills", type = FactorType.UNSIGNED),
 		Factor(factorId = "rpml-f-46", name = "stages.units.actions.error", type = FactorType.TEXT),
 		Factor(

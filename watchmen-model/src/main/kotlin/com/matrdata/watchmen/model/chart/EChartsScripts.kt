@@ -127,7 +127,7 @@ data class DropdownItem(
 	override var label: String? = null,
 	override var key: String? = null,
 	var placeholder: String? = null,
-	var options: List<DropdownItemOption<in Any>>? = null,
+	var options: List<DropdownItemOption<out Any>>? = null,
 	var defaultValue: ChartColor? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")

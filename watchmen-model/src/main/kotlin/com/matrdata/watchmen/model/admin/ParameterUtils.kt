@@ -1,23 +1,23 @@
 package com.matrdata.watchmen.model.admin
 
-import com.matrdata.watchmen.model.common.SingleArgumentComputeType
-import com.matrdata.watchmen.model.common.StandardComputedNonConditionalParameter
-import com.matrdata.watchmen.model.common.StandardTopicFactorParameter
+import com.matrdata.watchmen.model.common.ComputedParameter
+import com.matrdata.watchmen.model.common.ParameterComputeType
+import com.matrdata.watchmen.model.common.TopicFactorParameter
 
 object ParameterUtils {
-	fun buildStandardFactorParameter(topic: Topic, factorName: String): StandardTopicFactorParameter {
-		return StandardTopicFactorParameter(
+	fun buildTopicFactorParameter(topic: Topic, factorName: String): TopicFactorParameter {
+		return TopicFactorParameter(
 			topicId = topic.topicId,
 			factorId = TopicUtils.findFactorByName(topic, factorName)!!.factorId
 		)
 	}
 
 	fun buildSingleArgumentComputedParameter(
-		topic: Topic, factorName: String, type: SingleArgumentComputeType
-	): StandardComputedNonConditionalParameter {
-		return StandardComputedNonConditionalParameter(
+		topic: Topic, factorName: String, type: ParameterComputeType
+	): ComputedParameter {
+		return ComputedParameter(
 			type = type,
-			parameters = listOf(buildStandardFactorParameter(topic, factorName))
+			parameters = listOf(buildTopicFactorParameter(topic, factorName))
 		)
 	}
 }

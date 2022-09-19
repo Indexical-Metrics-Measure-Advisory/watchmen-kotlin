@@ -36,3 +36,7 @@ typealias DashboardId = String
 typealias PipelineTriggerTraceId = String
 typealias MonitorLogActionId = String
 typealias PipelineMonitorLogId = String
+
+typealias MonitorRuleId = String
+typealias CatalogId = String
+typealias MonitorJobLockId = String

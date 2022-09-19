@@ -196,7 +196,7 @@ data class MonitorLogUnit(
 	var name: String? = null,
 	var loopVariableName: String? = null,
 	var loopVariableValue: Any? = null,
-	var actions: List<MonitorLogAction<in PipelineActionType>> = mutableListOf(),
+	var actions: List<MonitorLogAction<out PipelineActionType>> = mutableListOf(),
 	override var status: MonitorLogStatus,
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int = 0,

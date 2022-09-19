@@ -277,7 +277,7 @@ data class PipelineUnit(
 	var unitId: PipelineUnitId? = null,
 	var name: String? = null,
 	var loopVariableName: String? = null,
-	var `do`: List<PipelineAction<in PipelineActionType>>? = null,
+	var `do`: List<PipelineAction<out `PipelineActionType`>>? = null,
 	override var conditional: Boolean? = false,
 	override var on: ParameterJoint? = null
 ) : Conditional, DataModel
