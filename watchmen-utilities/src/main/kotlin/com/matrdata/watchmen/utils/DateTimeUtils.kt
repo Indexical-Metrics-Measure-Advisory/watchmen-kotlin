@@ -6,7 +6,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.ConcurrentHashMap
 
-
 object DateTimeUtils {
 	private val formatters: MutableMap<String, DateTimeFormatter> = ConcurrentHashMap<String, DateTimeFormatter>()
 

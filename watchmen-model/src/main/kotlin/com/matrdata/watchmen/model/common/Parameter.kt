@@ -87,13 +87,21 @@ sealed class ComputedParameter<T : ParameterComputeType, P : Parameter>(
 		set(value) {}
 }
 
-enum class NonConditionalParameterComputeType(override val code: String) : ParameterComputeType {
-	NONE("none"),
+sealed interface NonConditionalParameterComputeType : ParameterComputeType
+
+enum class NoopComputeType(override val code: String) : NonConditionalParameterComputeType {
+	NONE("none")
+}
+
+enum class MultipleArgumentsComputeType(override val code: String) : NonConditionalParameterComputeType {
 	ADD("add"),
 	SUBTRACT("subtract"),
 	MULTIPLY("multiply"),
 	DIVIDE("divide"),
-	MODULUS("modulus"),
+	MODULUS("modulus")
+}
+
+enum class SingleArgumentComputeType(override val code: String) : NonConditionalParameterComputeType {
 	YEAR_OF("year-of"),
 	HALF_YEAR_OF("half-year-of"),
 	QUARTER_OF("quarter-of"),
@@ -109,7 +117,7 @@ enum class ConditionalParameterComputeType(override val code: String) : Paramete
 }
 
 data class StandardComputedNonConditionalParameter(
-	override var type: NonConditionalParameterComputeType? = NonConditionalParameterComputeType.NONE,
+	override var type: NonConditionalParameterComputeType? = NoopComputeType.NONE,
 	override var parameters: List<Parameter>? = null
 ) : ComputedParameter<NonConditionalParameterComputeType, Parameter>()
 
@@ -123,7 +131,7 @@ data class StandardComputedConditionalParameter(
 }
 
 data class ConditionalComputedNonConditionalParameter(
-	override var type: NonConditionalParameterComputeType? = NonConditionalParameterComputeType.NONE,
+	override var type: NonConditionalParameterComputeType? = NoopComputeType.NONE,
 	override var parameters: List<Parameter>? = null,
 	override var conditional: Boolean? = false,
 	override var on: ParameterJoint? = null
