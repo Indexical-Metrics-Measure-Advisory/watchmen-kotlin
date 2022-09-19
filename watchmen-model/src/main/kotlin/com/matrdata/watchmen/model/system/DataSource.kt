@@ -16,7 +16,7 @@ enum class DataSourceType(val code: String) {
 data class DataSourceParam(
 	var name: String? = null,
 	var value: String? = null,
-)
+) : DataModel
 
 data class DataSource(
 	var dataSourceId: DataSourceId? = null,
@@ -29,10 +29,10 @@ data class DataSource(
 	var name: String? = null,
 	var urlval: String? = null,
 	var params: List<DataSourceParam>? = null,
-	override var tenantId: TenantId?,
-	override var version: Int?,
-	override var createdAt: LocalDateTime?,
-	override var createdBy: UserId?,
-	override var lastModifiedAt: LocalDateTime?,
-	override var lastModifiedBy: UserId?
+	override var tenantId: TenantId? = null,
+	override var version: Int? = 1,
+	override var createdAt: LocalDateTime? = null,
+	override var createdBy: UserId? = null,
+	override var lastModifiedAt: LocalDateTime? = null,
+	override var lastModifiedBy: UserId? = null
 ) : TenantBasedTuple, OptimisticLock

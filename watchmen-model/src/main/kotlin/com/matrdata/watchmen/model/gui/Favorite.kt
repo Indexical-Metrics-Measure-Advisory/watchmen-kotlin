@@ -7,10 +7,10 @@ data class Favorite(
 	var connectedSpaceIds: List<ConnectedSpaceId>? = null,
 	var dashboardIds: List<DashboardId>? = null,
 	override var lastVisitTime: LocalDateTime?,
-	override var userId: UserId?,
-	override var tenantId: TenantId?,
-	override var createdAt: LocalDateTime?,
-	override var createdBy: UserId?,
-	override var lastModifiedAt: LocalDateTime?,
-	override var lastModifiedBy: UserId?
+	override var userId: UserId? = null,
+	override var tenantId: TenantId? = null,
+	override var createdAt: LocalDateTime? = null,
+	override var createdBy: UserId? = null,
+	override var lastModifiedAt: LocalDateTime? = null,
+	override var lastModifiedBy: UserId? = null
 ) : UserBasedTuple, LastVisit

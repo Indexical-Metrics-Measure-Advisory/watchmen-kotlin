@@ -14,12 +14,6 @@ data class StandardNamedDataset(
 	override var data: Dataset,
 ) : NamedDataset
 
-
-sealed interface Pageable {
-	var pageNumber: Int
-	var pageSize: Int
-}
-
 data class NamedDatasetPage(
 	override var columns: List<String>? = null,
 	override var data: Dataset,

@@ -1,29 +1,31 @@
 package com.matrdata.watchmen.model.common
 
-interface GraphicPosition {
-	var x: Float
-	var y: Float
+import java.math.BigDecimal
+
+interface GraphicPosition : DataModel {
+	var x: BigDecimal
+	var y: BigDecimal
 }
 
 data class StandardGraphicPosition(
-	var x: Float = 0f,
-	var y: Float = 0f
+	var x: BigDecimal = BigDecimal.ZERO,
+	var y: BigDecimal = BigDecimal.ZERO
 )
 
 
-sealed interface GraphicSize {
-	var width: Float
-	var height: Float
+sealed interface GraphicSize : DataModel {
+	var width: BigDecimal
+	var height: BigDecimal
 }
 
 data class StandardGraphicSize(
-	var width: Float = 0f,
-	var height: Float = 0f
+	var width: BigDecimal = BigDecimal.ZERO,
+	var height: BigDecimal = BigDecimal.ZERO
 )
 
 data class GraphicRect(
-	override var x: Float = 0f,
-	override var y: Float = 0f,
-	override var width: Float = 0f,
-	override var height: Float = 0f
+	override var x: BigDecimal = BigDecimal.ZERO,
+	override var y: BigDecimal = BigDecimal.ZERO,
+	override var width: BigDecimal = BigDecimal.ZERO,
+	override var height: BigDecimal = BigDecimal.ZERO
 ) : GraphicPosition, GraphicSize

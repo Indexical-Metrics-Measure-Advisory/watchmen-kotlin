@@ -6,7 +6,7 @@ enum class ParameterKind(val code: String) {
 	COMPUTED("computed")
 }
 
-sealed interface Parameter {
+sealed interface Parameter : DataModel {
 	var kind: ParameterKind?
 }
 

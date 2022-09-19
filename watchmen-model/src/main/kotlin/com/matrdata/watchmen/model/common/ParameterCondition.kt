@@ -1,6 +1,6 @@
 package com.matrdata.watchmen.model.common
 
-sealed interface ParameterCondition
+sealed interface ParameterCondition : DataModel
 
 enum class ParameterJointType(val code: String) {
 	AND("and"),
