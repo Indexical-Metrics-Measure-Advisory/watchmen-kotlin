@@ -8,9 +8,9 @@ import kotlin.contracts.contract
  * call given function only when this is true
  */
 @OptIn(ExperimentalContracts::class)
-inline fun Boolean.positive(block: Boolean.() -> Unit): Boolean {
+inline fun Boolean.doIfTrue(block: Boolean.() -> Unit): Boolean {
 	contract {
-		callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	if (this) {
 		block()
@@ -23,9 +23,9 @@ inline fun Boolean.positive(block: Boolean.() -> Unit): Boolean {
  * which means always returns false when no exception raised.
  */
 @OptIn(ExperimentalContracts::class)
-inline fun Boolean.throwIfPositive(block: Boolean.() -> Throwable): Boolean {
+inline fun Boolean.throwIfTrue(block: Boolean.() -> Throwable): Boolean {
 	contract {
-		callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	return if (this) {
 		throw block()
@@ -38,9 +38,9 @@ inline fun Boolean.throwIfPositive(block: Boolean.() -> Throwable): Boolean {
  * call given function only when this is false
  */
 @OptIn(ExperimentalContracts::class)
-inline fun Boolean.negative(block: Boolean.() -> Unit): Boolean {
+inline fun Boolean.doIfFalse(block: Boolean.() -> Unit): Boolean {
 	contract {
-		callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	if (!this) {
 		block()
@@ -53,9 +53,9 @@ inline fun Boolean.negative(block: Boolean.() -> Unit): Boolean {
  * which means always returns true when no exception raised.
  */
 @OptIn(ExperimentalContracts::class)
-inline fun Boolean.throwIfNegative(block: Boolean.() -> Throwable): Boolean {
+inline fun Boolean.throwIfFalse(block: Boolean.() -> Throwable): Boolean {
 	contract {
-		callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	return if (!this) {
 		throw block()

@@ -2,7 +2,7 @@ package com.matrdata.watchmen.model.indicator
 
 import com.matrdata.watchmen.model.common.*
 import com.matrdata.watchmen.utils.assert
-import com.matrdata.watchmen.utils.throwIfNegative
+import com.matrdata.watchmen.utils.throwIfFalse
 import java.time.LocalDateTime
 
 enum class BucketType(val code: String) {
@@ -74,7 +74,7 @@ sealed interface MeasureBucket<S : BucketSegment<out SegmentValue>> : Bucket<S> 
 private fun checkMeasureMethod(measure: MeasureMethod?, validMeasureMethods: List<MeasureMethod>) {
 	measure
 		?.assert { validMeasureMethods.contains(this) }
-		?.throwIfNegative { IllegalArgumentException("[${validMeasureMethods}] are supported, current is [$measure].") }
+		?.throwIfFalse { IllegalArgumentException("[${validMeasureMethods}] are supported, current is [$measure].") }
 }
 
 data class NumericValueMeasureBucket(
