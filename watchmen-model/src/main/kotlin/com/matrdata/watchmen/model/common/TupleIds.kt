@@ -40,3 +40,14 @@ typealias PipelineMonitorLogId = String
 typealias MonitorRuleId = String
 typealias CatalogId = String
 typealias MonitorJobLockId = String
+
+typealias BucketId = String
+typealias IndicatorId = String
+typealias TopicOrSubjectId = String
+typealias FactorOrSubjectDatasetColumnId = String
+typealias InspectionId = String
+typealias AchievementId = String
+typealias AchievementPluginTaskId = String
+typealias ObjectiveAnalysisId = String
+typealias ObjectiveAnalysisPerspectiveId = String
+typealias InspectionOrAchievementId = String

@@ -77,6 +77,44 @@ enum class FactorType(val code: String) {
 	ARRAY("array")
 }
 
+class DateTimeFactorValuesValidator(val min: Int, val max: Int) {
+	fun isValid(value: Int): Boolean {
+		return value in min..max
+	}
+
+	fun isValidOrThrow(value: Int, invalidMessage: (range: String) -> String): Boolean {
+		return if (this.isValid(value)) {
+			true
+		} else {
+			throw IllegalArgumentException(invalidMessage(this.getValidRange()))
+		}
+	}
+
+	fun getValidRange(): String {
+		return "[$min .. $max]"
+	}
+}
+
+object DateTimeFactorValueValidators {
+	val HALF_YEAR = DateTimeFactorValuesValidator(1, 2)
+	val QUARTER = DateTimeFactorValuesValidator(1, 4)
+	val MONTH = DateTimeFactorValuesValidator(1, 12)
+	val HALF_MONTH = DateTimeFactorValuesValidator(1, 2)
+	val TEN_DAYS = DateTimeFactorValuesValidator(1, 3)
+	val WEEK_OF_YEAR = DateTimeFactorValuesValidator(0, 53)
+	val WEEK_OF_MONTH = DateTimeFactorValuesValidator(0, 5)
+	val HALF_WEEK = DateTimeFactorValuesValidator(1, 2)
+	val DAY_OF_MONTH = DateTimeFactorValuesValidator(1, 31)
+	val DAY_OF_WEEK = DateTimeFactorValuesValidator(1, 7)
+	val DAY_KIND = DateTimeFactorValuesValidator(1, 3)
+	val HOUR = DateTimeFactorValuesValidator(0, 23)
+	val HOUR_KIND = DateTimeFactorValuesValidator(1, 3)
+	val MINUTE = DateTimeFactorValuesValidator(0, 59)
+	val SECOND = DateTimeFactorValuesValidator(0, 59)
+	val MILLISECOND = DateTimeFactorValuesValidator(0, 999)
+	val AM_PM = DateTimeFactorValuesValidator(1, 3)
+}
+
 enum class FactorIndexGroup(val code: String) {
 	INDEX_1("i-1"),
 	INDEX_2("i-2"),
