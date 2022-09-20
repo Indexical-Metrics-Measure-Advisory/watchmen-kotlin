@@ -111,7 +111,7 @@ data class CategorySegment(
 	override var value: List<String>? = null
 ) : BucketSegment<List<String>> {
 	companion object {
-		val OTHER_CATEGORY_SEGMENT = "&others"
+		const val OTHER_CATEGORY_SEGMENT = "&others"
 	}
 }
 

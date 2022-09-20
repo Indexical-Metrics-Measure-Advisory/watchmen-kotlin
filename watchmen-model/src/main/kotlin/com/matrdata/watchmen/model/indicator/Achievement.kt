@@ -29,7 +29,7 @@ data class ManualComputeAchievementIndicator(
 	override var variableName: String? = null
 ) : AchievementIndicator {
 	companion object {
-		val MANUAL_COMPUTE_ACHIEVEMENT_INDICATOR_ID = "-1"
+		const val MANUAL_COMPUTE_ACHIEVEMENT_INDICATOR_ID = "-1"
 	}
 
 	@Suppress("UNUSED_PARAMETER")
