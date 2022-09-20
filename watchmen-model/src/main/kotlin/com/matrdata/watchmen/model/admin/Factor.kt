@@ -3,6 +3,7 @@ package com.matrdata.watchmen.model.admin
 import com.matrdata.watchmen.model.common.DataModel
 import com.matrdata.watchmen.model.common.EnumId
 import com.matrdata.watchmen.model.common.FactorId
+import com.matrdata.watchmen.utils.throwIfNegative
 
 enum class FactorType(val code: String) {
 	SEQUENCE("sequence"),
@@ -77,21 +78,17 @@ enum class FactorType(val code: String) {
 	ARRAY("array")
 }
 
-class DateTimeFactorValuesValidator(val min: Int, val max: Int) {
-	fun isValid(value: Int): Boolean {
+class DateTimeFactorValuesValidator(private val min: Int, private val max: Int) {
+	private fun getValidRangeAsString(): String {
+		return "[$min .. $max]"
+	}
+
+	private fun isValid(value: Int): Boolean {
 		return value in min..max
 	}
 
 	fun isValidOrThrow(value: Int, invalidMessage: (range: String) -> String): Boolean {
-		return if (this.isValid(value)) {
-			true
-		} else {
-			throw IllegalArgumentException(invalidMessage(this.getValidRange()))
-		}
-	}
-
-	fun getValidRange(): String {
-		return "[$min .. $max]"
+		return this.isValid(value).throwIfNegative { IllegalArgumentException(invalidMessage(getValidRangeAsString())) }
 	}
 }
 

@@ -43,6 +43,10 @@ sealed interface InspectionTimeRange<V : Any> : DataModel {
 	var value: V?
 }
 
+private fun Int.checkBy(validator: DateTimeFactorValuesValidator): Boolean {
+	return validator.isValidOrThrow(this) { range -> "$range is supported, current is [$this]." }
+}
+
 data class InspectionYearRange(
 	override var value: Int? = null
 ) : InspectionTimeRange<Int> {
@@ -52,11 +56,6 @@ data class InspectionYearRange(
 		set(value) {}
 }
 
-private fun checkDateTimeRange(value: Int?, validator: DateTimeFactorValuesValidator) {
-	value?.let {
-		validator.isValidOrThrow(it) { range -> "$range is supported, currently is [$value]." }
-	}
-}
 
 data class InspectionHalfYearRange(
 	override var value: Int? = null
@@ -67,7 +66,7 @@ data class InspectionHalfYearRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.HALF_YEAR)
+		value?.checkBy(DateTimeFactorValueValidators.HALF_YEAR)
 	}
 }
 
@@ -80,7 +79,7 @@ data class InspectionQuarterRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.QUARTER)
+		value?.checkBy(DateTimeFactorValueValidators.QUARTER)
 	}
 }
 
@@ -93,7 +92,7 @@ data class InspectionMonthRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.MONTH)
+		value?.checkBy(DateTimeFactorValueValidators.MONTH)
 	}
 }
 
@@ -106,7 +105,7 @@ data class InspectionHalfMonthRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.HALF_MONTH)
+		value?.checkBy(DateTimeFactorValueValidators.HALF_MONTH)
 	}
 }
 
@@ -119,7 +118,7 @@ data class InspectionTenDaysRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.TEN_DAYS)
+		value?.checkBy(DateTimeFactorValueValidators.TEN_DAYS)
 	}
 }
 
@@ -132,7 +131,7 @@ data class InspectionWeekOfYearRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.WEEK_OF_YEAR)
+		value?.checkBy(DateTimeFactorValueValidators.WEEK_OF_YEAR)
 	}
 }
 
@@ -145,7 +144,7 @@ data class InspectionWeekOfMonthRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.WEEK_OF_MONTH)
+		value?.checkBy(DateTimeFactorValueValidators.WEEK_OF_MONTH)
 	}
 }
 
@@ -158,7 +157,7 @@ data class InspectionHalfWeekRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.HALF_WEEK)
+		value?.checkBy(DateTimeFactorValueValidators.HALF_WEEK)
 	}
 }
 
@@ -171,7 +170,7 @@ data class InspectionDayOfMonthRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.DAY_OF_MONTH)
+		value?.checkBy(DateTimeFactorValueValidators.DAY_OF_MONTH)
 	}
 }
 
@@ -184,7 +183,7 @@ data class InspectionDayOfWeekRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.DAY_OF_WEEK)
+		value?.checkBy(DateTimeFactorValueValidators.DAY_OF_WEEK)
 	}
 }
 
@@ -197,7 +196,7 @@ data class InspectionDayKindRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.DAY_KIND)
+		value?.checkBy(DateTimeFactorValueValidators.DAY_KIND)
 	}
 }
 
@@ -210,7 +209,7 @@ class InspectionHourRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.HOUR)
+		value?.checkBy(DateTimeFactorValueValidators.HOUR)
 	}
 }
 
@@ -223,7 +222,7 @@ data class InspectionHourKindRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.HOUR_KIND)
+		value?.checkBy(DateTimeFactorValueValidators.HOUR_KIND)
 	}
 }
 
@@ -236,7 +235,7 @@ data class InspectionAmPmRange(
 		set(value) {}
 
 	init {
-		checkDateTimeRange(value, DateTimeFactorValueValidators.AM_PM)
+		value?.checkBy(DateTimeFactorValueValidators.AM_PM)
 	}
 }
 

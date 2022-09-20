@@ -1,6 +1,8 @@
 package com.matrdata.watchmen.model.indicator
 
 import com.matrdata.watchmen.model.common.*
+import com.matrdata.watchmen.utils.assert
+import com.matrdata.watchmen.utils.throwIfNegative
 import java.time.LocalDateTime
 
 enum class BucketType(val code: String) {
@@ -69,6 +71,12 @@ sealed interface MeasureBucket<S : BucketSegment<out SegmentValue>> : Bucket<S> 
 	var measure: MeasureMethod?
 }
 
+private fun checkMeasureMethod(measure: MeasureMethod?, validMeasureMethods: List<MeasureMethod>) {
+	measure
+		?.assert { validMeasureMethods.contains(this) }
+		?.throwIfNegative { IllegalArgumentException("[${validMeasureMethods}] are supported, current is [$measure].") }
+}
+
 data class NumericValueMeasureBucket(
 	override var bucketId: BucketId? = null,
 	override var name: String? = null,
@@ -94,9 +102,7 @@ data class NumericValueMeasureBucket(
 		set(value) {}
 
 	init {
-		if (measure != null && AVAILABLE_MEASURES.contains(measure)) {
-			throw UnsupportedOperationException("Only measure method of [$AVAILABLE_MEASURES] is supported, currently is [$measure].")
-		}
+		checkMeasureMethod(measure, AVAILABLE_MEASURES)
 	}
 }
 
@@ -144,9 +150,7 @@ data class CategoryMeasureBucket(
 		set(value) {}
 
 	init {
-		if (measure != null && !AVAILABLE_MEASURES.contains(measure)) {
-			throw UnsupportedOperationException("Only measure method of [$AVAILABLE_MEASURES] is supported, currently is [$measure].")
-		}
+		checkMeasureMethod(measure, AVAILABLE_MEASURES)
 	}
 }
 
