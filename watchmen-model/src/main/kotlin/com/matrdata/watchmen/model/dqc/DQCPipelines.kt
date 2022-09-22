@@ -46,10 +46,10 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 					parameters = listOf(
 						ConstantParameter(
 							conditional = true,
-							on = ParameterJoint(
+							on = Joint(
 								jointType = ParameterJointType.AND,
 								filters = listOf(
-									DualParameterExpression(
+									DualExpression(
 										left = ParameterUtils.buildTopicFactorParameter(
 											topicRuleResult, "detected"
 										),
@@ -66,39 +66,39 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 				factorId = TopicUtils.findFactorByName(topicDaily, "count")!!.factorId
 			)
 		),
-		by = ParameterJoint(
+		by = Joint(
 			jointType = ParameterJointType.AND,
 			filters = listOf(
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildTopicFactorParameter(topicRuleResult, "ruleCode"),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "ruleCode")
 				),
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildTopicFactorParameter(topicRuleResult, "topicId"),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "topicId")
 				),
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildTopicFactorParameter(topicRuleResult, "factorId"),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "factorId")
 				),
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
 						topicRuleResult, "processDate", ParameterComputeType.YEAR_OF
 					),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "year")
 				),
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
 						topicRuleResult, "processDate", ParameterComputeType.MONTH_OF
 					),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "month")
 				),
-				DualParameterExpression(
+				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
 						topicRuleResult, "processDate", ParameterComputeType.DAY_OF_MONTH
 					),

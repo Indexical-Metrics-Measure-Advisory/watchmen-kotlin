@@ -1,6 +1,7 @@
 package com.matrdata.watchmen.model.console
 
 import com.matrdata.watchmen.model.chart.Chart
+import com.matrdata.watchmen.model.chart.ChartSettings
 import com.matrdata.watchmen.model.common.*
 import java.time.LocalDateTime
 
@@ -60,10 +61,10 @@ data class Report(
 	var funnels: List<ReportFunnel>? = null,
 	var indicators: List<ReportIndicator>? = null,
 	var dimensions: List<ReportDimension>? = null,
-	var filters: ParameterJoint? = null,
+	var filters: Joint? = null,
 	var description: String? = null,
 	var rect: GraphicRect? = null,
-	var chart: Chart? = null,
+	var chart: Chart<out ChartSettings>? = null,
 	var simulating: Boolean? = false,
 	var simulateData: Dataset? = null,
 	// base64

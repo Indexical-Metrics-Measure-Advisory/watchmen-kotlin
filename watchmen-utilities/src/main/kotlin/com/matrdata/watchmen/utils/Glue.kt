@@ -25,3 +25,17 @@ inline fun <T, R> T.adapt(block: T.() -> R): R {
 	}
 	return block()
 }
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T : Any> T?.throwIfNull(block: T?.() -> String): T {
+	contract {
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
+		returns() implies (this@throwIfNull != null)
+	}
+
+	if (this == null) {
+		throw IllegalArgumentException(block())
+	} else {
+		return this
+	}
+}

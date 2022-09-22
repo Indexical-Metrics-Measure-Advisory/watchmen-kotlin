@@ -59,7 +59,7 @@ data class SubjectDatasetColumn(
 data class SubjectDataset(
 	var columns: List<SubjectDatasetColumn>? = null,
 	var joins: List<SubjectDatasetJoin>? = null,
-	var filters: ParameterJoint? = null
+	var filters: Joint? = null
 ) : DataModel
 
 data class Subject(
@@ -102,7 +102,7 @@ data class SubjectDatasetCriteria(
 	var subjectId: SubjectId? = null,
 	var subjectName: String? = null,
 	var indicators: List<SubjectDatasetCriteriaIndicator>? = null,
-	var conditions: List<ParameterCondition>? = null,
+	var conditions: List<Condition>? = null,
 	override var pageNumber: Int = 1,
 	override var pageSize: Int = 100,
 ) : Pageable

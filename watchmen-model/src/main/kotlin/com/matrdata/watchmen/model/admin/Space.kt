@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class SpaceFilter(
 	var topicId: TopicId? = null,
 	var enabled: Boolean? = false,
-	var joint: ParameterJoint? = null
+	var joint: Joint? = null
 ) : DataModel
 
 data class Space(

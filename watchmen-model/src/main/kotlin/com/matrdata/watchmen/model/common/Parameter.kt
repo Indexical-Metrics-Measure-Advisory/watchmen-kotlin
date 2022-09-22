@@ -9,15 +9,13 @@ enum class ParameterKind(val code: String) {
 /**
  * parameter might with condition.
  */
-sealed interface Parameter : DataModel {
+sealed interface Parameter : Conditional, DataModel {
 	var kind: ParameterKind?
-	var conditional: Boolean?
-	var on: ParameterJoint?
 }
 
 data class TopicFactorParameter(
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null,
+	override var on: Joint? = null,
 	var topicId: TopicId? = null,
 	var factorId: FactorId? = null
 ) : Parameter {
@@ -43,7 +41,7 @@ enum class VariablePredefineFunctions(val code: String) {
 
 data class ConstantParameter(
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null,
+	override var on: Joint? = null,
 	var value: String? = null
 ) : Parameter {
 	@Suppress("UNUSED_PARAMETER")
@@ -72,7 +70,7 @@ enum class ParameterComputeType(val code: String) {
 
 data class ComputedParameter(
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null,
+	override var on: Joint? = null,
 	var type: ParameterComputeType? = null,
 	var parameters: List<Parameter>? = null
 ) : Parameter {

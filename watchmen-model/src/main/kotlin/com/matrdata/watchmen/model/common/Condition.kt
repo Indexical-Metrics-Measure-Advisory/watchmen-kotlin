@@ -1,35 +1,35 @@
 package com.matrdata.watchmen.model.common
 
-sealed interface ParameterCondition : DataModel
+sealed interface Condition : DataModel
 
 enum class ParameterJointType(val code: String) {
 	AND("and"),
 	OR("or")
 }
 
-data class ParameterJoint(
+data class Joint(
 	var jointType: ParameterJointType? = ParameterJointType.AND,
-	var filters: List<ParameterCondition>? = null
-) : ParameterCondition
+	var filters: List<Condition>? = null
+) : Condition
 
 sealed interface ParameterExpressionOperator {
 	val code: String
 }
 
-sealed class ParameterExpression<OP : ParameterExpressionOperator>(
+sealed class Expression<OP : ParameterExpressionOperator>(
 	open var left: Parameter? = null,
 	open var operator: OP? = null,
-) : ParameterCondition
+) : Condition
 
 enum class SingleParameterExpressionOperator(override val code: String) : ParameterExpressionOperator {
 	EMPTY("empty"),
 	NOT_EMPTY("not-empty")
 }
 
-data class SingleParameterExpression(
+data class SingleExpression(
 	override var left: Parameter? = null,
 	override var operator: SingleParameterExpressionOperator? = SingleParameterExpressionOperator.EMPTY,
-) : ParameterExpression<SingleParameterExpressionOperator>()
+) : Expression<SingleParameterExpressionOperator>()
 
 enum class DualParameterExpressionOperator(override val code: String) : ParameterExpressionOperator {
 	EQUALS("equals"),
@@ -42,8 +42,13 @@ enum class DualParameterExpressionOperator(override val code: String) : Paramete
 	NOT_IN("not-in")
 }
 
-data class DualParameterExpression(
+data class DualExpression(
 	override var left: Parameter? = null,
 	override var operator: DualParameterExpressionOperator? = DualParameterExpressionOperator.EQUALS,
 	var right: Parameter? = null,
-) : ParameterExpression<DualParameterExpressionOperator>()
+) : Expression<DualParameterExpressionOperator>()
+
+interface Conditional {
+	var conditional: Boolean?
+	var on: Joint?
+}

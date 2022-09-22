@@ -74,6 +74,6 @@ val DQC_RULE_DAILY = Topic(
 )
 
 fun askDQCTopics(): List<Topic> {
-	// TODO define all dqc topics
+	// TODO, NOT REALLY, a shortcut to find location of define all dqc topics
 	return listOf(DQC_RAW_RULE_RESULT, DQC_RULE_DAILY)
 }

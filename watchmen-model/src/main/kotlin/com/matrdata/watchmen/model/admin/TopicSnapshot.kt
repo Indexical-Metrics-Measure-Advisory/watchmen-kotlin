@@ -17,7 +17,7 @@ data class TopicSnapshotScheduler(
 	var targetTopicId: TopicId? = null,
 	var pipelineId: PipelineId? = null,
 	var frequency: TopicSnapshotFrequency = TopicSnapshotFrequency.DAILY,
-	var filter: ParameterJoint? = null,
+	var filter: Joint? = null,
 	// only for weekly
 	var weekday: String? = null,
 	// only for monthly

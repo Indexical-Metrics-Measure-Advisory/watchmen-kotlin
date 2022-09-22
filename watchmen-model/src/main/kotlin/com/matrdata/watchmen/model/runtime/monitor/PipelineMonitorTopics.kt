@@ -69,6 +69,6 @@ val RAW_PIPELINE_MONITOR_LOG = Topic(
 )
 
 fun askPipelineMonitorTopics(): List<Topic> {
-	// TODO define all pipeline monitor topics
+	// TODO, NOT REALLY, a shortcut to find location of define all pipeline monitor topics here
 	return listOf(RAW_PIPELINE_MONITOR_LOG)
 }

@@ -3,11 +3,6 @@ package com.matrdata.watchmen.model.admin
 import com.matrdata.watchmen.model.common.*
 import java.time.LocalDateTime
 
-sealed interface Conditional {
-	var conditional: Boolean?
-	var on: ParameterJoint?
-}
-
 sealed interface PipelineActionType {
 	val code: String
 }
@@ -64,7 +59,7 @@ sealed interface ToFactor<T : PipelineActionType> : ToTopic<T> {
 }
 
 sealed interface FindBy<T : PipelineActionType> : PipelineAction<T> {
-	var by: ParameterJoint?
+	var by: Joint?
 }
 
 enum class AggregateArithmetic(val code: String) {
@@ -92,7 +87,7 @@ data class AlarmAction(
 	var severity: AlarmActionSeverity = AlarmActionSeverity.MEDIUM,
 	var message: String? = null,
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null
+	override var on: Joint? = null
 ) : PipelineSystemAction, Conditional {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType
@@ -132,7 +127,7 @@ data class ReadRowAction(
 	override var actionId: PipelineActionId? = null,
 	override var variableName: String? = null,
 	override var topicId: TopicId? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: ReadTopicActionType
@@ -144,7 +139,7 @@ data class ReadRowsAction(
 	override var actionId: PipelineActionId? = null,
 	override var variableName: String? = null,
 	override var topicId: TopicId? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: ReadTopicActionType
@@ -158,7 +153,7 @@ data class ReadFactorAction(
 	override var topicId: TopicId? = null,
 	override var factorId: FactorId? = null,
 	override var arithmetic: AggregateArithmetic? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : ReadTopicAction, FromFactor<ReadTopicActionType>, AggregateArithmeticHolder {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: ReadTopicActionType
@@ -172,7 +167,7 @@ data class ReadFactorsAction(
 	override var variableName: String? = null,
 	override var topicId: TopicId? = null,
 	override var factorId: FactorId? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : ReadTopicAction, FromFactor<ReadTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: ReadTopicActionType
@@ -184,7 +179,7 @@ data class ExistsAction(
 	override var actionId: PipelineActionId? = null,
 	override var variableName: String? = null,
 	override var topicId: TopicId? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: ReadTopicActionType
@@ -238,7 +233,7 @@ data class InsertOrMergeRowAction(
 	override var topicId: TopicId? = null,
 	override var mapping: List<MappingFactor>? = null,
 	override var accumulateMode: AccumulateMode? = AccumulateMode.STANDARD,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : WriteTopicAction, MappingRow, FindBy<WriteTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: WriteTopicActionType
@@ -251,7 +246,7 @@ data class MergeRowAction(
 	override var topicId: TopicId? = null,
 	override var mapping: List<MappingFactor>? = null,
 	override var accumulateMode: AccumulateMode? = AccumulateMode.STANDARD,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : WriteTopicAction, MappingRow, FindBy<WriteTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: WriteTopicActionType
@@ -265,7 +260,7 @@ data class WriteFactorAction(
 	override var factorId: FactorId? = null,
 	override var arithmetic: AggregateArithmetic? = null,
 	override var accumulateMode: AccumulateMode? = null,
-	override var by: ParameterJoint? = null
+	override var by: Joint? = null
 ) : WriteTopicAction, ToFactor<WriteTopicActionType>, FindBy<WriteTopicActionType>, AggregateArithmeticHolder {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: WriteTopicActionType
@@ -277,9 +272,9 @@ data class PipelineUnit(
 	var unitId: PipelineUnitId? = null,
 	var name: String? = null,
 	var loopVariableName: String? = null,
-	var `do`: List<PipelineAction<out `PipelineActionType`>>? = null,
+	var `do`: List<PipelineAction<out PipelineActionType>>? = null,
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null
+	override var on: Joint? = null
 ) : Conditional, DataModel
 
 data class PipelineStage(
@@ -287,7 +282,7 @@ data class PipelineStage(
 	var name: String? = null,
 	var units: List<PipelineUnit>? = null,
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null
+	override var on: Joint? = null
 ) : Conditional, DataModel
 
 enum class PipelineTriggerType(val code: String) {
@@ -306,7 +301,7 @@ data class Pipeline(
 	var enabled: Boolean? = null,
 	var validated: Boolean? = null,
 	override var conditional: Boolean? = false,
-	override var on: ParameterJoint? = null,
+	override var on: Joint? = null,
 	override var tenantId: TenantId? = null,
 	override var version: Int? = 1,
 	override var createdAt: LocalDateTime? = null,

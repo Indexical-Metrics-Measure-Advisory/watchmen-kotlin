@@ -35,7 +35,7 @@ enum class IndicatorBaseOn(val code: String) {
 
 data class IndicatorFilter(
 	var enabled: Boolean? = false,
-	var joint: ParameterJoint? = null
+	var joint: Joint? = null
 ) : DataModel
 
 data class Indicator(
