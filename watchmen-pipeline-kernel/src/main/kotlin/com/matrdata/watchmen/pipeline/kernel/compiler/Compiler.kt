@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.pipeline.kernel.compile
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 

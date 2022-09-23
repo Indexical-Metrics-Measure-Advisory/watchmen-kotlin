@@ -1,8 +1,8 @@
 plugins {
-    id("java")
+	id("java")
 }
 
 dependencies {
-    implementation("ch.qos.logback:logback-classic:1.4.1")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
+	api("ch.qos.logback:logback-classic:1.4.1")
+	api("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 }

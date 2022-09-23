@@ -1,15 +1,10 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.conditional
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Conditional
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
-import com.matrdata.watchmen.pipeline.kernel.compile.PreparedCompiler
-import com.matrdata.watchmen.pipeline.kernel.compile.condition.CompiledInMemoryCondition
-import com.matrdata.watchmen.pipeline.kernel.compile.condition.use
-
-typealias PrerequisiteTest = (PipelineVariables, Principal) -> Boolean
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 
 val TEST_PREREQUISITE_ALWAYS_TRUE: PrerequisiteTest = { _, _ -> true }
 
@@ -41,17 +36,4 @@ class ConditionalCompiler private constructor(private val conditional: Condition
 			else -> this.conditional.on!!.use(principal).inMemory().compile().createTest()
 		}
 	}
-}
-
-
-class PreparedConditionalCompiler(
-	private val conditional: Conditional, private val principal: Principal
-) : PreparedCompiler<PrerequisiteTest> {
-	override fun compile(): PrerequisiteTest {
-		return ConditionalCompiler.of(this.conditional).compileBy(this.principal)
-	}
-}
-
-fun Conditional.use(principal: Principal): PreparedConditionalCompiler {
-	return PreparedConditionalCompiler(conditional = this, principal = principal)
 }

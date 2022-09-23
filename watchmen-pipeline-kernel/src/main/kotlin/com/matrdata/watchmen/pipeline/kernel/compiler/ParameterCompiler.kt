@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.parameter
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Parameter

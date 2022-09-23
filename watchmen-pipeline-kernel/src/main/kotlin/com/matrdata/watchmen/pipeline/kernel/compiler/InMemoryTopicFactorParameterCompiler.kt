@@ -1,9 +1,9 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.parameter
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.TopicFactorParameter
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryTopicFactorParameter
 
 /**
  * in-memory topic factor parameter compiler
@@ -18,20 +18,5 @@ class InMemoryTopicFactorParameterCompiler private constructor(private val param
 
 	override fun compileBy(principal: Principal): CompiledInMemoryTopicFactorParameter {
 		return CompiledInMemoryTopicFactorParameter(parameter = this.parameter)
-	}
-}
-
-/**
- * compiled in-memory topic factor parameter
- */
-class CompiledInMemoryTopicFactorParameter constructor(
-	private val parameter: TopicFactorParameter
-) : CompiledInMemoryParameter<TopicFactorParameter> {
-	override fun getParameter(): TopicFactorParameter {
-		return this.parameter
-	}
-
-	override fun value(variables: PipelineVariables, principal: Principal): Any? {
-		TODO("Not yet implemented")
 	}
 }

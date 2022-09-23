@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.condition
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.model.common.*
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
-import com.matrdata.watchmen.pipeline.kernel.compile.parameter.CompiledInMemoryParameter
-import com.matrdata.watchmen.pipeline.kernel.compile.parameter.use
+import com.matrdata.watchmen.model.common.DualExpression
+import com.matrdata.watchmen.model.common.Expression
+import com.matrdata.watchmen.model.common.ParameterExpressionOperator
+import com.matrdata.watchmen.model.common.SingleExpression
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryExpression
 
 /**
  * in-memory expression compiler
@@ -41,26 +41,5 @@ class InMemoryExpressionCompiler private constructor(private val expression: Exp
 				}.use(principal).inMemory().compile(),
 			)
 		}
-	}
-}
-
-/**
- * compiled in-memory expression
- */
-class CompiledInMemoryExpression constructor(
-	private val expression: Expression<out ParameterExpressionOperator>,
-	private val left: CompiledInMemoryParameter<out Parameter>,
-	private val right: CompiledInMemoryParameter<out Parameter>? = null
-) : CompiledInMemoryCondition<Expression<out ParameterExpressionOperator>> {
-	override fun getCondition(): Expression<out ParameterExpressionOperator> {
-		return this.expression
-	}
-
-	private fun getOperator(): ParameterExpressionOperator {
-		return requireNotNull(this.expression.operator) { "Operator of expression[${this.expression}] cannot be null." }
-	}
-
-	override fun test(variables: PipelineVariables, principal: Principal): Boolean {
-		TODO("Not yet implemented")
 	}
 }

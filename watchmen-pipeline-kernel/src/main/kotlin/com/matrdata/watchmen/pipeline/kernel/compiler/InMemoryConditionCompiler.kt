@@ -1,18 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.condition
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
-import com.matrdata.watchmen.pipeline.kernel.compile.PreparedCompiler
-
-sealed interface CompiledInMemoryCondition<C : Condition> {
-	fun getCondition(): C
-	fun test(variables: PipelineVariables, principal: Principal): Boolean
-}
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
 
 sealed interface InMemoryConditionCompiler<C : Condition, CC : CompiledInMemoryCondition<C>> : Compiler<CC> {
 	companion object {

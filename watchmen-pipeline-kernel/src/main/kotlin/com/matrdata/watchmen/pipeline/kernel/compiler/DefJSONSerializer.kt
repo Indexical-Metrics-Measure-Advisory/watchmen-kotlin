@@ -1,9 +1,8 @@
-package com.matrdata.watchmen.pipeline.kernel.compile
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.model.common.Conditional
+import com.matrdata.watchmen.pipeline.kernel.compiled.DefJSON
 import com.matrdata.watchmen.utils.toJSON
-
-typealias DefJSON = String
 
 fun Conditional.toPrerequisiteDefJSON(): DefJSON {
 	return mapOf(

@@ -2,6 +2,8 @@ package com.matrdata.watchmen.pipeline.kernel
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.Pipeline
+import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
+import com.matrdata.watchmen.model.common.TopicDataId
 import com.matrdata.watchmen.utils.throwIfTrue
 
 /**
@@ -20,7 +22,7 @@ class PipelineTaskBuilder {
 	private var pipeline: Pipeline? = null
 	private var previousData: Map<String, Any>? = null
 	private var currentData: Map<String, Any>? = null
-	private var traceId: PipelineTraceId? = null
+	private var traceId: PipelineTriggerTraceId? = null
 	private var dataId: TopicDataId? = null
 
 	/**
@@ -44,7 +46,7 @@ class PipelineTaskBuilder {
 	/**
 	 * set trace id for pipeline running
 	 */
-	fun traceBy(traceId: PipelineTraceId) = apply { this.traceId = traceId }
+	fun traceBy(traceId: PipelineTriggerTraceId) = apply { this.traceId = traceId }
 
 	/**
 	 * set principal who invoke this pipeline, and returns runtime context

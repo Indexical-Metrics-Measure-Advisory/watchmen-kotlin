@@ -1,9 +1,9 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.parameter
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.ComputedParameter
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryComputedParameter
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 
 /**
  * in-memory computed parameter compiler
@@ -18,20 +18,5 @@ class InMemoryComputedParameterCompiler private constructor(private val paramete
 
 	override fun compileBy(principal: Principal): CompiledInMemoryComputedParameter {
 		return CompiledInMemoryComputedParameter(parameter = this.parameter)
-	}
-}
-
-/**
- * compiled in-memory computed parameter
- */
-class CompiledInMemoryComputedParameter constructor(
-	private val parameter: ComputedParameter
-) : CompiledInMemoryParameter<ComputedParameter> {
-	override fun getParameter(): ComputedParameter {
-		return this.parameter
-	}
-
-	override fun value(variables: PipelineVariables, principal: Principal): Any? {
-		TODO("Not yet implemented")
 	}
 }

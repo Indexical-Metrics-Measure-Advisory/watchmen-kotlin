@@ -1,7 +1,7 @@
-package com.matrdata.watchmen.pipeline.kernel.compile
+package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.model.admin.PipelineTriggerType
-import com.matrdata.watchmen.pipeline.kernel.TopicDataId
+import com.matrdata.watchmen.model.common.TopicDataId
 
 data class PipelineTrigger(
 	val triggerType: PipelineTriggerType,

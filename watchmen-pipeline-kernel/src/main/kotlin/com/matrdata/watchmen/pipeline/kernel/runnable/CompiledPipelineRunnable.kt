@@ -1,42 +1,21 @@
-package com.matrdata.watchmen.pipeline.kernel.compile
+package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineTriggerType
 import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
+import com.matrdata.watchmen.model.common.TopicDataId
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
 import com.matrdata.watchmen.model.runtime.monitor.PipelineMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.*
-import com.matrdata.watchmen.pipeline.kernel.compile.conditional.PrerequisiteTest
-import com.matrdata.watchmen.pipeline.kernel.compile.conditional.use
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineStage
+import com.matrdata.watchmen.pipeline.kernel.compiled.PipelineTrigger
 import com.matrdata.watchmen.utils.*
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import java.time.LocalDateTime
 
-class PipelineCompiler private constructor(private val pipeline: Pipeline) : Compiler<CompiledPipeline> {
-	companion object {
-		fun of(pipeline: Pipeline): PipelineCompiler {
-			return PipelineCompiler(pipeline)
-		}
-	}
-
-	override fun compileBy(principal: Principal): CompiledPipeline {
-		return CompiledPipeline(
-			pipeline = this.pipeline,
-			// generate definition json string
-			prerequisiteDef = pipeline.toPrerequisiteDefJSON(),
-			// compile prerequisite to test function
-			prerequisiteTest = pipeline.use(principal).compile(),
-			stages = with(pipeline.stages) {
-				require(!this.isNullOrEmpty()) { "Stage not exists in pipeline[$pipeline]." }
-				this.map { it.within(pipeline).use(principal).compile() }
-			}
-		)
-	}
-}
-
-@Slf4j
 class PipelineTaskQueue {
 	private val tasks: MutableList<PipelineTask> = mutableListOf()
 
@@ -79,11 +58,13 @@ class PipelineTaskQueue {
 		}
 
 		return pipelines.map { pipeline ->
+			// create task on given pipeline
 			PipelineTaskBuilder.of(pipeline)
 				.data(trigger.previous, trigger.current)
 				.traceBy(traceId)
 				.dataId(trigger.dataId)
 				.by(principal)
+				// push created task to list
 				.also { task -> this.tasks.add(task) }
 		}
 	}
@@ -93,20 +74,28 @@ class PipelineTaskQueue {
 	}
 }
 
-@Slf4j
 class CompiledPipelineRunnable(
 	private val compiled: CompiledPipeline,
 	private val principal: Principal,
 	private val storages: TopicStorages,
 	private val handleMonitorLog: PipelineMonitorLogHandle,
-	private val traceId: PipelineTraceId,
+	private val traceId: PipelineTriggerTraceId,
 	private val dataId: TopicDataId,
 	private val previousData: Map<String, Any>?,
 	private val currentData: Map<String, Any>?
 ) {
-	private fun runStages(): Boolean {
-//		this.compiled.stages.{ acc, compiledPipelineStage -> }
+	private fun runStage(stage: CompiledPipelineStage): Boolean {
 		TODO("Not yet implemented")
+	}
+
+	private fun runStages(): Boolean {
+		return this.compiled.stages.fold(initial = true) { should, stage: CompiledPipelineStage ->
+			if (!should) {
+				false
+			} else {
+				this.runStage(stage)
+			}
+		}
 	}
 
 	fun run(): List<PipelineTask> {
@@ -184,7 +173,7 @@ class CompiledPipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
 	private var principal: Principal? = null
 	private var storages: TopicStorages? = null
 	private var handleMonitorLog: PipelineMonitorLogHandle? = null
-	private var traceId: PipelineTraceId? = null
+	private var traceId: PipelineTriggerTraceId? = null
 	private var dataId: TopicDataId? = null
 
 	fun use(principal: Principal): CompiledPipelineRunnableBuilder {
@@ -202,7 +191,7 @@ class CompiledPipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
 		return this
 	}
 
-	fun traceBy(traceId: PipelineTraceId): CompiledPipelineRunnableBuilder {
+	fun traceBy(traceId: PipelineTriggerTraceId): CompiledPipelineRunnableBuilder {
 		this.traceId = traceId
 		return this
 	}
@@ -224,32 +213,4 @@ class CompiledPipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
 			currentData = current
 		).run()
 	}
-}
-
-/**
- * compiled pipeline is thread-safe and will be cached.
- */
-class CompiledPipeline constructor(
-	internal val pipeline: Pipeline,
-	/** json string of prerequisite definition */
-	internal val prerequisiteDef: DefJSON,
-	/** function to test prerequisite */
-	internal val prerequisiteTest: PrerequisiteTest,
-	internal val stages: List<CompiledPipelineStage>
-) {
-	fun runnable(): CompiledPipelineRunnableBuilder {
-		return CompiledPipelineRunnableBuilder(this)
-	}
-}
-
-class PreparedPipelineCompiler(
-	private val pipeline: Pipeline, private val principal: Principal
-) : PreparedCompiler<CompiledPipeline> {
-	override fun compile(): CompiledPipeline {
-		return PipelineCompiler.of(this.pipeline).compileBy(this.principal)
-	}
-}
-
-fun Pipeline.use(principal: Principal): PreparedPipelineCompiler {
-	return PreparedPipelineCompiler(pipeline = this, principal = principal)
 }

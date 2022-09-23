@@ -63,6 +63,7 @@ data class MonitorAlarmAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
+	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.ALARM
 		set(value) {}
@@ -85,6 +86,7 @@ data class MonitorCopyToMemoryAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
+	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.COPY_TO_MEMORY
 		set(value) {}
@@ -107,6 +109,7 @@ data class MonitorWriteToExternalAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
+	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.WRITE_TO_EXTERNAL
 		set(value) {}

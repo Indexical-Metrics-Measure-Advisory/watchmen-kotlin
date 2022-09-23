@@ -1,15 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compile.parameter
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.model.common.*
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
-import com.matrdata.watchmen.pipeline.kernel.compile.Compiler
-import com.matrdata.watchmen.pipeline.kernel.compile.PreparedCompiler
-
-sealed interface CompiledInMemoryParameter<P : Parameter> {
-	fun getParameter(): P
-	fun value(variables: PipelineVariables, principal: Principal): Any?
-}
+import com.matrdata.watchmen.model.common.ComputedParameter
+import com.matrdata.watchmen.model.common.ConstantParameter
+import com.matrdata.watchmen.model.common.Parameter
+import com.matrdata.watchmen.model.common.TopicFactorParameter
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 
 sealed interface InMemoryParameterCompiler<P : Parameter> : Compiler<CompiledInMemoryParameter<P>> {
 	companion object {
