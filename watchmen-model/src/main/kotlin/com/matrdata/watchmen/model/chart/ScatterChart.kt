@@ -19,7 +19,7 @@ data class ScatterChart(
 	override var settings: ScatterChartSettings? = null,
 ) : Chart<ScatterChartSettings>(type = ChartType.SCATTER, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.SCATTER
 		set(value) {}
 }

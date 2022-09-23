@@ -81,7 +81,7 @@ data class PieChart(
 	override var settings: PieChartSettings? = null,
 ) : Chart<PieChartSettings>(type = ChartType.PIE, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.PIE
 		set(value) {}
 }
@@ -103,7 +103,7 @@ data class DoughnutChart(
 	override var settings: DoughnutChartSettings? = null,
 ) : Chart<DoughnutChartSettings>(type = ChartType.DOUGHNUT, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.DOUGHNUT
 		set(value) {}
 }
@@ -125,7 +125,7 @@ data class NightingaleChart(
 	override var settings: NightingaleChartSettings? = null,
 ) : Chart<NightingaleChartSettings>(type = ChartType.NIGHTINGALE, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.NIGHTINGALE
 		set(value) {}
 }
@@ -155,7 +155,7 @@ data class SunburstChart(
 	override var settings: SunburstChartSettings? = null,
 ) : Chart<SunburstChartSettings>(type = ChartType.SUNBURST, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.SUNBURST
 		set(value) {}
 }

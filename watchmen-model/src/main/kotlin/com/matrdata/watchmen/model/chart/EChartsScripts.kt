@@ -26,7 +26,7 @@ enum class ItemType(val code: String) {
 }
 
 sealed interface DefItem : DataModel {
-	var type: ItemType
+	var type: ItemType?
 	var label: String?
 }
 
@@ -34,7 +34,7 @@ data class SectionItem(
 	override var label: String? = null
 ) : DefItem {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.SECTION
 		set(value) {}
 }
@@ -52,7 +52,7 @@ data class NumberItem(
 	var defaultValue: BigDecimal? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.NUMBER
 		set(value) {}
 }
@@ -64,7 +64,7 @@ data class PercentageItem(
 	var defaultValue: BigDecimal? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.PERCENTAGE
 		set(value) {}
 }
@@ -75,7 +75,7 @@ data class BooleanItem(
 	var defaultValue: Boolean? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.BOOLEAN
 		set(value) {}
 }
@@ -87,7 +87,7 @@ data class TextItem(
 	var defaultValue: String? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.TEXT
 		set(value) {}
 }
@@ -98,7 +98,7 @@ data class ColorItem(
 	var defaultValue: ChartColor? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.COLOR
 		set(value) {}
 }
@@ -131,7 +131,7 @@ data class DropdownItem(
 	var defaultValue: ChartColor? = null
 ) : InputItem(label = label, key = key) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ItemType
+	override var type: ItemType?
 		get() = ItemType.DROPDOWN
 		set(value) {}
 }

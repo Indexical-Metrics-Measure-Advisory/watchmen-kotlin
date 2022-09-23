@@ -9,6 +9,6 @@ sealed interface ChartSettings : ChartTruncationHolder {
 }
 
 sealed class Chart<S : ChartSettings>(
-	open var type: ChartType,
+	open var type: ChartType?,
 	open var settings: S? = null,
 ) : DataModel

@@ -35,7 +35,7 @@ enum class DeleteTopicActionType(override val code: String) : PipelineActionType
 
 sealed interface PipelineAction<T : PipelineActionType> : DataModel {
 	var actionId: PipelineActionId?
-	var type: T
+	var type: T?
 }
 
 sealed interface MemoryWriter<T : PipelineActionType> : PipelineAction<T> {
@@ -90,7 +90,7 @@ data class AlarmAction(
 	override var on: Joint? = null
 ) : PipelineSystemAction, Conditional {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.ALARM
 		set(value) {}
 }
@@ -104,18 +104,18 @@ data class CopyToMemoryAction(
 	var source: Parameter? = null
 ) : PipelineSystemAction, MemoryWriter<SystemActionType> {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.COPY_TO_MEMORY
 		set(value) {}
 }
 
 data class WriteToExternalAction(
-	override var actionId: PipelineActionId?,
+	override var actionId: PipelineActionId? = null,
 	var externalWriterId: ExternalWriterId? = null,
 	var eventCode: String? = null
 ) : PipelineSystemAction {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.WRITE_TO_EXTERNAL
 		set(value) {}
 }
@@ -130,7 +130,7 @@ data class ReadRowAction(
 	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ReadTopicActionType
+	override var type: ReadTopicActionType?
 		get() = ReadTopicActionType.READ_ROW
 		set(value) {}
 }
@@ -142,7 +142,7 @@ data class ReadRowsAction(
 	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ReadTopicActionType
+	override var type: ReadTopicActionType?
 		get() = ReadTopicActionType.READ_ROWS
 		set(value) {}
 }
@@ -156,7 +156,7 @@ data class ReadFactorAction(
 	override var by: Joint? = null
 ) : ReadTopicAction, FromFactor<ReadTopicActionType>, AggregateArithmeticHolder {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ReadTopicActionType
+	override var type: ReadTopicActionType?
 		get() = ReadTopicActionType.READ_FACTOR
 		set(value) {}
 }
@@ -170,7 +170,7 @@ data class ReadFactorsAction(
 	override var by: Joint? = null
 ) : ReadTopicAction, FromFactor<ReadTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ReadTopicActionType
+	override var type: ReadTopicActionType?
 		get() = ReadTopicActionType.READ_FACTORS
 		set(value) {}
 }
@@ -182,7 +182,7 @@ data class ExistsAction(
 	override var by: Joint? = null
 ) : ReadTopicAction {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ReadTopicActionType
+	override var type: ReadTopicActionType?
 		get() = ReadTopicActionType.EXISTS
 		set(value) {}
 }
@@ -223,7 +223,7 @@ data class InsertRowAction(
 	override var accumulateMode: AccumulateMode? = AccumulateMode.STANDARD
 ) : WriteTopicAction, MappingRow {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: WriteTopicActionType
+	override var type: WriteTopicActionType?
 		get() = WriteTopicActionType.INSERT_ROW
 		set(value) {}
 }
@@ -236,7 +236,7 @@ data class InsertOrMergeRowAction(
 	override var by: Joint? = null
 ) : WriteTopicAction, MappingRow, FindBy<WriteTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: WriteTopicActionType
+	override var type: WriteTopicActionType?
 		get() = WriteTopicActionType.INSERT_OR_MERGE_ROW
 		set(value) {}
 }
@@ -249,7 +249,7 @@ data class MergeRowAction(
 	override var by: Joint? = null
 ) : WriteTopicAction, MappingRow, FindBy<WriteTopicActionType> {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: WriteTopicActionType
+	override var type: WriteTopicActionType?
 		get() = WriteTopicActionType.MERGE_ROW
 		set(value) {}
 }
@@ -263,7 +263,7 @@ data class WriteFactorAction(
 	override var by: Joint? = null
 ) : WriteTopicAction, ToFactor<WriteTopicActionType>, FindBy<WriteTopicActionType>, AggregateArithmeticHolder {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: WriteTopicActionType
+	override var type: WriteTopicActionType?
 		get() = WriteTopicActionType.WRITE_FACTOR
 		set(value) {}
 }

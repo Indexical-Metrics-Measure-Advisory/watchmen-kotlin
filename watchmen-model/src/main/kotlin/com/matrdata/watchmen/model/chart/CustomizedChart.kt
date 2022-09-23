@@ -15,7 +15,7 @@ data class CustomizedChart(
 	override var settings: CustomizedChartSettings? = null,
 ) : Chart<CustomizedChartSettings>(type = ChartType.CUSTOMIZED, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.CUSTOMIZED
 		set(value) {}
 }

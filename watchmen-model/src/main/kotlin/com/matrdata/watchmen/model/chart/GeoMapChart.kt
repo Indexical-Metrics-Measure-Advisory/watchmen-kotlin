@@ -28,7 +28,7 @@ data class GeoMapChart(
 	override var settings: GeoMapChartSettings? = null,
 ) : Chart<GeoMapChartSettings>(type = ChartType.MAP, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.MAP
 		set(value) {}
 }

@@ -12,7 +12,7 @@ data class ExternalWriter(
 	var writerId: ExternalWriterId? = null,
 	var writerCode: String? = null,
 	var name: String? = null,
-	var type: ExternalWriterType = ExternalWriterType.STANDARD_WRITER,
+	var type: ExternalWriterType? = ExternalWriterType.STANDARD_WRITER,
 	// personal access token
 	var pat: String? = null,
 	var url: String? = null,

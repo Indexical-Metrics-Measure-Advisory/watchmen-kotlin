@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class Favorite(
 	var connectedSpaceIds: List<ConnectedSpaceId>? = null,
 	var dashboardIds: List<DashboardId>? = null,
-	override var lastVisitTime: LocalDateTime?,
+	override var lastVisitTime: LocalDateTime? = null,
 	override var userId: UserId? = null,
 	override var tenantId: TenantId? = null,
 	override var createdAt: LocalDateTime? = null,

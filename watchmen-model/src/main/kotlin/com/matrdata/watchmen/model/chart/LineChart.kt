@@ -25,7 +25,7 @@ data class LineChart(
 	override var settings: LineChartSettings? = null,
 ) : Chart<LineChartSettings>(type = ChartType.LINE, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.LINE
 		set(value) {}
 }

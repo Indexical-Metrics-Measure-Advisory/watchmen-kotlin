@@ -34,7 +34,7 @@ data class TreeChart(
 	override var settings: TreeChartSettings? = null,
 ) : Chart<TreeChartSettings>(type = ChartType.TREE, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.TREE
 		set(value) {}
 }

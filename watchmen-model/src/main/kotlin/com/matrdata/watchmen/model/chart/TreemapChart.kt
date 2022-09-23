@@ -20,7 +20,7 @@ data class TreemapChart(
 	override var settings: TreemapChartSettings? = null,
 ) : Chart<TreemapChartSettings>(type = ChartType.TREEMAP, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.TREEMAP
 		set(value) {}
 }

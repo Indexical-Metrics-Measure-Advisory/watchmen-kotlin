@@ -11,24 +11,24 @@ enum class MonitorLogStatus(val code: String) {
 }
 
 sealed interface StandardMonitorLog : DataModel {
-	var status: MonitorLogStatus
+	var status: MonitorLogStatus?
 	var startTime: LocalDateTime?  // keep none when step is ignored
-	var spentInMills: Int  // keep 0 when step is ignored
+	var spentInMills: Int?  // keep 0 when step is ignored
 	var error: String?  // if status is ERROR
 }
 
 sealed interface ConditionalMonitorLog : StandardMonitorLog {
-	var prerequisite: Boolean  // result of prerequisite, True when it is not defined
+	var prerequisite: Boolean?  // result of prerequisite, True when it is not defined
 	var prerequisiteDefinedAs: Any?  // definition of prerequisite
 }
 
 sealed class MonitorLogAction<T : PipelineActionType>(
-	open var uid: MonitorLogActionId,
-	open var actionId: PipelineActionId,
-	open var type: T,
-	open var insertCount: Int = 0,
-	open var updateCount: Int = 0,
-	open var deleteCount: Int = 0,
+	open var uid: MonitorLogActionId? = null,
+	open var actionId: PipelineActionId? = null,
+	open var type: T? = null,
+	open var insertCount: Int? = 0,
+	open var updateCount: Int? = 0,
+	open var deleteCount: Int? = 0,
 	open var definedAs: Any? = null,  // definition of action
 	/**
 	 * 	touched value,
@@ -40,22 +40,22 @@ sealed class MonitorLogAction<T : PipelineActionType>(
 	 * 	for read-rows, list of dict
 	 */
 	open var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null
 ) : StandardMonitorLog
 
 data class MonitorAlarmAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var prerequisite: Boolean = false,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null,
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
 ) : MonitorLogAction<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.ALARM,
@@ -63,21 +63,21 @@ data class MonitorAlarmAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.ALARM
 		set(value) {}
 }
 
 data class MonitorCopyToMemoryAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var prerequisite: Boolean = false,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null,
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
 ) : MonitorLogAction<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.COPY_TO_MEMORY,
@@ -85,21 +85,21 @@ data class MonitorCopyToMemoryAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.COPY_TO_MEMORY
 		set(value) {}
 }
 
 data class MonitorWriteToExternalAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var prerequisite: Boolean = false,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null,
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
 ) : MonitorLogAction<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.WRITE_TO_EXTERNAL,
@@ -107,24 +107,24 @@ data class MonitorWriteToExternalAction(
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 ), ConditionalMonitorLog {
-	override var type: SystemActionType
+	override var type: SystemActionType?
 		get() = SystemActionType.WRITE_TO_EXTERNAL
 		set(value) {}
 }
 
 sealed class MonitorLogFindByAction<T : PipelineActionType>(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var type: T,
-	override var insertCount: Int = 0,
-	override var updateCount: Int = 0,
-	override var deleteCount: Int = 0,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var type: T? = null,
+	override var insertCount: Int? = 0,
+	override var updateCount: Int? = 0,
+	override var deleteCount: Int? = 0,
 	open var findBy: Any? = null, // runtime describing of find by
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null
 ) : MonitorLogAction<T>(
 	uid = uid, actionId = actionId, type = type,
@@ -134,16 +134,16 @@ sealed class MonitorLogFindByAction<T : PipelineActionType>(
 )
 
 data class MonitorReadAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var type: ReadTopicActionType,
-	override var insertCount: Int = 0,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var type: ReadTopicActionType? = null,
+	override var insertCount: Int? = 0,
 	override var findBy: Any? = null, // runtime describing of find by
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null
 ) : MonitorLogFindByAction<ReadTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
@@ -153,17 +153,17 @@ data class MonitorReadAction(
 )
 
 data class MonitorWriteAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var type: WriteTopicActionType,
-	override var insertCount: Int = 0,
-	override var updateCount: Int = 0,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var type: WriteTopicActionType? = null,
+	override var insertCount: Int? = 0,
+	override var updateCount: Int? = 0,
 	override var findBy: Any? = null, // runtime describing of find by
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null
 ) : MonitorLogFindByAction<WriteTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
@@ -173,16 +173,16 @@ data class MonitorWriteAction(
 )
 
 data class MonitorDeleteAction(
-	override var uid: MonitorLogActionId,
-	override var actionId: PipelineActionId,
-	override var type: DeleteTopicActionType,
-	override var deleteCount: Int = 0,
+	override var uid: MonitorLogActionId? = null,
+	override var actionId: PipelineActionId? = null,
+	override var type: DeleteTopicActionType? = null,
+	override var deleteCount: Int? = 0,
 	override var findBy: Any? = null, // runtime describing of find by
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
-	override var status: MonitorLogStatus,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null
 ) : MonitorLogFindByAction<DeleteTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
@@ -192,45 +192,45 @@ data class MonitorDeleteAction(
 )
 
 data class MonitorLogUnit(
-	var unitId: PipelineUnitId,
+	var unitId: PipelineUnitId? = null,
 	var name: String? = null,
 	var loopVariableName: String? = null,
 	var loopVariableValue: Any? = null,
-	var actions: List<MonitorLogAction<out PipelineActionType>> = mutableListOf(),
-	override var status: MonitorLogStatus,
+	var actions: List<MonitorLogAction<out PipelineActionType>>? = null,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-	override var prerequisite: Boolean = false,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null
 ) : ConditionalMonitorLog
 
 data class MonitorLogStage(
-	var stageId: PipelineStageId,
+	var stageId: PipelineStageId?,
 	var name: String? = null,
-	var units: List<MonitorLogUnit> = mutableListOf(),
-	override var status: MonitorLogStatus,
+	var units: List<MonitorLogUnit>? = null,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-	override var prerequisite: Boolean = false,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null
 ) : ConditionalMonitorLog
 
 data class PipelineMonitorLog(
-	var uid: PipelineMonitorLogId,
-	var traceId: PipelineTriggerTraceId,
-	var pipelineId: PipelineId,
-	var topicId: TopicId,
-	var dataId: Long,
+	var uid: PipelineMonitorLogId?,
+	var traceId: PipelineTriggerTraceId?,
+	var pipelineId: PipelineId?,
+	var topicId: TopicId?,
+	var dataId: Long?,
 	var oldValue: Any? = null,
 	var newValue: Any? = null,
-	var stages: List<MonitorLogStage> = mutableListOf(),
-	override var status: MonitorLogStatus,
+	var stages: List<MonitorLogStage>? = null,
+	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
-	override var spentInMills: Int = 0,
+	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-	override var prerequisite: Boolean = false,
+	override var prerequisite: Boolean? = false,
 	override var prerequisiteDefinedAs: Any? = null
 ) : ConditionalMonitorLog
 

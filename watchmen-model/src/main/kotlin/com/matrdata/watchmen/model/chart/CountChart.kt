@@ -20,7 +20,7 @@ data class CountChart(
 	override var settings: CountChartSettings? = null,
 ) : Chart<CountChartSettings>(type = ChartType.COUNT, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.COUNT
 		set(value) {}
 }

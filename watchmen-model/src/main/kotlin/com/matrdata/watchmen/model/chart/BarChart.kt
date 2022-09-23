@@ -59,7 +59,7 @@ data class BarChart(
 	override var settings: BarChartSettings? = null,
 ) : Chart<BarChartSettings>(type = ChartType.BAR, settings = settings) {
 	@Suppress("UNUSED_PARAMETER")
-	override var type: ChartType
+	override var type: ChartType?
 		get() = ChartType.BAR
 		set(value) {}
 }

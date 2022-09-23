@@ -13,8 +13,6 @@ sealed interface AchievementIndicator : DataModel {
 	var variableName: String?
 }
 
-val MANUAL_COMPUTE_ACHIEVEMENT_INDICATOR_ID = "-1"
-
 /**
  * for manual compute indicator,
  * 1. indicatorId fixed as {@link MANUAL_COMPUTE_ACHIEVEMENT_INDICATOR_ID},
