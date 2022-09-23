@@ -10,7 +10,7 @@ class CompiledPipelineUnit constructor(
 	private val pipeline: Pipeline,
 	private val stage: PipelineStage,
 	private val unit: PipelineUnit,
-	/** variables assertion */
+	/** compiled variables */
 	private val variables: CompiledVariables,
 	/** json string of prerequisite definition */
 	private val prerequisiteDef: DefJSON,

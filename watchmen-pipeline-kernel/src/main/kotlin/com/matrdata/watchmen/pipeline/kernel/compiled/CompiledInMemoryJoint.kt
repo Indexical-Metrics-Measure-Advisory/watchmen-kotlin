@@ -4,7 +4,7 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterJointType
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
+import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
 /**
  * compiled in-memory joint

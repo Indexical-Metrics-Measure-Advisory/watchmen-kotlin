@@ -11,7 +11,7 @@ import com.matrdata.watchmen.utils.throwIfNull
 
 class PipelineStageCompiler private constructor(
 	private val pipeline: Pipeline, private val stage: PipelineStage,
-	// variables assertion from parent level
+	// compiled variables from parent level
 	private val variables: CompiledVariables
 ) : Compiler<CompiledPipelineStage> {
 	companion object {
@@ -20,24 +20,29 @@ class PipelineStageCompiler private constructor(
 		}
 	}
 
+	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
+		// TODO use variables on prerequisite test
+		return ConditionalCompiler.of(this.stage).compileBy(principal)
+	}
+
 	override fun compileBy(principal: Principal): CompiledPipelineStage {
-		// no variables assertion change in stage level, simply inherit parent's
-		return this.variables.inherit().handTo { variablesOnStage ->
+		// copy compiled variables for myself
+		return this.variables.copy().handTo { variablesOnStage ->
 			CompiledPipelineStage(
 				pipeline = this.pipeline, stage = this.stage,
 				variables = variablesOnStage,
 				// generate definition json string
 				prerequisiteDef = this.stage.toPrerequisiteDefJSON(),
 				// compile prerequisite to test function
-				prerequisiteTest = this.stage.within(this.pipeline)
-					.inherit(variablesOnStage).use(principal)
-					.compilePrerequisiteTest(),
+				prerequisiteTest = this.compilePrerequisiteTest(variablesOnStage, principal),
 				// compile units, inherit variables from stage
 				units = this.stage.units.let { units ->
 					require(!units.isNullOrEmpty()) { "Unit not exists in pipeline stage[${this.stage}]." }
-					return@let units.map { unit ->
+					units.map { unit ->
 						unit.within(this.pipeline, this.stage)
-							.inherit(variablesOnStage).use(principal)
+							// always use the root variables
+							.inherit(this.variables)
+							.use(principal)
 							.compile()
 					}
 				}
@@ -51,10 +56,6 @@ class PreparedPipelineStageCompiler(
 	private val variables: CompiledVariables,
 	private val principal: Principal
 ) : PreparedCompiler<CompiledPipelineStage> {
-	fun compilePrerequisiteTest(): PrerequisiteTest {
-		return ConditionalCompiler.of(this.stage).compileBy(this.principal)
-	}
-
 	override fun compile(): CompiledPipelineStage {
 		return PipelineStageCompiler.of(this.pipeline, this.stage, this.variables).compileBy(this.principal)
 	}

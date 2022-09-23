@@ -2,11 +2,12 @@ package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineStage
+import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineStageRunnableBuilder
 
 class CompiledPipelineStage constructor(
 	val pipeline: Pipeline,
 	val stage: PipelineStage,
-	/** variables assertion */
+	/** compiled variables */
 	val variables: CompiledVariables,
 	/** json string of prerequisite definition */
 	val prerequisiteDef: DefJSON,
@@ -14,5 +15,7 @@ class CompiledPipelineStage constructor(
 	val prerequisiteTest: PrerequisiteTest,
 	val units: List<CompiledPipelineUnit>
 ) {
-	// TODO not yet implemented
+	fun runnable(pipeline: CompiledPipeline): PipelineStageRunnableBuilder {
+		return PipelineStageRunnableBuilder(pipeline, this)
+	}
 }

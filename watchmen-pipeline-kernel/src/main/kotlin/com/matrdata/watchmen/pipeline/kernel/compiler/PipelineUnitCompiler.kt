@@ -24,8 +24,8 @@ class PipelineUnitCompiler private constructor(
 	}
 
 	override fun compileBy(principal: Principal): CompiledPipelineUnit {
-		// no variables assertion change in unit level, simply inherit parent's
-		return this.variables.inherit().handTo { variablesOnUnit ->
+		// copy compiled variables for myself
+		return this.variables.copy().handTo { variablesOnUnit ->
 			CompiledPipelineUnit(
 				pipeline = this.pipeline,
 				stage = this.stage,
@@ -39,9 +39,11 @@ class PipelineUnitCompiler private constructor(
 					.compilePrerequisiteTest(),
 				actions = this.unit.`do`.let { actions ->
 					require(!actions.isNullOrEmpty()) { "Action not exists in pipeline unit[${this.unit}]." }
-					return@let actions.map { action ->
+					actions.map { action ->
 						action.within(this.pipeline, this.stage, this.unit)
-							.inherit(variablesOnUnit).use(principal)
+							// always use the root variables
+							.inherit(this.variables)
+							.use(principal)
 							.compile()
 					}
 				}

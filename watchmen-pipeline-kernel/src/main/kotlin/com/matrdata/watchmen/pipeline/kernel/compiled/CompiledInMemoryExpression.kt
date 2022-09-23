@@ -4,7 +4,7 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
-import com.matrdata.watchmen.pipeline.kernel.PipelineVariables
+import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
 /**
  * compiled in-memory expression

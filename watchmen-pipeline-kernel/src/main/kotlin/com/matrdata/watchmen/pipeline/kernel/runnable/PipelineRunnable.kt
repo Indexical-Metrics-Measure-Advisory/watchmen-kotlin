@@ -2,8 +2,6 @@ package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
-import com.matrdata.watchmen.model.admin.Pipeline
-import com.matrdata.watchmen.model.admin.PipelineTriggerType
 import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
 import com.matrdata.watchmen.model.common.TopicDataId
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
@@ -16,65 +14,7 @@ import com.matrdata.watchmen.utils.*
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import java.time.LocalDateTime
 
-class PipelineTaskQueue {
-	private val tasks: MutableList<PipelineTask> = mutableListOf()
-
-	private fun shouldRun(pipeline: Pipeline, triggerType: PipelineTriggerType): Boolean {
-		return when {
-			pipeline.enabled != true -> false
-
-			triggerType == PipelineTriggerType.DELETE -> {
-				pipeline.type == PipelineTriggerType.DELETE
-			}
-
-			triggerType == PipelineTriggerType.INSERT -> {
-				pipeline.type == PipelineTriggerType.INSERT || pipeline.type == PipelineTriggerType.INSERT_OR_MERGE
-			}
-
-			triggerType == PipelineTriggerType.MERGE -> {
-				pipeline.type == PipelineTriggerType.MERGE || pipeline.type == PipelineTriggerType.INSERT_OR_MERGE
-			}
-
-			triggerType == PipelineTriggerType.INSERT_OR_MERGE -> {
-				pipeline.type == PipelineTriggerType.INSERT_OR_MERGE
-			}
-
-			else -> throw PipelineKernelException("Pipeline trigger type[$triggerType] is not supported.")
-		}
-	}
-
-	fun append(
-		schema: TopicSchema, trigger: PipelineTrigger, traceId: PipelineTriggerTraceId, principal: Principal
-	): List<PipelineTask> {
-		val topic = schema.topic
-		val pipelines =
-			askPipelineMetaService(principal).findByTopicId(topic.topicId!!).filter {
-				this.shouldRun(it, trigger.triggerType)
-			}
-
-		if (pipelines.isEmpty()) {
-			logger.warn("No pipeline needs to be triggered by topic[id=${topic.topicId}, name=${topic.name}].")
-			return listOf()
-		}
-
-		return pipelines.map { pipeline ->
-			// create task on given pipeline
-			PipelineTaskBuilder.of(pipeline)
-				.data(trigger.previous, trigger.current)
-				.traceBy(traceId)
-				.dataId(trigger.dataId)
-				.by(principal)
-				// push created task to list
-				.also { task -> this.tasks.add(task) }
-		}
-	}
-
-	fun getTasks(): List<PipelineTask> {
-		return this.tasks
-	}
-}
-
-class CompiledPipelineRunnable(
+class PipelineRunnable(
 	private val compiled: CompiledPipeline,
 	private val principal: Principal,
 	private val storages: TopicStorages,
@@ -84,16 +24,26 @@ class CompiledPipelineRunnable(
 	private val previousData: Map<String, Any>?,
 	private val currentData: Map<String, Any>?
 ) {
-	private fun runStage(stage: CompiledPipelineStage): Boolean {
-		TODO("Not yet implemented")
+	private fun runStage(
+		stage: CompiledPipelineStage,
+		variables: PipelineVariables, log: PipelineMonitorLog, createPipelineTask: CreatePipelineTask
+	): Boolean {
+		return stage.runnable(this.compiled)
+			.inherit(log)
+			.use(this.principal)
+			.use(storages)
+			.use(createPipelineTask)
+			.run(variables)
 	}
 
-	private fun runStages(): Boolean {
+	private fun runStages(
+		variables: PipelineVariables, log: PipelineMonitorLog, createPipelineTask: CreatePipelineTask
+	): Boolean {
 		return this.compiled.stages.fold(initial = true) { should, stage: CompiledPipelineStage ->
 			if (!should) {
 				false
 			} else {
-				this.runStage(stage)
+				this.runStage(stage, variables, log, createPipelineTask)
 			}
 		}
 	}
@@ -126,7 +76,9 @@ class CompiledPipelineRunnable(
 					// prerequisite check returns true
 					log.prerequisite = true
 					// run stages
-					runStages()
+					runStages(variables, log) { schema: TopicSchema, trigger: PipelineTrigger ->
+						taskQueue.append(schema, trigger, traceId, principal)
+					}
 						// stages run successfully
 						.doIfTrue { log.status = MonitorLogStatus.DONE }
 						// error occurred in stages running, log status on pipeline runtime log
@@ -169,40 +121,21 @@ class CompiledPipelineRunnable(
 	}
 }
 
-class CompiledPipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
+class PipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
 	private var principal: Principal? = null
 	private var storages: TopicStorages? = null
 	private var handleMonitorLog: PipelineMonitorLogHandle? = null
 	private var traceId: PipelineTriggerTraceId? = null
 	private var dataId: TopicDataId? = null
 
-	fun use(principal: Principal): CompiledPipelineRunnableBuilder {
-		this.principal = principal
-		return this
-	}
-
-	fun use(storages: TopicStorages): CompiledPipelineRunnableBuilder {
-		this.storages = storages
-		return this
-	}
-
-	fun use(handleMonitorLog: PipelineMonitorLogHandle): CompiledPipelineRunnableBuilder {
-		this.handleMonitorLog = handleMonitorLog
-		return this
-	}
-
-	fun traceBy(traceId: PipelineTriggerTraceId): CompiledPipelineRunnableBuilder {
-		this.traceId = traceId
-		return this
-	}
-
-	fun dataId(dataId: TopicDataId): CompiledPipelineRunnableBuilder {
-		this.dataId = dataId
-		return this
-	}
+	fun use(principal: Principal) = apply { this.principal = principal }
+	fun use(storages: TopicStorages) = apply { this.storages = storages }
+	fun use(handleMonitorLog: PipelineMonitorLogHandle) = apply { this.handleMonitorLog = handleMonitorLog }
+	fun traceBy(traceId: PipelineTriggerTraceId) = apply { this.traceId = traceId }
+	fun dataId(dataId: TopicDataId) = apply { this.dataId = dataId }
 
 	fun run(previous: Map<String, Any>?, current: Map<String, Any>?): List<PipelineTask> {
-		return CompiledPipelineRunnable(
+		return PipelineRunnable(
 			compiled = this.pipeline,
 			principal = this.principal.throwIfNull { "Principal cannot be null when run pipeline." },
 			storages = this.storages.throwIfNull { "Topic storages cannot be null when run pipeline." },

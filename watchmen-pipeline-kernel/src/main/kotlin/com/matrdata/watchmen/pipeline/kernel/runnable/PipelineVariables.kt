@@ -1,10 +1,10 @@
-package com.matrdata.watchmen.pipeline.kernel
+package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.model.admin.Topic
 
 class PipelineVariables(
 	private val previousData: Map<String, Any>?, private val currentData: Map<String, Any>?,
-	topic: Topic
+	private val topic: Topic
 ) {
 //	private val variables: Map<String, Any?> = mutableMapOf()
 //

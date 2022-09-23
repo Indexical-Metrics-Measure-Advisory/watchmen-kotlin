@@ -10,7 +10,7 @@ class CompiledVariables constructor() {
 	/**
 	 * inherit from this and create new one
 	 */
-	fun inherit(): CompiledVariables {
+	fun copy(): CompiledVariables {
 		return CompiledVariables(this)
 	}
 }
