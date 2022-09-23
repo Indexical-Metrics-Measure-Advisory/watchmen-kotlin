@@ -46,7 +46,7 @@ sealed class MonitorLogAction<T : PipelineActionType>(
 	override var error: String? = null
 ) : StandardMonitorLog
 
-data class MonitorAlarmAction(
+data class AlarmActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var prerequisite: Boolean? = false,
@@ -69,7 +69,7 @@ data class MonitorAlarmAction(
 		set(value) {}
 }
 
-data class MonitorCopyToMemoryAction(
+data class CopyToMemoryActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var prerequisite: Boolean? = false,
@@ -92,7 +92,7 @@ data class MonitorCopyToMemoryAction(
 		set(value) {}
 }
 
-data class MonitorWriteToExternalAction(
+data class WriteToExternalActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var prerequisite: Boolean? = false,
@@ -136,7 +136,7 @@ sealed class MonitorLogFindByAction<T : PipelineActionType>(
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 )
 
-data class MonitorReadAction(
+data class ReadActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var type: ReadTopicActionType? = null,
@@ -155,7 +155,7 @@ data class MonitorReadAction(
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 )
 
-data class MonitorWriteAction(
+data class WriteActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var type: WriteTopicActionType? = null,
@@ -175,7 +175,7 @@ data class MonitorWriteAction(
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 )
 
-data class MonitorDeleteAction(
+data class DeleteActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var type: DeleteTopicActionType? = null,
@@ -194,12 +194,12 @@ data class MonitorDeleteAction(
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 )
 
-data class MonitorLogUnit(
+data class UnitMonitorLog(
 	var unitId: PipelineUnitId? = null,
 	var name: String? = null,
 	var loopVariableName: String? = null,
 	var loopVariableValue: Any? = null,
-	var actions: List<MonitorLogAction<out PipelineActionType>>? = null,
+	var actions: MutableList<MonitorLogAction<out PipelineActionType>>? = null,
 	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
@@ -208,10 +208,10 @@ data class MonitorLogUnit(
 	override var prerequisiteDefinedAs: Any? = null
 ) : ConditionalMonitorLog
 
-data class MonitorLogStage(
+data class StageMonitorLog(
 	var stageId: PipelineStageId?,
 	var name: String? = null,
-	var units: List<MonitorLogUnit>? = null,
+	var units: MutableList<UnitMonitorLog>? = null,
 	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
@@ -228,7 +228,7 @@ data class PipelineMonitorLog(
 	var dataId: Long?,
 	var oldValue: Any? = null,
 	var newValue: Any? = null,
-	var stages: List<MonitorLogStage>? = null,
+	var stages: MutableList<StageMonitorLog>? = null,
 	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,

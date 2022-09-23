@@ -58,8 +58,8 @@ class PipelineRunnable(
 			askTopicMetaService(principal).findById(triggerTopicId).throwIfNull {
 				"Topic[id=$triggerTopicId] not found."
 			}
+		// create variables
 		val variables = PipelineVariables(this.previousData, this.currentData, triggerTopic)
-
 		// create monitor log
 		val log = createLog()
 		// create queue, accepts new tasks which created by this
