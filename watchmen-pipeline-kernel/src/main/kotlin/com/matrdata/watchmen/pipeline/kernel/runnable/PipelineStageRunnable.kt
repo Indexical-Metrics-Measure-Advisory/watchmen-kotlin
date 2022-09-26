@@ -25,13 +25,12 @@ class PipelineStageRunnable(
 	private val variables: PipelineVariables
 ) {
 	private fun runUnit(unit: CompiledPipelineUnit, variables: PipelineVariables, log: StageMonitorLog): Boolean {
-		TODO("Not yet implemented")
-//		return unit.runnable(this.pipeline, this.compiled)
-//			.inherit(log)
-//			.use(this.principal)
-//			.use(this.storages)
-//			.use(createPipelineTask)
-//			.run(variables)
+		return unit.runnable(this.pipeline, this.compiled)
+			.inherit(log)
+			.use(this.principal)
+			.use(this.storages)
+			.use(this.createPipelineTask)
+			.run(variables)
 	}
 
 	private fun runUnits(variables: PipelineVariables, log: StageMonitorLog): Boolean {
@@ -45,7 +44,7 @@ class PipelineStageRunnable(
 	}
 
 	fun run(): Boolean {
-		val stageLog = this.createLog(this.log)
+		val stageLog = this.createLog()
 		try {
 			this.compiled.prerequisiteTest(variables, principal)
 				.doIfFalse {
@@ -76,18 +75,18 @@ class PipelineStageRunnable(
 		return stageLog.status != MonitorLogStatus.ERROR
 	}
 
-	private fun createLog(log: PipelineMonitorLog): StageMonitorLog {
+	private fun createLog(): StageMonitorLog {
 		return StageMonitorLog(
 			stageId = this.compiled.stage.stageId, name = this.compiled.stage.name,
 			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
 			prerequisite = true,
 			prerequisiteDefinedAs = this.compiled.prerequisiteDef,
 			units = mutableListOf()
-		).also { log.stages!!.add(it) }
+		).also { this.log.stages!!.add(it) }
 	}
 }
 
-class PipelineStageRunnableBuilder(
+class PipelineStageRunnableCommand(
 	private val pipeline: CompiledPipeline, private val stage: CompiledPipelineStage
 ) {
 	private var log: PipelineMonitorLog? = null

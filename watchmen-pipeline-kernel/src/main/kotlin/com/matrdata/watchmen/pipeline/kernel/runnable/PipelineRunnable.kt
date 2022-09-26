@@ -121,7 +121,7 @@ class PipelineRunnable(
 	}
 }
 
-class PipelineRunnableBuilder(private val pipeline: CompiledPipeline) {
+class PipelineRunnableCommand(private val pipeline: CompiledPipeline) {
 	private var principal: Principal? = null
 	private var storages: TopicStorages? = null
 	private var handleMonitorLog: PipelineMonitorLogHandle? = null

@@ -17,3 +17,7 @@ package com.matrdata.watchmen.pipeline.kernel
 fun askIsAsyncHandlePipelineMonitorLog(): Boolean {
 	return true
 }
+
+fun askIsParallelActionsInLoopUnit(): Boolean {
+	return false
+}

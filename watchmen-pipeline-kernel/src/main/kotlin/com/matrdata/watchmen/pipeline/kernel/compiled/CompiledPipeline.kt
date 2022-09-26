@@ -1,7 +1,7 @@
 package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.model.admin.Pipeline
-import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineRunnableBuilder
+import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineRunnableCommand
 
 /**
  * compiled pipeline is thread-safe and will be cached.
@@ -15,7 +15,7 @@ class CompiledPipeline constructor(
 	/** compiled stages */
 	val stages: List<CompiledPipelineStage>
 ) {
-	fun runnable(): PipelineRunnableBuilder {
-		return PipelineRunnableBuilder(this)
+	fun runnable(): PipelineRunnableCommand {
+		return PipelineRunnableCommand(this)
 	}
 }
