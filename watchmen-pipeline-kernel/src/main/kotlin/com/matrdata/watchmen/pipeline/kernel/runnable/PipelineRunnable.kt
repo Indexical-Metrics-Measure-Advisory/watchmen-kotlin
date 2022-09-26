@@ -41,6 +41,7 @@ class PipelineRunnable(
 	): Boolean {
 		return this.compiled.stages.fold(initial = true) { should, stage: CompiledPipelineStage ->
 			if (!should) {
+				// ignore stage run when previous said should not
 				false
 			} else {
 				this.runStage(stage, variables, log, createPipelineTask)
@@ -111,12 +112,12 @@ class PipelineRunnable(
 			uid = askSnowflakeGenerator().nextIdAsStr(),
 			traceId = this.traceId, dataId = dataId,
 			pipelineId = this.compiled.pipeline.pipelineId!!, topicId = this.compiled.pipeline.topicId!!,
-			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
 			oldValue = this.previousData.toJSON(),
 			newValue = this.currentData.toJSON(),
 			prerequisite = true,
 			prerequisiteDefinedAs = this.compiled.prerequisiteDef,
-			stages = mutableListOf()
+			stages = mutableListOf(),
+			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null
 		)
 	}
 }

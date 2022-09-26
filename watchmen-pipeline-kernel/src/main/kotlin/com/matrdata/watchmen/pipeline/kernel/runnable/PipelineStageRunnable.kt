@@ -36,6 +36,7 @@ class PipelineStageRunnable(
 	private fun runUnits(variables: PipelineVariables, log: StageMonitorLog): Boolean {
 		return this.compiled.units.fold(initial = true) { should, unit: CompiledPipelineUnit ->
 			if (!should) {
+				// ignore unit run when previous said should not
 				false
 			} else {
 				this.runUnit(unit, variables, log)
@@ -46,7 +47,7 @@ class PipelineStageRunnable(
 	fun run(): Boolean {
 		val stageLog = this.createLog()
 		try {
-			this.compiled.prerequisiteTest(variables, principal)
+			this.compiled.prerequisiteTest(this.variables, this.principal)
 				.doIfFalse {
 					// prerequisite check returns false
 					stageLog.prerequisite = false
@@ -57,7 +58,7 @@ class PipelineStageRunnable(
 					stageLog.prerequisite = true
 					// run stages
 					runUnits(variables, stageLog)
-						// stages run successfully
+						// units run successfully
 						.doIfTrue { stageLog.status = MonitorLogStatus.DONE }
 						// error occurred in units running, log status on stage runtime log
 						.doIfFalse { stageLog.status = MonitorLogStatus.ERROR }
@@ -78,10 +79,10 @@ class PipelineStageRunnable(
 	private fun createLog(): StageMonitorLog {
 		return StageMonitorLog(
 			stageId = this.compiled.stage.stageId, name = this.compiled.stage.name,
-			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
 			prerequisite = true,
 			prerequisiteDefinedAs = this.compiled.prerequisiteDef,
-			units = mutableListOf()
+			units = mutableListOf(),
+			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null
 		).also { this.log.stages!!.add(it) }
 	}
 }

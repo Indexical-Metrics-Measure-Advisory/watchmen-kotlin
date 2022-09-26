@@ -84,7 +84,7 @@ enum class AlarmActionSeverity(val code: String) {
 
 data class AlarmAction(
 	override var actionId: PipelineActionId? = null,
-	var severity: AlarmActionSeverity = AlarmActionSeverity.MEDIUM,
+	var severity: AlarmActionSeverity? = AlarmActionSeverity.MEDIUM,
 	var message: String? = null,
 	override var conditional: Boolean? = false,
 	override var on: Joint? = null

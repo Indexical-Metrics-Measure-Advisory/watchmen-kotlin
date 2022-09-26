@@ -23,6 +23,11 @@ class PipelineUnitCompiler private constructor(
 		}
 	}
 
+	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
+		// TODO use variables on prerequisite test
+		return ConditionalCompiler.of(this.unit).compileBy(principal)
+	}
+
 	override fun compileBy(principal: Principal): CompiledPipelineUnit {
 		// copy compiled variables for myself
 		return this.variables.copy().handTo { variablesOnUnit ->
@@ -34,9 +39,7 @@ class PipelineUnitCompiler private constructor(
 				// generate definition json string
 				prerequisiteDef = this.unit.toPrerequisiteDefJSON(),
 				// compile prerequisite to test function
-				prerequisiteTest = this.unit.within(this.pipeline, this.stage)
-					.inherit(variablesOnUnit).use(principal)
-					.compilePrerequisiteTest(),
+				prerequisiteTest = this.compilePrerequisiteTest(variablesOnUnit, principal),
 				actions = this.unit.`do`.let { actions ->
 					require(!actions.isNullOrEmpty()) { "Action not exists in pipeline unit[${this.unit}]." }
 					actions.map { action ->
@@ -57,10 +60,6 @@ class PreparedPipelineUnitCompiler(
 	private val variables: CompiledVariables,
 	private val principal: Principal
 ) : PreparedCompiler<CompiledPipelineUnit> {
-	fun compilePrerequisiteTest(): PrerequisiteTest {
-		return ConditionalCompiler.of(this.unit).compileBy(this.principal)
-	}
-
 	override fun compile(): CompiledPipelineUnit {
 		return PipelineUnitCompiler.of(this.pipeline, this.stage, this.unit, this.variables).compileBy(this.principal)
 	}

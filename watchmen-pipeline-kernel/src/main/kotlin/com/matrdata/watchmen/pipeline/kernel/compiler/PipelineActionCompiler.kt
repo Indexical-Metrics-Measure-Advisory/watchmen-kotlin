@@ -6,15 +6,16 @@ import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.utils.throwIfNull
 
-sealed interface PipelineActionCompiler<T : PipelineActionType, A : CompiledPipelineAction<T>> : Compiler<A> {
+interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledPipelineAction<T, A>> :
+	Compiler<CA> {
 	companion object {
 		fun of(
 			pipeline: Pipeline, stage: PipelineStage, unit: PipelineUnit,
 			action: PipelineAction<out PipelineActionType>,
 			variables: CompiledVariables
-		): PipelineActionCompiler<out PipelineActionType, out CompiledPipelineAction<out PipelineActionType>> {
+		): PipelineActionCompiler<out PipelineActionType, out PipelineAction<out PipelineActionType>, out CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
 			return when (action) {
-				is AlarmAction -> TODO("Not yet implemented") // AlarmActionCompiler.of(pipeline, stage, unit, action)
+				is AlarmAction -> AlarmActionCompiler.of(pipeline, stage, unit, action, variables)
 				is CopyToMemoryAction -> TODO("Not yet implemented")
 				is WriteToExternalAction -> TODO("Not yet implemented")
 				is InsertOrMergeRowAction -> TODO("Not yet implemented")
@@ -36,8 +37,8 @@ class PreparedPipelineActionCompiler(
 	private val action: PipelineAction<out PipelineActionType>,
 	private val variables: CompiledVariables,
 	private val principal: Principal
-) : PreparedCompiler<CompiledPipelineAction<out PipelineActionType>> {
-	override fun compile(): CompiledPipelineAction<out PipelineActionType> {
+) : PreparedCompiler<CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
+	override fun compile(): CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>> {
 		return PipelineActionCompiler.of(
 			this.pipeline, this.stage, this.unit, this.action, this.variables
 		).compileBy(this.principal)
