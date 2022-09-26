@@ -4,6 +4,7 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.pnp.ExternalWriterParams
 import com.matrdata.watchmen.data.kernel.pnp.ExternalWriterRegistry
 import com.matrdata.watchmen.model.admin.*
+import com.matrdata.watchmen.model.system.ExternalWriter
 import com.matrdata.watchmen.pipeline.kernel.askExternalWriterService
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledWriteToExternalAction
@@ -27,33 +28,32 @@ class WriteToExternalActionCompiler(
 		}
 	}
 
-
 	private fun compileWrite(
 		@Suppress("UNUSED_PARAMETER") variables: CompiledVariables,
 		@Suppress("UNUSED_PARAMETER") principal: Principal
 	): WriteToExternal {
 		return { v: PipelineVariables, p: Principal ->
-			val def = action.externalWriterId.throwIfBlank {
+			action.externalWriterId.throwIfBlank {
 				"External writer not declared in action[pipelineId=${pipeline.pipelineId}, stageId=${stage.stageId}, unitId=${unit.unitId}, actionId=${action.actionId}]."
 			}.handTo { writerId: String ->
 				askExternalWriterService(p).findById(writerId).throwIfNull {
 					"External writer[id=$writerId] not found."
-				}.also {
-					it.writerCode.throwIfBlank { "Code of external writer cannot[id=$writerId] be blank." }
-					it.url.throwIfBlank { "Url of external writer cannot[id=$writerId] be blank." }
+				}.also { def: ExternalWriter ->
+					def.writerCode.throwIfBlank { "Code of external writer cannot[id=$writerId] be blank." }
+					def.url.throwIfBlank { "Url of external writer cannot[id=$writerId] be blank." }
 				}
-			}
-
-			ExternalWriterRegistry.INSTANCE.askWriter(def.writerCode!!).run(
-				ExternalWriterParams(
-					pat = def.pat,
-					url = def.url,
-					eventCode = this.action.eventCode,
-					currentData = v.getCurrentData(),
-					previousData = v.getPreviousData(),
-					variables = v.getVariableData()
+			}.handTo { def: ExternalWriter ->
+				ExternalWriterRegistry.INSTANCE.askWriter(def.writerCode!!).run(
+					ExternalWriterParams(
+						pat = def.pat,
+						url = def.url,
+						eventCode = this.action.eventCode,
+						currentData = v.getCurrentData(),
+						previousData = v.getPreviousData(),
+						variables = v.getVariableData()
+					)
 				)
-			)
+			}
 		}
 	}
 
