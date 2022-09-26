@@ -3,7 +3,7 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineStage
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineStage
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledStage
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.utils.handTo
@@ -13,7 +13,7 @@ class PipelineStageCompiler private constructor(
 	private val pipeline: Pipeline, private val stage: PipelineStage,
 	// compiled variables from parent level
 	private val variables: CompiledVariables
-) : Compiler<CompiledPipelineStage> {
+) : Compiler<CompiledStage> {
 	companion object {
 		fun of(pipeline: Pipeline, stage: PipelineStage, variables: CompiledVariables): PipelineStageCompiler {
 			return PipelineStageCompiler(pipeline, stage, variables)
@@ -25,10 +25,10 @@ class PipelineStageCompiler private constructor(
 		return ConditionalCompiler.of(this.stage).compileBy(principal)
 	}
 
-	override fun compileBy(principal: Principal): CompiledPipelineStage {
+	override fun compileBy(principal: Principal): CompiledStage {
 		// copy compiled variables for myself
 		return this.variables.copy().handTo { variablesOnStage ->
-			CompiledPipelineStage(
+			CompiledStage(
 				pipeline = this.pipeline, stage = this.stage,
 				variables = variablesOnStage,
 				// generate definition json string
@@ -55,8 +55,8 @@ class PreparedPipelineStageCompiler(
 	private val pipeline: Pipeline, private val stage: PipelineStage,
 	private val variables: CompiledVariables,
 	private val principal: Principal
-) : PreparedCompiler<CompiledPipelineStage> {
-	override fun compile(): CompiledPipelineStage {
+) : PreparedCompiler<CompiledStage> {
+	override fun compile(): CompiledStage {
 		return PipelineStageCompiler.of(this.pipeline, this.stage, this.variables).compileBy(this.principal)
 	}
 }

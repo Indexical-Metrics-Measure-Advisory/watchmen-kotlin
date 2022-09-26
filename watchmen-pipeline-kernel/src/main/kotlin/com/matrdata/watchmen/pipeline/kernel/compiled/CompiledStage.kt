@@ -4,7 +4,7 @@ import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineStage
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineStageRunnableCommand
 
-class CompiledPipelineStage constructor(
+class CompiledStage constructor(
 	val pipeline: Pipeline,
 	val stage: PipelineStage,
 	/** compiled variables */
@@ -13,7 +13,7 @@ class CompiledPipelineStage constructor(
 	val prerequisiteDef: DefJSON,
 	/** function to test prerequisite */
 	val prerequisiteTest: PrerequisiteTest,
-	val units: List<CompiledPipelineUnit>
+	val units: List<CompiledUnit>
 ) {
 	fun runnable(pipeline: CompiledPipeline): PipelineStageRunnableCommand {
 		return PipelineStageRunnableCommand(pipeline, this)

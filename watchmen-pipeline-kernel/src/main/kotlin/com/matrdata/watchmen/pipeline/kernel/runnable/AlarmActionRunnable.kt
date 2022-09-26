@@ -14,7 +14,7 @@ import com.matrdata.watchmen.utils.spentInMs
 import java.time.LocalDateTime
 
 class AlarmActionRunnable(wrapped: PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>) :
-	SpecificPipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>(wrapped) {
+	PipelineActionRunnableWrapper<SystemActionType, AlarmAction, CompiledAlarmAction>(wrapped) {
 	fun run(): Boolean {
 		val actionLog = this.createLog()
 
@@ -23,14 +23,12 @@ class AlarmActionRunnable(wrapped: PipelineActionRunnable<SystemActionType, Alar
 				.doIfFalse {
 					// prerequisite check returns false
 					actionLog.prerequisite = false
-					actionLog.status = MonitorLogStatus.DONE
-					// return true to continue next action
-					return true
 				}.doIfTrue {
 					actionLog.prerequisite = true
 					val value = compiled.message.value(variables, principal)
 					actionLog.touched = mapOf("data" to value)
 					val severity = (compiled.action.severity ?: AlarmActionSeverity.MEDIUM).code.uppercase()
+					// TODO alarm message is logged on error level default
 					logger.error("[PIPELINE] [ALARM] [$severity] $value")
 				}
 		} catch (t: Throwable) {

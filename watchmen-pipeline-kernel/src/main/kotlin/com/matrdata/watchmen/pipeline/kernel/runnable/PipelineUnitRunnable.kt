@@ -8,10 +8,10 @@ import com.matrdata.watchmen.model.runtime.monitor.StageMonitorLog
 import com.matrdata.watchmen.model.runtime.monitor.UnitMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.TopicStorages
 import com.matrdata.watchmen.pipeline.kernel.askIsParallelActionsInLoopUnit
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineAction
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineStage
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineUnit
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledStage
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledUnit
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import com.matrdata.watchmen.utils.doIfFalse
 import com.matrdata.watchmen.utils.doIfTrue
@@ -21,8 +21,8 @@ import java.time.LocalDateTime
 
 class PipelineUnitRunnable(
 	private val pipeline: CompiledPipeline,
-	private val stage: CompiledPipelineStage,
-	private val compiled: CompiledPipelineUnit,
+	private val stage: CompiledStage,
+	private val compiled: CompiledUnit,
 	private val principal: Principal,
 	private val storages: TopicStorages,
 	private val createPipelineTask: CreatePipelineTask,
@@ -39,7 +39,7 @@ class PipelineUnitRunnable(
 	}
 
 	private fun runAction(
-		action: CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>,
+		action: CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>,
 		variables: PipelineVariables, log: UnitMonitorLog
 	): Boolean {
 		return action.runnable(this.pipeline, this.stage, this.compiled)
@@ -51,7 +51,7 @@ class PipelineUnitRunnable(
 	}
 
 	private fun runActions(variables: PipelineVariables, log: UnitMonitorLog): Boolean {
-		return this.compiled.actions.fold(initial = true) { should, action: CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>> ->
+		return this.compiled.actions.fold(initial = true) { should, action: CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>> ->
 			if (!should) {
 				// ignore action run when previous said should not
 				false
@@ -73,9 +73,6 @@ class PipelineUnitRunnable(
 				.doIfFalse {
 					// prerequisite check returns false
 					unitLog.prerequisite = false
-					unitLog.status = MonitorLogStatus.DONE
-					// return true to continue next unit
-					return true
 				}.doIfTrue {
 					unitLog.prerequisite = true
 					// run units
@@ -152,8 +149,8 @@ class PipelineUnitRunnable(
 }
 
 class PipelineUnitRunnableCommand(
-	private val pipeline: CompiledPipeline, private val stage: CompiledPipelineStage,
-	private val unit: CompiledPipelineUnit
+	private val pipeline: CompiledPipeline, private val stage: CompiledStage,
+	private val unit: CompiledUnit
 ) {
 	private var log: StageMonitorLog? = null
 	private var principal: Principal? = null

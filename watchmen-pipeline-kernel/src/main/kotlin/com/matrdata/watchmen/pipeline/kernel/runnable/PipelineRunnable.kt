@@ -8,7 +8,7 @@ import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
 import com.matrdata.watchmen.model.runtime.monitor.PipelineMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.*
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineStage
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledStage
 import com.matrdata.watchmen.pipeline.kernel.compiled.PipelineTrigger
 import com.matrdata.watchmen.utils.*
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
@@ -25,7 +25,7 @@ class PipelineRunnable(
 	private val currentData: Map<String, Any>?
 ) {
 	private fun runStage(
-		stage: CompiledPipelineStage,
+		stage: CompiledStage,
 		variables: PipelineVariables, log: PipelineMonitorLog, createPipelineTask: CreatePipelineTask
 	): Boolean {
 		return stage.runnable(this.compiled)
@@ -39,7 +39,7 @@ class PipelineRunnable(
 	private fun runStages(
 		variables: PipelineVariables, log: PipelineMonitorLog, createPipelineTask: CreatePipelineTask
 	): Boolean {
-		return this.compiled.stages.fold(initial = true) { should, stage: CompiledPipelineStage ->
+		return this.compiled.stages.fold(initial = true) { should, stage: CompiledStage ->
 			if (!should) {
 				// ignore stage run when previous said should not
 				false
@@ -72,7 +72,6 @@ class PipelineRunnable(
 					// prerequisite check returns false
 					// no need to run pipeline, log status as done
 					log.prerequisite = false
-					log.status = MonitorLogStatus.DONE
 				}.doIfTrue {
 					// prerequisite check returns true
 					log.prerequisite = true
@@ -96,7 +95,7 @@ class PipelineRunnable(
 
 		log.apply {
 			// log spent in milliseconds
-			spentInMills = log.startTime?.spentInMs()?.toInt() ?: 0
+			spentInMills = startTime?.spentInMs()?.toInt() ?: 0
 		}.also {
 			// trigger log pipeline
 			this.handleMonitorLog(it, askIsAsyncHandlePipelineMonitorLog())

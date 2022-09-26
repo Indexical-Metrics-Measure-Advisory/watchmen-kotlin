@@ -2,18 +2,18 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.*
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineAction
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.utils.throwIfNull
 
-interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledPipelineAction<T, A>> :
+interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledAction<T, A>> :
 	Compiler<CA> {
 	companion object {
 		fun of(
 			pipeline: Pipeline, stage: PipelineStage, unit: PipelineUnit,
 			action: PipelineAction<out PipelineActionType>,
 			variables: CompiledVariables
-		): PipelineActionCompiler<out PipelineActionType, out PipelineAction<out PipelineActionType>, out CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
+		): PipelineActionCompiler<out PipelineActionType, out PipelineAction<out PipelineActionType>, out CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
 			return when (action) {
 				is AlarmAction -> AlarmActionCompiler.of(pipeline, stage, unit, action, variables)
 				is CopyToMemoryAction -> TODO("Not yet implemented")
@@ -37,8 +37,8 @@ class PreparedPipelineActionCompiler(
 	private val action: PipelineAction<out PipelineActionType>,
 	private val variables: CompiledVariables,
 	private val principal: Principal
-) : PreparedCompiler<CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
-	override fun compile(): CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>> {
+) : PreparedCompiler<CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
+	override fun compile(): CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>> {
 		return PipelineActionCompiler.of(
 			this.pipeline, this.stage, this.unit, this.action, this.variables
 		).compileBy(this.principal)

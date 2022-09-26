@@ -4,7 +4,7 @@ import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineUnitRunnableCommand
 import com.matrdata.watchmen.utils.ValueUtils
 
-class CompiledPipelineUnit constructor(
+class CompiledUnit constructor(
 	val pipeline: Pipeline,
 	val stage: PipelineStage,
 	val unit: PipelineUnit,
@@ -14,12 +14,12 @@ class CompiledPipelineUnit constructor(
 	val prerequisiteDef: DefJSON,
 	/** function to test prerequisite */
 	val prerequisiteTest: PrerequisiteTest,
-	val actions: List<CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>>
+	val actions: List<CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>>
 ) {
 	val loopVariableName: String? get() = this.unit.loopVariableName
 	val hasLoop: Boolean get() = ValueUtils.isNotBlank(this.loopVariableName)
 
-	fun runnable(pipeline: CompiledPipeline, stage: CompiledPipelineStage): PipelineUnitRunnableCommand {
+	fun runnable(pipeline: CompiledPipeline, stage: CompiledStage): PipelineUnitRunnableCommand {
 		return PipelineUnitRunnableCommand(pipeline, stage, this)
 	}
 }

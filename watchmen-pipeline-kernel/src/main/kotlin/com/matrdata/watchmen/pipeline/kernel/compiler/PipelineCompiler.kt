@@ -23,6 +23,7 @@ class PipelineCompiler private constructor(private val pipeline: Pipeline) : Com
 		// create a compiled variables to trace the variable changes
 		// this variables will be used through the entire compiling
 		// variables must be copied to create a snapshot when enter each stage/unit/action
+		// also variables is copied when passed to pipeline prerequisite
 		return CompiledVariables().handTo { variables ->
 			CompiledPipeline(
 				pipeline = this.pipeline,

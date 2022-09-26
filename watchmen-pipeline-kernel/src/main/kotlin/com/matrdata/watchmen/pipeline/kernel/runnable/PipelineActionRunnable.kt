@@ -10,10 +10,10 @@ import com.matrdata.watchmen.pipeline.kernel.TopicStorages
 import com.matrdata.watchmen.pipeline.kernel.compiled.*
 import com.matrdata.watchmen.utils.throwIfNull
 
-class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<out T>, CA : CompiledPipelineAction<out T, out A>>(
+class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<out T>, CA : CompiledAction<out T, out A>>(
 	internal val pipeline: CompiledPipeline,
-	internal val stage: CompiledPipelineStage,
-	internal val unit: CompiledPipelineUnit,
+	internal val stage: CompiledStage,
+	internal val unit: CompiledUnit,
 	internal val compiled: CA,
 	internal val principal: Principal,
 	internal val storages: TopicStorages,
@@ -22,6 +22,7 @@ class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<
 	internal val variables: PipelineVariables
 ) {
 	fun run(): Boolean {
+		// create wrapper and run
 		@Suppress("UNCHECKED_CAST")
 		return when (this.compiled) {
 			is CompiledAlarmAction -> AlarmActionRunnable(this as PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>)
@@ -30,12 +31,15 @@ class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<
 	}
 }
 
-abstract class SpecificPipelineActionRunnable<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledPipelineAction<T, A>>(
+/**
+ * wrapper of pipeline action runnable, the actual runnable
+ */
+sealed class PipelineActionRunnableWrapper<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledAction<T, A>>(
 	private val wrapped: PipelineActionRunnable<T, A, CA>
 ) {
 	internal val pipeline: CompiledPipeline get() = wrapped.pipeline
-	internal val stage: CompiledPipelineStage get() = wrapped.stage
-	internal val unit: CompiledPipelineUnit get() = wrapped.unit
+	internal val stage: CompiledStage get() = wrapped.stage
+	internal val unit: CompiledUnit get() = wrapped.unit
 	internal val compiled: CA get() = wrapped.compiled
 	internal val principal: Principal get() = wrapped.principal
 	internal val storages: TopicStorages get() = wrapped.storages
@@ -46,9 +50,9 @@ abstract class SpecificPipelineActionRunnable<T : PipelineActionType, A : Pipeli
 
 class PipelineActionRunnableCommand(
 	private val pipeline: CompiledPipeline,
-	private val stage: CompiledPipelineStage,
-	private val unit: CompiledPipelineUnit,
-	private val action: CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>
+	private val stage: CompiledStage,
+	private val unit: CompiledUnit,
+	private val action: CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>
 ) {
 	private var log: UnitMonitorLog? = null
 	private var principal: Principal? = null

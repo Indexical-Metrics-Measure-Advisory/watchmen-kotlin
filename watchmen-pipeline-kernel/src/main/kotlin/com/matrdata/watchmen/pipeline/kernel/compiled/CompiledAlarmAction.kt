@@ -13,6 +13,6 @@ class CompiledAlarmAction(
 	/** function to test prerequisite */
 	val prerequisiteTest: PrerequisiteTest,
 	val message: CompiledInMemoryConstantParameter
-) : CompiledPipelineAction<SystemActionType, AlarmAction>(
+) : CompiledAction<SystemActionType, AlarmAction>(
 	pipeline = pipeline, stage = stage, unit = unit, action = action, actionDef = actionDef
 )

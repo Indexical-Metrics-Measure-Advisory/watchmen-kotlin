@@ -4,7 +4,7 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineStage
 import com.matrdata.watchmen.model.admin.PipelineUnit
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipelineUnit
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledUnit
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.utils.handTo
@@ -13,7 +13,7 @@ import com.matrdata.watchmen.utils.throwIfNull
 class PipelineUnitCompiler private constructor(
 	private val pipeline: Pipeline, private val stage: PipelineStage, private val unit: PipelineUnit,
 	private val variables: CompiledVariables
-) : Compiler<CompiledPipelineUnit> {
+) : Compiler<CompiledUnit> {
 	companion object {
 		fun of(
 			pipeline: Pipeline, stage: PipelineStage, unit: PipelineUnit,
@@ -28,10 +28,10 @@ class PipelineUnitCompiler private constructor(
 		return ConditionalCompiler.of(this.unit).compileBy(principal)
 	}
 
-	override fun compileBy(principal: Principal): CompiledPipelineUnit {
+	override fun compileBy(principal: Principal): CompiledUnit {
 		// copy compiled variables for myself
 		return this.variables.copy().handTo { variablesOnUnit ->
-			CompiledPipelineUnit(
+			CompiledUnit(
 				pipeline = this.pipeline,
 				stage = this.stage,
 				unit = this.unit,
@@ -59,8 +59,8 @@ class PreparedPipelineUnitCompiler(
 	private val pipeline: Pipeline, private val stage: PipelineStage, private val unit: PipelineUnit,
 	private val variables: CompiledVariables,
 	private val principal: Principal
-) : PreparedCompiler<CompiledPipelineUnit> {
-	override fun compile(): CompiledPipelineUnit {
+) : PreparedCompiler<CompiledUnit> {
+	override fun compile(): CompiledUnit {
 		return PipelineUnitCompiler.of(this.pipeline, this.stage, this.unit, this.variables).compileBy(this.principal)
 	}
 }

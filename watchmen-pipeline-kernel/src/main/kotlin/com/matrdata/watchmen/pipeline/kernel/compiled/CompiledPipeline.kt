@@ -13,7 +13,7 @@ class CompiledPipeline constructor(
 	/** function to test prerequisite */
 	val prerequisiteTest: PrerequisiteTest,
 	/** compiled stages */
-	val stages: List<CompiledPipelineStage>
+	val stages: List<CompiledStage>
 ) {
 	fun runnable(): PipelineRunnableCommand {
 		return PipelineRunnableCommand(this)
