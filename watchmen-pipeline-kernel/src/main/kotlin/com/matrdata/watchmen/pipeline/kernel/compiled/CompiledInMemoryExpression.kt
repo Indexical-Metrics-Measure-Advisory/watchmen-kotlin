@@ -11,7 +11,7 @@ import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
  */
 class CompiledInMemoryExpression constructor(
 	private val expression: Expression<out ParameterExpressionOperator>,
-	private val left: CompiledInMemoryParameter<out Parameter>,
+	private val left: CompiledInMemoryParameter<out Parameter>?,
 	private val right: CompiledInMemoryParameter<out Parameter>? = null
 ) : CompiledInMemoryCondition<Expression<out ParameterExpressionOperator>> {
 	override fun getCondition(): Expression<out ParameterExpressionOperator> {

@@ -24,21 +24,15 @@ class InMemoryExpressionCompiler private constructor(private val expression: Exp
 			is SingleExpression -> CompiledInMemoryExpression(
 				expression = this.expression,
 				// compile left
-				left = requireNotNull(this.expression.left) {
-					"Left of expression[${this.expression}] cannot be null."
-				}.use(principal).inMemory().compile()
+				left = this.expression.left?.use(principal)?.inMemory()?.compile()
 			)
 
 			is DualExpression -> CompiledInMemoryExpression(
 				expression = this.expression,
 				// compile left
-				left = requireNotNull(this.expression.left) {
-					"Left of expression[${this.expression}] cannot be null."
-				}.use(principal).inMemory().compile(),
+				left = this.expression.left?.use(principal)?.inMemory()?.compile(),
 				// compile right
-				right = requireNotNull(this.expression.right) {
-					"Right of expression[${this.expression}] cannot be null."
-				}.use(principal).inMemory().compile(),
+				right = this.expression.right?.use(principal)?.inMemory()?.compile(),
 			)
 		}
 	}

@@ -72,8 +72,6 @@ data class AlarmActionMonitorLog(
 data class CopyToMemoryActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
-	override var prerequisite: Boolean? = false,
-	override var prerequisiteDefinedAs: Any? = null,
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
 	override var status: MonitorLogStatus? = null,
@@ -85,7 +83,7 @@ data class CopyToMemoryActionMonitorLog(
 	insertCount = 0, updateCount = 0, deleteCount = 0,
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
-), ConditionalMonitorLog {
+) {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.COPY_TO_MEMORY
@@ -95,8 +93,6 @@ data class CopyToMemoryActionMonitorLog(
 data class WriteToExternalActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
-	override var prerequisite: Boolean? = false,
-	override var prerequisiteDefinedAs: Any? = null,
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
 	override var status: MonitorLogStatus? = null,
@@ -108,7 +104,7 @@ data class WriteToExternalActionMonitorLog(
 	insertCount = 0, updateCount = 0, deleteCount = 0,
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
-), ConditionalMonitorLog {
+) {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.WRITE_TO_EXTERNAL

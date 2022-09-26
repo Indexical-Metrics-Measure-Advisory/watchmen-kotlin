@@ -16,7 +16,7 @@ interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, 
 		): PipelineActionCompiler<out PipelineActionType, out PipelineAction<out PipelineActionType>, out CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
 			return when (action) {
 				is AlarmAction -> AlarmActionCompiler.of(pipeline, stage, unit, action, variables)
-				is CopyToMemoryAction -> TODO("Not yet implemented")
+				is CopyToMemoryAction -> CopyToMemoryActionCompiler.of(pipeline, stage, unit, action, variables)
 				is WriteToExternalAction -> TODO("Not yet implemented")
 				is InsertOrMergeRowAction -> TODO("Not yet implemented")
 				is MergeRowAction -> TODO("Not yet implemented")

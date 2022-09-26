@@ -1,10 +1,7 @@
 package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.model.admin.AlarmAction
-import com.matrdata.watchmen.model.admin.PipelineAction
-import com.matrdata.watchmen.model.admin.PipelineActionType
-import com.matrdata.watchmen.model.admin.SystemActionType
+import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.runtime.monitor.UnitMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.TopicStorages
 import com.matrdata.watchmen.pipeline.kernel.compiled.*
@@ -25,9 +22,10 @@ class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<
 		// create wrapper and run
 		@Suppress("UNCHECKED_CAST")
 		return when (this.compiled) {
-			is CompiledAlarmAction -> AlarmActionRunnable(this as PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>)
+			is CompiledAlarmAction -> AlarmActionRunnable(this as PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>).run()
+			is CompiledCopyToMemoryAction -> CopyToMemoryActionRunnable(this as PipelineActionRunnable<SystemActionType, CopyToMemoryAction, CompiledCopyToMemoryAction>).run()
 			else -> TODO("Not yet implemented")
-		}.run()
+		}
 	}
 }
 
