@@ -5,3 +5,4 @@ import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
 typealias DefJSON = String
 typealias PrerequisiteTest = (PipelineVariables, Principal) -> Boolean
+typealias WriteToExternal = (PipelineVariables, Principal) -> Unit

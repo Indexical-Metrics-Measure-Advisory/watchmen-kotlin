@@ -25,7 +25,7 @@ class CopyToMemoryActionCompiler(
 	private fun compileSource(
 		variables: CompiledVariables, principal: Principal
 	): CompiledInMemoryParameter<out Parameter>? {
-		// TODO use variables on prerequisite test
+		// TODO use variables on source compiling
 		return this.action.source?.use(principal)?.inMemory()?.compile()
 	}
 
@@ -36,9 +36,9 @@ class CopyToMemoryActionCompiler(
 				stage = this.stage,
 				unit = this.unit,
 				action = this.action,
-				variables = variablesOnAction,
 				// generate definition json string of action itself
 				actionDef = this.action.toDefJSON(),
+				variables = variablesOnAction,
 				source = this.compileSource(variablesOnAction, principal)
 			)
 		}

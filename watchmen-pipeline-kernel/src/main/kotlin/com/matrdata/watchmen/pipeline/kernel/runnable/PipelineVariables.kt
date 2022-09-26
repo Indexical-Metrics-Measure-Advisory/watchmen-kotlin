@@ -9,6 +9,11 @@ class PipelineVariables(
 ) {
 	private val map: MutableMap<String, Any?> = mutableMapOf()
 
+	fun getPreviousData(): Map<String, Any?>? = this.previousData
+	fun getCurrentData(): Map<String, Any?>? = this.currentData
+
+	fun getVariableData(): Map<String, Any?> = this.map
+
 	private fun findFrom(from: Any?, name: String): Any? {
 		return when (from) {
 			null -> null

@@ -24,12 +24,12 @@ class AlarmActionCompiler(
 	}
 
 	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
-		// TODO use variables on prerequisite test
+		// TODO use variables on prerequisite compiling
 		return ConditionalCompiler.of(this.action).compileBy(principal)
 	}
 
 	private fun compileMessage(variables: CompiledVariables, principal: Principal): CompiledInMemoryConstantParameter {
-		// TODO use variables on prerequisite test
+		// TODO use variables on message compiling
 		return InMemoryConstantParameterCompiler.of(ConstantParameter(value = this.action.message)).compileBy(principal)
 	}
 
@@ -40,13 +40,13 @@ class AlarmActionCompiler(
 				stage = this.stage,
 				unit = this.unit,
 				action = this.action,
+				// generate definition json string of action itself
+				actionDef = this.action.toDefJSON(),
 				variables = variablesOnAction,
 				// generate definition json string of prerequisite
 				prerequisiteDef = this.action.toPrerequisiteDefJSON(),
 				// compile prerequisite to test function
 				prerequisiteTest = this.compilePrerequisiteTest(variablesOnAction, principal),
-				// generate definition json string of action itself
-				actionDef = this.action.toDefJSON(),
 				message = this.compileMessage(variablesOnAction, principal)
 			)
 		}

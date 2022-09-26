@@ -24,6 +24,7 @@ class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<
 		return when (this.compiled) {
 			is CompiledAlarmAction -> AlarmActionRunnable(this as PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>).run()
 			is CompiledCopyToMemoryAction -> CopyToMemoryActionRunnable(this as PipelineActionRunnable<SystemActionType, CopyToMemoryAction, CompiledCopyToMemoryAction>).run()
+			is CompiledWriteToExternalAction -> WriteToExternalActionRunnable(this as PipelineActionRunnable<SystemActionType, WriteToExternalAction, CompiledWriteToExternalAction>).run()
 			else -> TODO("Not yet implemented")
 		}
 	}

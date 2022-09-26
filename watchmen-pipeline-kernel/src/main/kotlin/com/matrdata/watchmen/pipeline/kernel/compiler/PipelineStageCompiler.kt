@@ -21,7 +21,7 @@ class PipelineStageCompiler private constructor(
 	}
 
 	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
-		// TODO use variables on prerequisite test
+		// TODO use variables on prerequisite compiling
 		return ConditionalCompiler.of(this.stage).compileBy(principal)
 	}
 

@@ -15,7 +15,7 @@ class PipelineCompiler private constructor(private val pipeline: Pipeline) : Com
 	}
 
 	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
-		// TODO use variables on prerequisite test
+		// TODO use variables on prerequisite compiling
 		return ConditionalCompiler.of(this.pipeline).compileBy(principal)
 	}
 

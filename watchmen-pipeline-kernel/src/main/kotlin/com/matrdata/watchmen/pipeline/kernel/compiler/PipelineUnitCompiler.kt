@@ -24,7 +24,7 @@ class PipelineUnitCompiler private constructor(
 	}
 
 	private fun compilePrerequisiteTest(variables: CompiledVariables, principal: Principal): PrerequisiteTest {
-		// TODO use variables on prerequisite test
+		// TODO use variables on prerequisite compiling
 		return ConditionalCompiler.of(this.unit).compileBy(principal)
 	}
 
