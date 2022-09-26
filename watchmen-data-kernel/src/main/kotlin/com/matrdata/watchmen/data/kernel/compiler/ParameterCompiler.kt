@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.pipeline.kernel.compiler
+package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Parameter
@@ -8,10 +8,9 @@ class ParameterCompilerSwitcher(private val parameter: Parameter, private val pr
 		return PreparedInMemoryParameterCompiler(parameter = this.parameter, principal = this.principal)
 	}
 
-	// TODO not yet implemented, in-storage condition compiler
-//	fun inStorage(): PrepareInStorageConditionCompiler {
-//		return PrepareInStorageConditionCompiler(condition = this.condition, principal = this.principal)
-//	}
+	fun inStorage(): PreparedInStorageParameterCompiler {
+		return PreparedInStorageParameterCompiler(condition = this.parameter, principal = this.principal)
+	}
 }
 
 fun Parameter.use(principal: Principal): ParameterCompilerSwitcher {

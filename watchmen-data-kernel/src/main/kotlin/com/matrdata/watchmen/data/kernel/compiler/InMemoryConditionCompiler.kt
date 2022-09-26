@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compiler
+package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryCondition
 
 sealed interface InMemoryConditionCompiler<C : Condition, CC : CompiledInMemoryCondition<C>> : Compiler<CC> {
 	companion object {

@@ -1,5 +1,6 @@
 package com.matrdata.watchmen.pipeline.kernel.compiled
 
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.Parameter
 

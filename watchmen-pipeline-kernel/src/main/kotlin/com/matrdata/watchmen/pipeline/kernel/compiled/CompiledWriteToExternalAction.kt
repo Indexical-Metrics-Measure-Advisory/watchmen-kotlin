@@ -8,7 +8,7 @@ class CompiledWriteToExternalAction(
 	actionDef: DefJSON,
 	/** compiled variables */
 	val variables: CompiledVariables,
-	val write: WriteToExternal
+	val write: WriteToExternalFunc
 ) : CompiledAction<SystemActionType, WriteToExternalAction>(
 	pipeline = pipeline, stage = stage, unit = unit, action = action, actionDef = actionDef
 )

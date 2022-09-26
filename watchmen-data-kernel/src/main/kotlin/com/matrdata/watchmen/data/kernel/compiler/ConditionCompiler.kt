@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.pipeline.kernel.compiler
+package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
@@ -8,10 +8,9 @@ class ConditionCompilerSwitcher(private val condition: Condition, private val pr
 		return PreparedInMemoryConditionCompiler(condition = this.condition, principal = this.principal)
 	}
 
-	// TODO not yet implemented, in-storage condition compiler
-//	fun inStorage(): PrepareInStorageConditionCompiler {
-//		return PrepareInStorageConditionCompiler(condition = this.condition, principal = this.principal)
-//	}
+	fun inStorage(): PreparedInStorageConditionCompiler {
+		return PreparedInStorageConditionCompiler(condition = this.condition, principal = this.principal)
+	}
 }
 
 fun Condition.use(principal: Principal): ConditionCompilerSwitcher {

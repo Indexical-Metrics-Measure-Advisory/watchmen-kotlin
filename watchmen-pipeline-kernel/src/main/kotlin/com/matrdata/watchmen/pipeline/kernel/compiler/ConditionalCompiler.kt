@@ -1,9 +1,10 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.data.kernel.compiler.use
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Conditional
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 
 val TEST_PREREQUISITE_ALWAYS_TRUE: PrerequisiteTest = { _, _ -> true }

@@ -1,7 +1,7 @@
-package com.matrdata.watchmen.pipeline.kernel.runnable
+package com.matrdata.watchmen.data.kernel.runnable
 
+import com.matrdata.watchmen.data.kernel.DataKernelException
 import com.matrdata.watchmen.model.admin.Topic
-import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 
 class PipelineVariables(
 	private val previousData: Map<String, Any?>?, private val currentData: Map<String, Any?>?,
@@ -19,7 +19,7 @@ class PipelineVariables(
 			null -> null
 			is Map<*, *> -> from[name]
 			// TODO how to get property value from non-map object
-			else -> throw PipelineKernelException("Only map is supported in pipeline variables.")
+			else -> throw DataKernelException("Only map is supported in pipeline variables.")
 		}
 	}
 

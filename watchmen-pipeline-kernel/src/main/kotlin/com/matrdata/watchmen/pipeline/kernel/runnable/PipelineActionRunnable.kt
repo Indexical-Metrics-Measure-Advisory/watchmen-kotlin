@@ -1,6 +1,7 @@
 package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.runtime.monitor.UnitMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.TopicStorages
