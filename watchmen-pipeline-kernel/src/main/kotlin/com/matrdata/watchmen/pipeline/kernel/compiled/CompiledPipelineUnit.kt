@@ -16,10 +16,8 @@ class CompiledPipelineUnit constructor(
 	val prerequisiteTest: PrerequisiteTest,
 	val actions: List<CompiledPipelineAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>>
 ) {
-	val loopVariableName: String?
-		get() = this.unit.loopVariableName
-	val hasLoop: Boolean
-		get() = ValueUtils.isNotBlank(this.loopVariableName)
+	val loopVariableName: String? get() = this.unit.loopVariableName
+	val hasLoop: Boolean get() = ValueUtils.isNotBlank(this.loopVariableName)
 
 	fun runnable(pipeline: CompiledPipeline, stage: CompiledPipelineStage): PipelineUnitRunnableCommand {
 		return PipelineUnitRunnableCommand(pipeline, stage, this)

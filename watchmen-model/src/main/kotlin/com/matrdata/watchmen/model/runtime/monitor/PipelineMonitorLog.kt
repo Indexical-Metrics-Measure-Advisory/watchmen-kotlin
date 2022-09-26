@@ -22,7 +22,7 @@ sealed interface ConditionalMonitorLog : StandardMonitorLog {
 	var prerequisiteDefinedAs: Any?  // definition of prerequisite
 }
 
-sealed class MonitorLogAction<T : PipelineActionType>(
+sealed class ActionMonitorLog<T : PipelineActionType>(
 	open var uid: MonitorLogActionId? = null,
 	open var actionId: PipelineActionId? = null,
 	open var type: T? = null,
@@ -57,7 +57,7 @@ data class AlarmActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-) : MonitorLogAction<SystemActionType>(
+) : ActionMonitorLog<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.ALARM,
 	insertCount = 0, updateCount = 0, deleteCount = 0,
 	definedAs = definedAs, touched = touched,
@@ -80,7 +80,7 @@ data class CopyToMemoryActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-) : MonitorLogAction<SystemActionType>(
+) : ActionMonitorLog<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.COPY_TO_MEMORY,
 	insertCount = 0, updateCount = 0, deleteCount = 0,
 	definedAs = definedAs, touched = touched,
@@ -103,7 +103,7 @@ data class WriteToExternalActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null,
-) : MonitorLogAction<SystemActionType>(
+) : ActionMonitorLog<SystemActionType>(
 	uid = uid, actionId = actionId, type = SystemActionType.WRITE_TO_EXTERNAL,
 	insertCount = 0, updateCount = 0, deleteCount = 0,
 	definedAs = definedAs, touched = touched,
@@ -115,7 +115,7 @@ data class WriteToExternalActionMonitorLog(
 		set(value) {}
 }
 
-sealed class MonitorLogFindByAction<T : PipelineActionType>(
+sealed class FindByMonitorActionLog<T : PipelineActionType>(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var type: T? = null,
@@ -129,7 +129,7 @@ sealed class MonitorLogFindByAction<T : PipelineActionType>(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null
-) : MonitorLogAction<T>(
+) : ActionMonitorLog<T>(
 	uid = uid, actionId = actionId, type = type,
 	insertCount = insertCount, updateCount = updateCount, deleteCount = deleteCount,
 	definedAs = definedAs, touched = touched,
@@ -148,7 +148,7 @@ data class ReadActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null
-) : MonitorLogFindByAction<ReadTopicActionType>(
+) : FindByMonitorActionLog<ReadTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
 	insertCount = insertCount, updateCount = 0, deleteCount = 0, findBy = findBy,
 	definedAs = definedAs, touched = touched,
@@ -168,7 +168,7 @@ data class WriteActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null
-) : MonitorLogFindByAction<WriteTopicActionType>(
+) : FindByMonitorActionLog<WriteTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
 	insertCount = insertCount, updateCount = updateCount, deleteCount = 0, findBy = findBy,
 	definedAs = definedAs, touched = touched,
@@ -187,7 +187,7 @@ data class DeleteActionMonitorLog(
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
 	override var error: String? = null
-) : MonitorLogFindByAction<DeleteTopicActionType>(
+) : FindByMonitorActionLog<DeleteTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
 	insertCount = 0, updateCount = 0, deleteCount = deleteCount, findBy = findBy,
 	definedAs = definedAs, touched = touched,
@@ -199,7 +199,7 @@ data class UnitMonitorLog(
 	var name: String? = null,
 	var loopVariableName: String? = null,
 	var loopVariableValue: Any? = null,
-	var actions: MutableList<MonitorLogAction<out PipelineActionType>>? = null,
+	var actions: MutableList<ActionMonitorLog<out PipelineActionType>>? = null,
 	override var status: MonitorLogStatus? = null,
 	override var startTime: LocalDateTime? = null,
 	override var spentInMills: Int? = 0,
