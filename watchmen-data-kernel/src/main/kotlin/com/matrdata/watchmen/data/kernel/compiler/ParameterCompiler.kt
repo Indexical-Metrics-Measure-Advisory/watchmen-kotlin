@@ -9,7 +9,7 @@ class ParameterCompilerSwitcher(private val parameter: Parameter, private val pr
 	}
 
 	fun inStorage(): PreparedInStorageParameterCompiler {
-		return PreparedInStorageParameterCompiler(condition = this.parameter, principal = this.principal)
+		return PreparedInStorageParameterCompiler(parameter = this.parameter, principal = this.principal)
 	}
 }
 

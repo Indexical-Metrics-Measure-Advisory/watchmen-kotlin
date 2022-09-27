@@ -15,18 +15,20 @@ interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, 
 			variables: CompiledVariables
 		): PipelineActionCompiler<out PipelineActionType, out PipelineAction<out PipelineActionType>, out CompiledAction<out PipelineActionType, out PipelineAction<out PipelineActionType>>> {
 			return when (action) {
+				// system actions
 				is AlarmAction -> AlarmActionCompiler.of(pipeline, stage, unit, action, variables)
 				is CopyToMemoryAction -> CopyToMemoryActionCompiler.of(pipeline, stage, unit, action, variables)
 				is WriteToExternalAction -> WriteToExternalActionCompiler.of(pipeline, stage, unit, action, variables)
-				is InsertOrMergeRowAction -> TODO("Not yet implemented")
-				is MergeRowAction -> TODO("Not yet implemented")
-				is ExistsAction -> TODO("Not yet implemented")
-				is ReadFactorAction -> TODO("Not yet implemented")
-				is ReadFactorsAction -> TODO("Not yet implemented")
-				is ReadRowAction -> TODO("Not yet implemented")
-				is ReadRowsAction -> TODO("Not yet implemented")
-				is WriteFactorAction -> TODO("Not yet implemented")
+				// read actions
+				is ReadTopicAction -> ReadTopicActionCompiler.of(pipeline, stage, unit, action, variables)
+				// write actions
 				is InsertRowAction -> TODO("Not yet implemented")
+				is MergeRowAction -> TODO("Not yet implemented")
+				is InsertOrMergeRowAction -> TODO("Not yet implemented")
+				is WriteFactorAction -> TODO("Not yet implemented")
+				// delete actions
+				is DeleteRowAction -> TODO("Not yet implemented")
+				is DeleteRowsAction -> TODO("Not yet implemented")
 			}
 		}
 	}

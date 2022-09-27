@@ -5,8 +5,8 @@ import com.matrdata.watchmen.model.admin.AlarmActionSeverity
 import com.matrdata.watchmen.model.admin.SystemActionType
 import com.matrdata.watchmen.model.runtime.monitor.AlarmActionMonitorLog
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
-import com.matrdata.watchmen.pipeline.kernel.askSnowflakeGenerator
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledAlarmAction
+import com.matrdata.watchmen.pipeline.kernel.utils.askNextIdAsStr
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import com.matrdata.watchmen.utils.doIfFalse
 import com.matrdata.watchmen.utils.doIfTrue
@@ -46,7 +46,7 @@ class AlarmActionRunnable(wrapped: PipelineActionRunnable<SystemActionType, Alar
 
 	private fun createLog(): AlarmActionMonitorLog {
 		return AlarmActionMonitorLog(
-			uid = askSnowflakeGenerator().nextIdAsStr(),
+			uid = askNextIdAsStr(),
 			actionId = this.compiled.action.actionId,
 			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
 			prerequisite = true,

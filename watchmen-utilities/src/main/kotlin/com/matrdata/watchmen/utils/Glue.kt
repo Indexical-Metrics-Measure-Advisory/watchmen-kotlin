@@ -50,3 +50,30 @@ inline fun <T : Any> T?.throwIfNull(block: T?.() -> String): T {
 		return this
 	}
 }
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T : Any> T?.throwIfNull2(block: T?.() -> Throwable): T {
+	contract {
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
+		returns() implies (this@throwIfNull2 != null)
+	}
+
+	if (this == null) {
+		throw block()
+	} else {
+		return this
+	}
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T : Any> T?.useIfNull(block: () -> T?): T? {
+	contract {
+		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
+	}
+
+	if (this == null) {
+		return block()
+	} else {
+		return this
+	}
+}

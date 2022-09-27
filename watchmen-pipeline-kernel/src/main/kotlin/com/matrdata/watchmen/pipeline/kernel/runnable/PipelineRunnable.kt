@@ -7,10 +7,15 @@ import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
 import com.matrdata.watchmen.model.common.TopicDataId
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
 import com.matrdata.watchmen.model.runtime.monitor.PipelineMonitorLog
-import com.matrdata.watchmen.pipeline.kernel.*
+import com.matrdata.watchmen.pipeline.kernel.PipelineMonitorLogHandle
+import com.matrdata.watchmen.pipeline.kernel.PipelineTask
+import com.matrdata.watchmen.pipeline.kernel.TopicStorages
+import com.matrdata.watchmen.pipeline.kernel.askIsAsyncHandlePipelineMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledStage
 import com.matrdata.watchmen.pipeline.kernel.compiled.PipelineTrigger
+import com.matrdata.watchmen.pipeline.kernel.utils.askNextIdAsStr
+import com.matrdata.watchmen.pipeline.kernel.utils.askTopicById
 import com.matrdata.watchmen.utils.*
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import java.time.LocalDateTime
@@ -52,14 +57,11 @@ class PipelineRunnable(
 
 	fun run(): List<PipelineTask> {
 		// build pipeline variables
-		val triggerTopicId =
-			this.compiled.pipeline.topicId.throwIfBlank {
-				"Trigger topic id of pipeline[id=${compiled.pipeline.pipelineId}] cannot be blank."
-			}
-		val triggerTopic =
-			askTopicMetaService(principal).findById(triggerTopicId).throwIfNull {
-				"Topic[id=$triggerTopicId] not found."
-			}
+		val triggerTopic = this.compiled.pipeline.topicId.throwIfBlank {
+			"Trigger topic id of pipeline[id=${compiled.pipeline.pipelineId}] cannot be blank."
+		}.handTo { topicId ->
+			askTopicById(topicId, principal)
+		}
 		// create variables
 		val variables = PipelineVariables(this.previousData, this.currentData, triggerTopic)
 		// create monitor log
@@ -109,7 +111,7 @@ class PipelineRunnable(
 	private fun createLog(): PipelineMonitorLog {
 		return PipelineMonitorLog(
 			// create uid of compiled monitor log
-			uid = askSnowflakeGenerator().nextIdAsStr(),
+			uid = askNextIdAsStr(),
 			traceId = this.traceId, dataId = dataId,
 			pipelineId = this.compiled.pipeline.pipelineId!!, topicId = this.compiled.pipeline.topicId!!,
 			oldValue = this.previousData.toJSON(),

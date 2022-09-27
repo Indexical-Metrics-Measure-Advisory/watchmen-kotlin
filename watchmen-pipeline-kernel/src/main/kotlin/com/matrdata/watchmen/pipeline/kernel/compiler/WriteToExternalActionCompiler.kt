@@ -6,13 +6,12 @@ import com.matrdata.watchmen.data.kernel.pnp.ExternalWriterRegistry
 import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.system.ExternalWriter
-import com.matrdata.watchmen.pipeline.kernel.askExternalWriterService
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledWriteToExternalAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.WriteToExternalFunc
+import com.matrdata.watchmen.pipeline.kernel.utils.askWriterById
 import com.matrdata.watchmen.utils.handTo
 import com.matrdata.watchmen.utils.throwIfBlank
-import com.matrdata.watchmen.utils.throwIfNull
 
 class WriteToExternalActionCompiler(
 	private val pipeline: Pipeline, private val stage: PipelineStage,
@@ -29,20 +28,17 @@ class WriteToExternalActionCompiler(
 	}
 
 	private fun compileWrite(
-		@Suppress("UNUSED_PARAMETER") variables: CompiledVariables,
-		@Suppress("UNUSED_PARAMETER") principal: Principal
+		@Suppress("UNUSED_PARAMETER") variables: CompiledVariables, principal: Principal
 	): WriteToExternalFunc {
-		return { v: PipelineVariables, p: Principal ->
-			action.externalWriterId.throwIfBlank {
-				"External writer not declared in action[pipelineId=${pipeline.pipelineId}, stageId=${stage.stageId}, unitId=${unit.unitId}, actionId=${action.actionId}]."
-			}.handTo { writerId: String ->
-				askExternalWriterService(p).findById(writerId).throwIfNull {
-					"External writer[id=$writerId] not found."
-				}.also { def: ExternalWriter ->
-					def.writerCode.throwIfBlank { "Code of external writer cannot[id=$writerId] be blank." }
-					def.url.throwIfBlank { "Url of external writer cannot[id=$writerId] be blank." }
-				}
-			}.handTo { def: ExternalWriter ->
+		return action.externalWriterId.throwIfBlank {
+			"External writer not declared in action[pipelineId=${pipeline.pipelineId}, stageId=${stage.stageId}, unitId=${unit.unitId}, actionId=${action.actionId}]."
+		}.handTo { writerId: String ->
+			askWriterById(writerId, principal)
+		}.also { def: ExternalWriter ->
+			def.writerCode.throwIfBlank { "Code of external writer cannot[id=${def.writerId}] be blank." }
+			def.url.throwIfBlank { "Url of external writer cannot[id=${def.writerId}] be blank." }
+		}.handTo { def: ExternalWriter ->
+			{ v: PipelineVariables, _: Principal ->
 				ExternalWriterRegistry.INSTANCE.askWriter(def.writerCode!!).run(
 					ExternalWriterParams(
 						pat = def.pat,

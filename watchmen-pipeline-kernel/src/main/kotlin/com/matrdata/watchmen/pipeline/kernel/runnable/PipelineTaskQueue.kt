@@ -8,8 +8,8 @@ import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
 import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 import com.matrdata.watchmen.pipeline.kernel.PipelineTask
 import com.matrdata.watchmen.pipeline.kernel.PipelineTaskBuilder
-import com.matrdata.watchmen.pipeline.kernel.askPipelineMetaService
 import com.matrdata.watchmen.pipeline.kernel.compiled.PipelineTrigger
+import com.matrdata.watchmen.pipeline.kernel.utils.askPipelinesByTopicId
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 
 class PipelineTaskQueue {
@@ -43,10 +43,9 @@ class PipelineTaskQueue {
 		schema: TopicSchema, trigger: PipelineTrigger, traceId: PipelineTriggerTraceId, principal: Principal
 	): List<PipelineTask> {
 		val topic = schema.topic
-		val pipelines =
-			askPipelineMetaService(principal).findByTopicId(topic.topicId!!).filter {
-				this.shouldRun(it, trigger.triggerType)
-			}
+		val pipelines = askPipelinesByTopicId(topic.topicId!!).filter {
+			this.shouldRun(it, trigger.triggerType)
+		}
 
 		if (pipelines.isEmpty()) {
 			logger.warn("No pipeline needs to be triggered by topic[id=${topic.topicId}, name=${topic.name}].")

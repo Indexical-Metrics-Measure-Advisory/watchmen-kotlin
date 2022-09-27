@@ -4,8 +4,8 @@ import com.matrdata.watchmen.model.admin.SystemActionType
 import com.matrdata.watchmen.model.admin.WriteToExternalAction
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
 import com.matrdata.watchmen.model.runtime.monitor.WriteToExternalActionMonitorLog
-import com.matrdata.watchmen.pipeline.kernel.askSnowflakeGenerator
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledWriteToExternalAction
+import com.matrdata.watchmen.pipeline.kernel.utils.askNextIdAsStr
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
 import com.matrdata.watchmen.utils.spentInMs
 import java.time.LocalDateTime
@@ -32,7 +32,7 @@ class WriteToExternalActionRunnable(wrapped: PipelineActionRunnable<SystemAction
 
 	private fun createLog(): WriteToExternalActionMonitorLog {
 		return WriteToExternalActionMonitorLog(
-			uid = askSnowflakeGenerator().nextIdAsStr(),
+			uid = askNextIdAsStr(),
 			actionId = this.compiled.action.actionId,
 			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
 			definedAs = this.compiled.actionDef, touched = null

@@ -10,15 +10,15 @@ interface TopicDataStorage
 class TopicStorages(private val principal: Principal) {
 	private val storages: MutableMap<DataSourceId, TopicDataStorage> = mutableMapOf()
 
-	private fun createTopicStorage(): TopicDataStorage {
+	private fun createStorage(): TopicDataStorage {
 		TODO("Not yet implemented")
 	}
 
-	fun ask(schema: TopicSchema): TopicDataStorage {
+	fun askStorage(schema: TopicSchema): TopicDataStorage {
 		val topic = schema.topic
 		val dataSourceId = topic.dataSourceId.throwIfBlank {
 			"Data source is not defined for topic[id=${topic.topicId}, name=${topic.name}]."
 		}
-		return this.storages[dataSourceId] ?: createTopicStorage().also { this.storages[dataSourceId] = it }
+		return this.storages[dataSourceId] ?: createStorage().also { this.storages[dataSourceId] = it }
 	}
 }

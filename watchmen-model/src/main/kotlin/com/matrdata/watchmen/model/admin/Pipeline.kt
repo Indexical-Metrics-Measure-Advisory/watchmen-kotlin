@@ -73,7 +73,7 @@ sealed interface AggregateArithmeticHolder : DataModel {
 	var arithmetic: AggregateArithmetic?
 }
 
-sealed interface PipelineSystemAction : PipelineAction<SystemActionType>
+sealed interface SystemAction : PipelineAction<SystemActionType>
 
 enum class AlarmActionSeverity(val code: String) {
 	LOW("low"),
@@ -88,7 +88,7 @@ data class AlarmAction(
 	var message: String? = null,
 	override var conditional: Boolean? = false,
 	override var on: Joint? = null
-) : PipelineSystemAction, Conditional {
+) : SystemAction, Conditional {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.ALARM
@@ -102,7 +102,7 @@ data class CopyToMemoryAction(
 	override var actionId: PipelineActionId?,
 	override var variableName: String?,
 	var source: Parameter? = null
-) : PipelineSystemAction, MemoryWriter<SystemActionType> {
+) : SystemAction, MemoryWriter<SystemActionType> {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.COPY_TO_MEMORY
@@ -113,7 +113,7 @@ data class WriteToExternalAction(
 	override var actionId: PipelineActionId? = null,
 	var externalWriterId: ExternalWriterId? = null,
 	var eventCode: String? = null
-) : PipelineSystemAction {
+) : SystemAction {
 	@Suppress("UNUSED_PARAMETER")
 	override var type: SystemActionType?
 		get() = SystemActionType.WRITE_TO_EXTERNAL
@@ -265,6 +265,30 @@ data class WriteFactorAction(
 	@Suppress("UNUSED_PARAMETER")
 	override var type: WriteTopicActionType?
 		get() = WriteTopicActionType.WRITE_FACTOR
+		set(value) {}
+}
+
+sealed interface DeleteTopicAction : ToTopic<DeleteTopicActionType>, FindBy<DeleteTopicActionType>
+
+data class DeleteRowAction(
+	override var actionId: PipelineActionId? = null,
+	override var topicId: TopicId? = null,
+	override var by: Joint? = null
+) : DeleteTopicAction {
+	@Suppress("UNUSED_PARAMETER")
+	override var type: DeleteTopicActionType?
+		get() = DeleteTopicActionType.DELETE_ROW
+		set(value) {}
+}
+
+data class DeleteRowsAction(
+	override var actionId: PipelineActionId? = null,
+	override var topicId: TopicId? = null,
+	override var by: Joint? = null
+) : DeleteTopicAction {
+	@Suppress("UNUSED_PARAMETER")
+	override var type: DeleteTopicActionType?
+		get() = DeleteTopicActionType.DELETE_ROWS
 		set(value) {}
 }
 
