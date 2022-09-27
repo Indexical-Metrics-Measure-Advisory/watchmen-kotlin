@@ -111,7 +111,7 @@ class CompiledReadFactorAction(
 )
 
 class CompiledReadFactorsAction(
-	pipeline: Pipeline, stage: PipelineStage, unit: PipelineUnit, action: ReadFactorAction,
+	pipeline: Pipeline, stage: PipelineStage, unit: PipelineUnit, action: ReadFactorsAction,
 	/** json string of action definition */
 	actionDef: DefJSON,
 	/** compiled variables */
@@ -122,7 +122,7 @@ class CompiledReadFactorsAction(
 	factor: Factor,
 	/** filter to read data */
 	by: CompiledInStorageCondition<out Condition>?
-) : CompiledReadTopicFactorAction<ReadFactorAction>(
+) : CompiledReadTopicFactorAction<ReadFactorsAction>(
 	pipeline = pipeline, stage = stage, unit = unit, action = action, actionDef = actionDef,
 	variables = variables,
 	topicSchema = topicSchema, factor = factor, by = by

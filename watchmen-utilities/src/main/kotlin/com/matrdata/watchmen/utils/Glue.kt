@@ -37,6 +37,17 @@ inline fun <T, R> T.handTo(block: (T) -> R): R {
 	return block(this)
 }
 
+/**
+ * unbox pair and hand first and second as arguments separately to given function, and gather returned by it
+ */
+@OptIn(ExperimentalContracts::class)
+inline fun <F, T, P : Pair<F, T>, R> P.handTo(block: (F, T) -> R): R {
+	contract {
+		callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+	}
+	return block(this.first, this.second)
+}
+
 @OptIn(ExperimentalContracts::class)
 inline fun <T : Any> T?.throwIfNull(block: T?.() -> String): T {
 	contract {

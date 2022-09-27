@@ -3,10 +3,8 @@ package com.matrdata.watchmen.pipeline.kernel.utils
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.meta.TopicMetaService
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
-import com.matrdata.watchmen.model.admin.FromTopic
-import com.matrdata.watchmen.model.admin.PipelineActionType
-import com.matrdata.watchmen.model.admin.ToTopic
-import com.matrdata.watchmen.model.admin.Topic
+import com.matrdata.watchmen.model.admin.*
+import com.matrdata.watchmen.model.common.FactorId
 import com.matrdata.watchmen.model.common.TopicId
 import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 import com.matrdata.watchmen.utils.handTo
@@ -17,6 +15,12 @@ private fun askTopicMetaService(): TopicMetaService {
 	return TopicMetaService()
 }
 
+/**
+ * raise exception when
+ * 1. given topic id is blank,
+ * 2. or topic not found,
+ * 3. or topic not belongs to given principal.
+ */
 fun askTopicById(topicId: TopicId?, principal: Principal): Topic {
 	return topicId
 		.throwIfBlank2 { PipelineKernelException("Topic id cannot be null or blank.") }
@@ -27,6 +31,12 @@ fun askTopicById(topicId: TopicId?, principal: Principal): Topic {
 		.throwIfNull2 { PipelineKernelException("Topic[id=$topicId] not found.") }
 }
 
+/**
+ * raise exception when
+ * 1. given topic id is blank,
+ * 2. or topic not found,
+ * 3. or topic not belongs to given principal.
+ */
 fun askTopicSchemaById(topicId: TopicId?, principal: Principal): TopicSchema {
 	return topicId
 		.throwIfBlank2 { PipelineKernelException("Topic id cannot be null or blank.") }
@@ -43,4 +53,21 @@ fun ToTopic<out PipelineActionType>.askTopicSchema(principal: Principal): TopicS
 
 fun FromTopic<out PipelineActionType>.askTopicSchema(principal: Principal): TopicSchema {
 	return askTopicSchemaById(this.topicId, principal)
+}
+
+fun askFactorById(topicSchema: TopicSchema, factorId: FactorId?): Factor {
+	return factorId
+		.throwIfBlank2 { PipelineKernelException("Factor id cannot be null or blank.") }
+		.handTo { id -> topicSchema.findFactorById(id) }
+		.throwIfNull2 {
+			PipelineKernelException("Factor[id=$factorId] not found in topic[id=${topicSchema.topic.topicId}].")
+		}
+}
+
+fun FromFactor<out PipelineActionType>.findFactorWithin(topicSchema: TopicSchema): Factor {
+	return askFactorById(topicSchema, this.factorId)
+}
+
+fun ToFactor<out PipelineActionType>.findFactorWithin(topicSchema: TopicSchema): Factor {
+	return askFactorById(topicSchema, this.factorId)
 }
