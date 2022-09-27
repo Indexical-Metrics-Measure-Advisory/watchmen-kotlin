@@ -60,7 +60,7 @@ class PipelineRunnable(
 		val triggerTopic = this.compiled.pipeline.topicId.throwIfBlank {
 			"Trigger topic id of pipeline[id=${compiled.pipeline.pipelineId}] cannot be blank."
 		}.handTo { topicId ->
-			askTopicById(topicId, principal)
+			askTopicById(topicId, principal) { "of pipeline[id=${compiled.pipeline.pipelineId}]" }
 		}
 		// create variables
 		val variables = PipelineVariables(this.previousData, this.currentData, triggerTopic)
