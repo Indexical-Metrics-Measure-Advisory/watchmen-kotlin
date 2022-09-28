@@ -32,7 +32,10 @@ class InMemoryTopicFactorParameterCompiler private constructor(private val param
 		return CompiledInMemoryTopicFactorParameter(
 			parameter = this.parameter,
 			possibleTypes = listOf(factor.type ?: FactorType.TEXT),
-			askValue = { v: PipelineVariables, _ -> v.findFromCurrent(factorName) },
+			askValue = { v: PipelineVariables, _ ->
+				// get value from current trigger data by declared factor's name
+				v.findFromCurrent(factorName)
+			},
 			dependedDefs = listOf(topicSchema.topic)
 		)
 	}
