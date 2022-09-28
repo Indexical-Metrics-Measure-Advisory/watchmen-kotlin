@@ -3,13 +3,13 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.utils.askFactorById
 import com.matrdata.watchmen.data.kernel.utils.askTopicSchemaById
-import com.matrdata.watchmen.model.admin.FactorType
 import com.matrdata.watchmen.model.common.TopicFactorParameter
 import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryTopicFactorParameter
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.utils.throwIfBlank2
+import com.matrdata.watchmen.utils.throwIfNull2
 
 /**
  * in-memory topic factor parameter compiler
@@ -28,10 +28,13 @@ class InMemoryTopicFactorParameterCompiler private constructor(private val param
 		val factorName = factor.name.throwIfBlank2 {
 			PipelineKernelException("Factor name of parameter[${parameter}] cannot be null or blank.")
 		}
+		val factorType = factor.type.throwIfNull2 {
+			PipelineKernelException("Factor type of parameter[${parameter}] cannot be null.")
+		}
 
 		return CompiledInMemoryTopicFactorParameter(
 			parameter = this.parameter,
-			possibleTypes = listOf(factor.type ?: FactorType.TEXT),
+			possibleTypes = listOf(factorType),
 			askValue = { v: PipelineVariables, _ ->
 				// get value from current trigger data by declared factor's name
 				v.findFromCurrent(factorName)
