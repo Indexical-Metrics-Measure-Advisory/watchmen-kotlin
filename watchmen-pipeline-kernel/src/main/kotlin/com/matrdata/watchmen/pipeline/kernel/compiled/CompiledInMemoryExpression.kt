@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.data.kernel.compiled
+package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.DataKernelException

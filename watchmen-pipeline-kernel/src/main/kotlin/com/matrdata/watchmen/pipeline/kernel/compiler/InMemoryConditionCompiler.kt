@@ -1,11 +1,12 @@
-package com.matrdata.watchmen.data.kernel.compiler
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryCondition
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.utils.throwIfNull
 
 sealed interface InMemoryConditionCompiler<C : Condition, CC : CompiledInMemoryCondition<C>> : Compiler<CC> {
 	companion object {
@@ -19,9 +20,19 @@ sealed interface InMemoryConditionCompiler<C : Condition, CC : CompiledInMemoryC
 }
 
 class PreparedInMemoryConditionCompiler(
-	private val condition: Condition, private val principal: Principal
+	private val condition: Condition
 ) : PreparedCompiler<CompiledInMemoryCondition<out Condition>> {
+	private var principal: Principal? = null
+
+	fun use(principal: Principal) = apply { this.principal = principal }
+
 	override fun compile(): CompiledInMemoryCondition<out Condition> {
-		return InMemoryConditionCompiler.of(this.condition).compileBy(this.principal)
+		this.principal.throwIfNull { "Principal cannot be null on in-memory parameter compiling." }
+
+		return InMemoryConditionCompiler.of(this.condition).compileBy(this.principal!!)
 	}
+}
+
+fun Condition.inMemory(): PreparedInMemoryConditionCompiler {
+	return PreparedInMemoryConditionCompiler(condition = this)
 }

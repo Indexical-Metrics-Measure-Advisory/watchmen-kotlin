@@ -1,8 +1,8 @@
-package com.matrdata.watchmen.data.kernel.compiler
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryJoint
 import com.matrdata.watchmen.model.common.Joint
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryJoint
 
 /**
  * in-memory joint compiler
@@ -19,7 +19,7 @@ class InMemoryJointCompiler private constructor(private val joint: Joint) :
 		return CompiledInMemoryJoint(
 			joint = this.joint,
 			// compile sub filters, use empty list when it is null
-			filters = this.joint.filters?.map { it.use(principal).inMemory().compile() } ?: listOf()
+			filters = this.joint.filters?.map { it.inMemory().use(principal).compile() } ?: listOf()
 		)
 	}
 }

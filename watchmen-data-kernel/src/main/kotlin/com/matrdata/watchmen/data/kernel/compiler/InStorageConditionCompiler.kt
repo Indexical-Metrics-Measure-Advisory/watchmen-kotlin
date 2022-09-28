@@ -6,6 +6,7 @@ import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
+import com.matrdata.watchmen.utils.throwIfNull
 
 sealed interface InStorageConditionCompiler<C : Condition, CC : CompiledInStorageCondition<C>> : Compiler<CC> {
 	companion object {
@@ -19,9 +20,20 @@ sealed interface InStorageConditionCompiler<C : Condition, CC : CompiledInStorag
 }
 
 class PreparedInStorageConditionCompiler(
-	private val condition: Condition, private val principal: Principal
+	private val condition: Condition
 ) : PreparedCompiler<CompiledInStorageCondition<out Condition>> {
+	private var principal: Principal? = null
+
+	fun use(principal: Principal) = apply { this.principal = principal }
+
 	override fun compile(): CompiledInStorageCondition<out Condition> {
-		return InStorageConditionCompiler.of(this.condition).compileBy(this.principal)
+		this.principal.throwIfNull { "Principal cannot be null on in-storage condition compiling." }
+
+		return InStorageConditionCompiler.of(this.condition).compileBy(this.principal!!)
 	}
 }
+
+fun Condition.inStorage(): PreparedInStorageConditionCompiler {
+	return PreparedInStorageConditionCompiler(condition = this)
+}
+

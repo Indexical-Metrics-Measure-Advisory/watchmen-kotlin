@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.data.kernel.compiler
+package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryExpression
 import com.matrdata.watchmen.model.common.DualExpression
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
 import com.matrdata.watchmen.model.common.SingleExpression
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryExpression
 
 /**
  * in-memory expression compiler
@@ -24,15 +24,15 @@ class InMemoryExpressionCompiler private constructor(private val expression: Exp
 			is SingleExpression -> CompiledInMemoryExpression(
 				expression = this.expression,
 				// compile left
-				left = this.expression.left?.use(principal)?.inMemory()?.compile()
+				left = this.expression.left?.inMemory()?.use(principal)?.compile()
 			)
 
 			is DualExpression -> CompiledInMemoryExpression(
 				expression = this.expression,
 				// compile left
-				left = this.expression.left?.use(principal)?.inMemory()?.compile(),
+				left = this.expression.left?.inMemory()?.use(principal)?.compile(),
 				// compile right
-				right = this.expression.right?.use(principal)?.inMemory()?.compile(),
+				right = this.expression.right?.inMemory()?.use(principal)?.compile(),
 			)
 		}
 	}

@@ -1,12 +1,11 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
-import com.matrdata.watchmen.data.kernel.compiler.use
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledCopyToMemoryAction
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.utils.handTo
 
 class CopyToMemoryActionCompiler(
@@ -27,7 +26,7 @@ class CopyToMemoryActionCompiler(
 		variables: CompiledVariables, principal: Principal
 	): CompiledInMemoryParameter<out Parameter>? {
 		// TODO use variables on source compiling
-		return this.action.source?.use(principal)?.inMemory()?.compile()
+		return this.action.source?.inMemory()?.use(principal)?.compile()
 	}
 
 	override fun compileBy(principal: Principal): CompiledCopyToMemoryAction {

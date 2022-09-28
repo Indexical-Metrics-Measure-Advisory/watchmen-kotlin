@@ -24,15 +24,15 @@ class InStorageExpressionCompiler private constructor(private val expression: Ex
 			is SingleExpression -> CompiledInStorageExpression(
 				expression = this.expression,
 				// compile left
-				left = this.expression.left?.use(principal)?.inStorage()?.compile()
+				left = this.expression.left?.inStorage()?.use(principal)?.compile()
 			)
 
 			is DualExpression -> CompiledInStorageExpression(
 				expression = this.expression,
 				// compile left
-				left = this.expression.left?.use(principal)?.inStorage()?.compile(),
+				left = this.expression.left?.inStorage()?.use(principal)?.compile(),
 				// compile right
-				right = this.expression.right?.use(principal)?.inStorage()?.compile(),
+				right = this.expression.right?.inStorage()?.use(principal)?.compile(),
 			)
 		}
 	}

@@ -19,7 +19,7 @@ class InStorageJointCompiler private constructor(private val joint: Joint) :
 		return CompiledInStorageJoint(
 			joint = this.joint,
 			// compile sub filters, use empty list when it is null
-			filters = this.joint.filters?.map { it.use(principal).inStorage().compile() } ?: listOf()
+			filters = this.joint.filters?.map { it.inStorage().use(principal).compile() } ?: listOf()
 		)
 	}
 }

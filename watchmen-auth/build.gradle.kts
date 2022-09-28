@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":watchmen-utilities"))
-	implementation(project(":watchmen-model"))
+	api(project(":watchmen-model"))
 }

@@ -1,10 +1,9 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryCondition
-import com.matrdata.watchmen.data.kernel.compiler.use
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Conditional
+import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
@@ -33,7 +32,7 @@ class ConditionalCompiler private constructor(private val conditional: Condition
 			// no condition declared, always return true
 			this.conditional.on!!.filters.isNullOrEmpty() -> TEST_PREREQUISITE_ALWAYS_TRUE
 			// compile condition, prerequisite is always in memory, create test function
-			else -> this.conditional.on!!.use(principal).inMemory().compile().createTest()
+			else -> this.conditional.on!!.inMemory().use(principal).compile().createTest()
 		}
 	}
 }

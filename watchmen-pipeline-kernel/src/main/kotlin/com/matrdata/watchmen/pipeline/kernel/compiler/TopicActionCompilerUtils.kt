@@ -3,7 +3,7 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInStorageCondition
 import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
-import com.matrdata.watchmen.data.kernel.compiler.use
+import com.matrdata.watchmen.data.kernel.compiler.inStorage
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
 import com.matrdata.watchmen.model.admin.FindBy
 import com.matrdata.watchmen.model.admin.MappingFactor
@@ -22,7 +22,7 @@ internal fun FindBy<out PipelineActionType>.compileFindBy(
 	val actionId = this.actionId
 	return this.by.throwIfNull2 {
 		PipelineKernelException("By of action[id=$actionId] cannot be null.")
-	}.use(principal).inStorage().compile()
+	}.inStorage().use(principal).compile()
 }
 
 internal fun MappingFactor.compile(
