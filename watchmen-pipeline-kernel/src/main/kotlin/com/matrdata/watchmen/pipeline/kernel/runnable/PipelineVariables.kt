@@ -26,8 +26,17 @@ class PipelineVariables(
 		}
 	}
 
-	fun findFromCurrent(names: List<String>): Any? {
+	private fun findFromCurrent(names: List<String>): Any? {
 		return this.currentData?.let { this.findFrom(this.currentData, names) }
+	}
+
+	/**
+	 * find value from current data, name supports splitting by dot.
+	 *
+	 */
+	fun findFromCurrent(name: String): Any? {
+		val names = name.split(".")
+		return this.findFromCurrent(names)
 	}
 
 	fun findFromPrevious(names: List<String>): Any? {

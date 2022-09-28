@@ -8,24 +8,24 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @OptIn(ExperimentalContracts::class)
-inline fun String?.throwIfBlank(block: String?.() -> String): String {
+inline fun String?.throwIfBlank(block: (String?) -> String): String {
 	contract {
 		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	return if (ValueUtils.isBlank(this)) {
-		throw IllegalArgumentException(block())
+		throw IllegalArgumentException(block(this))
 	} else {
 		this!!
 	}
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun String?.throwIfBlank2(block: String?.() -> Throwable): String {
+inline fun String?.throwIfBlank2(block: (String?) -> Throwable): String {
 	contract {
 		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 	}
 	return if (ValueUtils.isBlank(this)) {
-		throw block()
+		throw block(this)
 	} else {
 		this!!
 	}
@@ -36,7 +36,7 @@ fun String?.toDate(formats: List<String>): LocalDate? {
 }
 
 fun String?.toDateTime(formats: List<String>): LocalDateTime? {
-	return DateTimeUtils.toDateTime(this, formats);
+	return DateTimeUtils.toDateTime(this, formats)
 }
 
 fun String?.toTime(formats: List<String>): LocalTime? {

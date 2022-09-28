@@ -49,7 +49,7 @@ inline fun <F, T, P : Pair<F, T>, R> P.handTo(block: (F, T) -> R): R {
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T : Any> T?.throwIfNull(block: T?.() -> String): T {
+inline fun <T : Any> T?.throwIfNull(block: () -> String): T {
 	contract {
 		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 		returns() implies (this@throwIfNull != null)
@@ -63,7 +63,7 @@ inline fun <T : Any> T?.throwIfNull(block: T?.() -> String): T {
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T : Any> T?.throwIfNull2(block: T?.() -> Throwable): T {
+inline fun <T : Any> T?.throwIfNull2(block: () -> Throwable): T {
 	contract {
 		callsInPlace(block, InvocationKind.AT_MOST_ONCE)
 		returns() implies (this@throwIfNull2 != null)
@@ -90,26 +90,26 @@ inline fun <T : Any> T?.useIfNull(block: () -> T?): T? {
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T> Collection<T>?.throwIfNullOrEmpty(block: Collection<T>?.() -> String): Collection<T> {
+inline fun <T> Collection<T>?.throwIfNullOrEmpty(block: (Collection<T>?) -> String): Collection<T> {
 	contract {
 		returns() implies (this@throwIfNullOrEmpty != null)
 	}
 
 	if (this.isNullOrEmpty()) {
-		throw IllegalArgumentException(block())
+		throw IllegalArgumentException(block(this))
 	} else {
 		return this
 	}
 }
 
 @OptIn(ExperimentalContracts::class)
-inline fun <T> Collection<T>?.throwIfNullOrEmpty2(block: Collection<T>?.() -> Throwable): Collection<T> {
+inline fun <T> Collection<T>?.throwIfNullOrEmpty2(block: (Collection<T>?) -> Throwable): Collection<T> {
 	contract {
 		returns() implies (this@throwIfNullOrEmpty2 != null)
 	}
 
 	if (this.isNullOrEmpty()) {
-		throw block()
+		throw block(this)
 	} else {
 		return this
 	}
