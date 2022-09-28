@@ -1,30 +1,24 @@
-package com.matrdata.watchmen.data.kernel.runnable
+package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.data.kernel.DataKernelException
-import com.matrdata.watchmen.model.admin.Topic
+import com.matrdata.watchmen.data.kernel.runnable.RunnableContext
+import com.matrdata.watchmen.utils.throwIfNullOrEmpty2
 
 class PipelineVariables(
-	private val previousData: Map<String, Any?>?, private val currentData: Map<String, Any?>?,
-	private val topic: Topic
-) {
-	private val map: MutableMap<String, Any?> = mutableMapOf()
-
+	private val previousData: Map<String, Any?>?, private val currentData: Map<String, Any?>?
+) : RunnableContext() {
 	fun getPreviousData(): Map<String, Any?>? = this.previousData
 	fun getCurrentData(): Map<String, Any?>? = this.currentData
 
 	fun getVariableData(): Map<String, Any?> = this.map
 
-	private fun findFrom(from: Any?, name: String): Any? {
-		return when (from) {
-			null -> null
-			is Map<*, *> -> from[name]
-			// TODO how to get property value from non-map object
-			else -> throw DataKernelException("Only map is supported in pipeline variables.")
-		}
-	}
-
+	/**
+	 * find value by given names
+	 */
 	private fun findFrom(data: Map<String, Any?>, names: List<String>): Any? {
-		return names.fold(data) { from: Any?, name: String ->
+		return names.throwIfNullOrEmpty2 {
+			DataKernelException("Names cannot be null or empty.")
+		}.fold(data) { from: Any?, name: String ->
 			when (from) {
 				is List<*> -> from.map { this.findFrom(it, name) }
 				else -> this.findFrom(from, name)
@@ -36,10 +30,15 @@ class PipelineVariables(
 		return this.currentData?.let { this.findFrom(this.currentData, names) }
 	}
 
-	fun find(name: String): Any? {
+	fun findFromPrevious(names: List<String>): Any? {
+		return this.previousData?.let { this.findFrom(this.previousData, names) }
+	}
+
+	override fun find(name: String): Any? {
 		if (map.containsKey(name)) {
 			return map[name]
 		}
+
 		// split name with "."
 		val names = name.split(".")
 		if (names.size == 1) {
@@ -57,19 +56,19 @@ class PipelineVariables(
 		return this.findFromCurrent(names)
 	}
 
-	/**
-	 * put value into variables.
-	 * note even name has ".", still use it as a whole part as key.
-	 * which means, write internal field/property of existing data would <b>NEVER HAPPEN</b>.
-	 */
-	fun put(name: String, value: Any?): PipelineVariables {
-		map[name] = value
+	override fun put(name: String, value: Any?): PipelineVariables {
+		super.put(name, value)
 		return this
 	}
 
-	fun copy(): PipelineVariables {
+	/**
+	 * copy to a new variables,
+	 * 1. for internal variables, not deep copy,
+	 * 2. for previous/current, copy reference only.
+	 */
+	override fun copy(): PipelineVariables {
 		return PipelineVariables(
-			previousData = this.previousData, currentData = this.currentData, topic = this.topic
+			previousData = this.previousData, currentData = this.currentData
 		).also { copied -> copied.map.putAll(this.map) }
 	}
 }

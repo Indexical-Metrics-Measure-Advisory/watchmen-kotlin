@@ -1,7 +1,7 @@
 package com.matrdata.watchmen.data.kernel.compiled
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
+import com.matrdata.watchmen.data.kernel.runnable.RunnableContext
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.model.common.ParameterJointType
@@ -23,7 +23,7 @@ class CompiledInMemoryJoint constructor(
 		}
 	}
 
-	override fun test(variables: PipelineVariables, principal: Principal): Boolean {
+	override fun test(variables: RunnableContext, principal: Principal): Boolean {
 		return if (this.hasFilter()) {
 			when (this.isConjunctOnAnd()) {
 				// a or b [ or c [ or d ...]]

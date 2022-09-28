@@ -1,5 +1,6 @@
 package com.matrdata.watchmen.pipeline.kernel.runnable
 
+import com.matrdata.watchmen.data.kernel.utils.askNextIdAsStr
 import com.matrdata.watchmen.model.admin.DeleteRowAction
 import com.matrdata.watchmen.model.admin.DeleteRowsAction
 import com.matrdata.watchmen.model.admin.DeleteTopicAction
@@ -9,7 +10,6 @@ import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteRowAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteRowsAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteTopicAction
-import com.matrdata.watchmen.pipeline.kernel.utils.askNextIdAsStr
 import java.time.LocalDateTime
 
 abstract class DeleteTopicActionRunnable<A : DeleteTopicAction, CA : CompiledDeleteTopicAction<A>>(

@@ -1,8 +1,8 @@
 package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
+import com.matrdata.watchmen.data.kernel.utils.askNextIdAsStr
 import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
 import com.matrdata.watchmen.model.common.TopicDataId
 import com.matrdata.watchmen.model.runtime.monitor.MonitorLogStatus
@@ -14,7 +14,6 @@ import com.matrdata.watchmen.pipeline.kernel.askIsAsyncHandlePipelineMonitorLog
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledStage
 import com.matrdata.watchmen.pipeline.kernel.compiled.PipelineTrigger
-import com.matrdata.watchmen.pipeline.kernel.utils.askNextIdAsStr
 import com.matrdata.watchmen.pipeline.kernel.utils.askTopicById
 import com.matrdata.watchmen.utils.*
 import com.matrdata.watchmen.utils.Slf4j.Companion.logger
@@ -63,7 +62,7 @@ class PipelineRunnable(
 			askTopicById(topicId, principal) { "of pipeline[id=${compiled.pipeline.pipelineId}]" }
 		}
 		// create variables
-		val variables = PipelineVariables(this.previousData, this.currentData, triggerTopic)
+		val variables = PipelineVariables(this.previousData, this.currentData)
 		// create monitor log
 		val log = createLog()
 		// create queue, accepts new tasks which created by this
