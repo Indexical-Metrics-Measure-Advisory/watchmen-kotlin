@@ -31,11 +31,13 @@ class WriteToExternalActionRunnable(wrapped: PipelineActionRunnable<SystemAction
 	}
 
 	private fun createLog(): WriteToExternalActionMonitorLog {
-		return WriteToExternalActionMonitorLog(
-			uid = askNextIdAsStr(),
-			actionId = this.compiled.action.actionId,
-			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
-			definedAs = this.compiled.actionDef, touched = null
-		).also { this.log.actions!!.add(it) }
+		return with(this.compiled) {
+			WriteToExternalActionMonitorLog(
+				uid = askNextIdAsStr(),
+				actionId = this.action.actionId,
+				status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
+				definedAs = this.actionDef, touched = null
+			)
+		}.also { this.log.actions!!.add(it) }
 	}
 }

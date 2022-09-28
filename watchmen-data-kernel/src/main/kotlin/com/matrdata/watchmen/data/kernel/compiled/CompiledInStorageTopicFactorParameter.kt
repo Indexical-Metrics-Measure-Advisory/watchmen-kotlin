@@ -8,12 +8,8 @@ import com.matrdata.watchmen.model.common.TopicFactorParameter
  * compiled in-storage topic factor parameter
  */
 class CompiledInStorageTopicFactorParameter constructor(
-	private val parameter: TopicFactorParameter
+	val parameter: TopicFactorParameter
 ) : CompiledInStorageParameter<TopicFactorParameter> {
-	override fun getParameter(): TopicFactorParameter {
-		return this.parameter
-	}
-
 	override fun value(variables: PipelineVariables, principal: Principal): Any? {
 		TODO("Not yet implemented")
 	}

@@ -45,13 +45,14 @@ class AlarmActionRunnable(wrapped: PipelineActionRunnable<SystemActionType, Alar
 	}
 
 	private fun createLog(): AlarmActionMonitorLog {
-		return AlarmActionMonitorLog(
-			uid = askNextIdAsStr(),
-			actionId = this.compiled.action.actionId,
-			status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
-			prerequisite = true,
-			prerequisiteDefinedAs = this.compiled.prerequisiteDef,
-			definedAs = this.compiled.actionDef, touched = null
-		).also { this.log.actions!!.add(it) }
+		return with(this.compiled) {
+			AlarmActionMonitorLog(
+				uid = askNextIdAsStr(),
+				actionId = this.action.actionId,
+				status = MonitorLogStatus.DONE, startTime = LocalDateTime.now(), spentInMills = 0, error = null,
+				prerequisite = true, prerequisiteDefinedAs = this.prerequisiteDef,
+				definedAs = this.actionDef, touched = null
+			)
+		}.also { this.log.actions!!.add(it) }
 	}
 }

@@ -10,15 +10,13 @@ abstract class CompiledReadTopicAction<A : ReadTopicAction>(
 	/** json string of action definition */
 	actionDef: DefJSON,
 	/** compiled variables */
-	variables: CompiledVariables,
-	/** topic where read from */
-	topicSchema: TopicSchema,
+	val variables: CompiledVariables,
+	/** topic where data find by */
+	val topicSchema: TopicSchema,
 	/** filter to read data */
-	by: CompiledInStorageCondition<out Condition>?
-) : CompiledFindByAction<ReadTopicActionType, A>(
-	pipeline = pipeline, stage = stage, unit = unit, action = action, actionDef = actionDef,
-	variables = variables,
-	topicSchema = topicSchema, by = by
+	val by: CompiledInStorageCondition<out Condition>?
+) : CompiledAction<ReadTopicActionType, A>(
+	pipeline = pipeline, stage = stage, unit = unit, action = action, actionDef = actionDef
 ) {
 	/**
 	 * returns empty string when variable name is null

@@ -5,6 +5,5 @@ import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.model.common.Parameter
 
 sealed interface CompiledInMemoryParameter<P : Parameter> {
-	fun getParameter(): P?
 	fun value(variables: PipelineVariables, principal: Principal): Any?
 }

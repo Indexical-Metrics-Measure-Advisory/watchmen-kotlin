@@ -4,6 +4,7 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.runtime.monitor.UnitMonitorLog
+import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 import com.matrdata.watchmen.pipeline.kernel.TopicStorages
 import com.matrdata.watchmen.pipeline.kernel.compiled.*
 import com.matrdata.watchmen.utils.throwIfNull
@@ -26,7 +27,18 @@ class PipelineActionRunnable<out T : PipelineActionType, out A : PipelineAction<
 			is CompiledAlarmAction -> AlarmActionRunnable(this as PipelineActionRunnable<SystemActionType, AlarmAction, CompiledAlarmAction>).run()
 			is CompiledCopyToMemoryAction -> CopyToMemoryActionRunnable(this as PipelineActionRunnable<SystemActionType, CopyToMemoryAction, CompiledCopyToMemoryAction>).run()
 			is CompiledWriteToExternalAction -> WriteToExternalActionRunnable(this as PipelineActionRunnable<SystemActionType, WriteToExternalAction, CompiledWriteToExternalAction>).run()
-			else -> TODO("Not yet implemented")
+			is CompiledReadRowAction -> ReadRowActionRunnable(this as PipelineActionRunnable<ReadTopicActionType, ReadRowAction, CompiledReadRowAction>).run()
+			is CompiledReadRowsAction -> ReadRowsActionRunnable(this as PipelineActionRunnable<ReadTopicActionType, ReadRowsAction, CompiledReadRowsAction>).run()
+			is CompiledExistsAction -> ExistsActionRunnable(this as PipelineActionRunnable<ReadTopicActionType, ExistsAction, CompiledExistsAction>).run()
+			is CompiledReadFactorAction -> ReadFactorActionRunnable(this as PipelineActionRunnable<ReadTopicActionType, ReadFactorAction, CompiledReadFactorAction>).run()
+			is CompiledReadFactorsAction -> ReadFactorsActionRunnable(this as PipelineActionRunnable<ReadTopicActionType, ReadFactorsAction, CompiledReadFactorsAction>).run()
+			is CompiledInsertRowAction -> InsertRowActionRunnable(this as PipelineActionRunnable<WriteTopicActionType, InsertRowAction, CompiledInsertRowAction>).run()
+			is CompiledMergeRowAction -> MergeRowActionRunnable(this as PipelineActionRunnable<WriteTopicActionType, MergeRowAction, CompiledMergeRowAction>).run()
+			is CompiledInsertOrMergeRowAction -> InsertOrMergeRowActionRunnable(this as PipelineActionRunnable<WriteTopicActionType, InsertOrMergeRowAction, CompiledInsertOrMergeRowAction>).run()
+			is CompiledWriteFactorAction -> WriteFactorActionRunnable(this as PipelineActionRunnable<WriteTopicActionType, WriteFactorAction, CompiledWriteFactorAction>).run()
+			is CompiledDeleteRowAction -> DeleteRowActionRunnable(this as PipelineActionRunnable<DeleteTopicActionType, DeleteRowAction, CompiledDeleteRowAction>).run()
+			is CompiledDeleteRowsAction -> DeleteRowsActionRunnable(this as PipelineActionRunnable<DeleteTopicActionType, DeleteRowsAction, CompiledDeleteRowsAction>).run()
+			else -> throw PipelineKernelException("Action[${this.compiled}] is not supported.")
 		}
 	}
 }

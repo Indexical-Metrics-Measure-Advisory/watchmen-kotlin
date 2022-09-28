@@ -136,7 +136,6 @@ data class ReadActionMonitorLog(
 	override var uid: MonitorLogActionId? = null,
 	override var actionId: PipelineActionId? = null,
 	override var type: ReadTopicActionType? = null,
-	override var insertCount: Int? = 0,
 	override var findBy: Any? = null, // runtime describing of find by
 	override var definedAs: Any? = null,
 	override var touched: Any? = null,
@@ -146,7 +145,7 @@ data class ReadActionMonitorLog(
 	override var error: String? = null
 ) : FindByMonitorActionLog<ReadTopicActionType>(
 	uid = uid, actionId = actionId, type = type,
-	insertCount = insertCount, updateCount = 0, deleteCount = 0, findBy = findBy,
+	insertCount = 0, updateCount = 0, deleteCount = 0, findBy = findBy,
 	definedAs = definedAs, touched = touched,
 	status = status, startTime = startTime, spentInMills = spentInMills, error = error
 )

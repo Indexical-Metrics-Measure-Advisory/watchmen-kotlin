@@ -8,12 +8,8 @@ import com.matrdata.watchmen.model.common.ConstantParameter
  * compiled in-storage constant parameter
  */
 class CompiledInStorageConstantParameter constructor(
-	private val parameter: ConstantParameter
+	val parameter: ConstantParameter
 ) : CompiledInStorageParameter<ConstantParameter> {
-	override fun getParameter(): ConstantParameter {
-		return this.parameter
-	}
-
 	override fun value(variables: PipelineVariables, principal: Principal): Any? {
 		TODO("Not yet implemented")
 	}

@@ -13,13 +13,7 @@ class CompiledInMemoryJoint constructor(
 	private val joint: Joint,
 	private val filters: List<CompiledInMemoryCondition<out Condition>>
 ) : CompiledInMemoryCondition<Joint> {
-	override fun getCondition(): Joint {
-		return this.joint
-	}
-
-	private fun hasFilter(): Boolean {
-		return this.filters.isNotEmpty()
-	}
+	private fun hasFilter(): Boolean = this.filters.isNotEmpty()
 
 	private fun isConjunctOnAnd(): Boolean {
 		return when (this.joint.jointType) {

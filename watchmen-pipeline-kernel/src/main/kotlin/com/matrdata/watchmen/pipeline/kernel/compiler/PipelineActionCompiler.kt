@@ -22,13 +22,9 @@ interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, 
 				// read actions
 				is ReadTopicAction -> ReadTopicActionCompiler.of(pipeline, stage, unit, action, variables)
 				// write actions
-				is InsertRowAction -> TODO("Not yet implemented")
-				is MergeRowAction -> TODO("Not yet implemented")
-				is InsertOrMergeRowAction -> TODO("Not yet implemented")
-				is WriteFactorAction -> TODO("Not yet implemented")
+				is WriteTopicAction -> WriteTopicActionCompiler.of(pipeline, stage, unit, action, variables)
 				// delete actions
-				is DeleteRowAction -> TODO("Not yet implemented")
-				is DeleteRowsAction -> TODO("Not yet implemented")
+				is DeleteTopicAction -> DeleteTopicActionCompiler.of(pipeline, stage, unit, action, variables)
 			}
 		}
 	}

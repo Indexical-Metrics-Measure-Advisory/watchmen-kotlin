@@ -260,6 +260,7 @@ data class WriteFactorAction(
 	override var factorId: FactorId? = null,
 	override var arithmetic: AggregateArithmetic? = null,
 	override var accumulateMode: AccumulateMode? = null,
+	var source: Parameter? = null,
 	override var by: Joint? = null
 ) : WriteTopicAction, ToFactor<WriteTopicActionType>, FindBy<WriteTopicActionType>, AggregateArithmeticHolder {
 	@Suppress("UNUSED_PARAMETER")

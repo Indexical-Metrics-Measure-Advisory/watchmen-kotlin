@@ -88,3 +88,29 @@ inline fun <T : Any> T?.useIfNull(block: () -> T?): T? {
 		return this
 	}
 }
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T> Collection<T>?.throwIfNullOrEmpty(block: Collection<T>?.() -> String): Collection<T> {
+	contract {
+		returns() implies (this@throwIfNullOrEmpty != null)
+	}
+
+	if (this.isNullOrEmpty()) {
+		throw IllegalArgumentException(block())
+	} else {
+		return this
+	}
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T> Collection<T>?.throwIfNullOrEmpty2(block: Collection<T>?.() -> Throwable): Collection<T> {
+	contract {
+		returns() implies (this@throwIfNullOrEmpty2 != null)
+	}
+
+	if (this.isNullOrEmpty()) {
+		throw block()
+	} else {
+		return this
+	}
+}
