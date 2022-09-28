@@ -1,12 +1,12 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
+import com.matrdata.watchmen.data.kernel.compiler.use
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledCopyToMemoryAction
-import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
-import com.matrdata.watchmen.data.kernel.compiler.use
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.utils.handTo
 
 class CopyToMemoryActionCompiler(

@@ -1,9 +1,9 @@
 package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.model.common.TopicFactorParameter
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryTopicFactorParameter
+import com.matrdata.watchmen.model.common.TopicFactorParameter
 
 /**
  * in-memory topic factor parameter compiler

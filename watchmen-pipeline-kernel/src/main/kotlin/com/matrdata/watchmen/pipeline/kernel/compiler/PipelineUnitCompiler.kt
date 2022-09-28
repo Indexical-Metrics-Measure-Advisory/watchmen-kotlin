@@ -1,11 +1,11 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.admin.PipelineStage
 import com.matrdata.watchmen.model.admin.PipelineUnit
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledUnit
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.utils.handTo
 import com.matrdata.watchmen.utils.throwIfNull

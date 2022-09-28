@@ -1,5 +1,6 @@
 package com.matrdata.watchmen.pipeline.kernel.compiled
 
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineUnitRunnableCommand
 import com.matrdata.watchmen.utils.ValueUtils

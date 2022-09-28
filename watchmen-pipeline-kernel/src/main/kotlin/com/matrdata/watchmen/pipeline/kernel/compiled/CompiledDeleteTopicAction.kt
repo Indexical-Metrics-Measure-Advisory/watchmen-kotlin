@@ -1,6 +1,7 @@
 package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInStorageCondition
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.Condition

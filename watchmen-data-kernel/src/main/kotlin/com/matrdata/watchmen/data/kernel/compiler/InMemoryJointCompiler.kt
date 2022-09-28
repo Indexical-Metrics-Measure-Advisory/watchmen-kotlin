@@ -1,8 +1,8 @@
 package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.model.common.Joint
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryJoint
+import com.matrdata.watchmen.model.common.Joint
 
 /**
  * in-memory joint compiler

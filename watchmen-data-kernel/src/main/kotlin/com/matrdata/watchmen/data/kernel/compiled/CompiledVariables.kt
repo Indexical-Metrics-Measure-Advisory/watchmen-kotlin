@@ -1,4 +1,4 @@
-package com.matrdata.watchmen.pipeline.kernel.compiled
+package com.matrdata.watchmen.data.kernel.compiled
 
 class CompiledVariables constructor() {
 	private val variables: MutableMap<String, Any> = mutableMapOf()

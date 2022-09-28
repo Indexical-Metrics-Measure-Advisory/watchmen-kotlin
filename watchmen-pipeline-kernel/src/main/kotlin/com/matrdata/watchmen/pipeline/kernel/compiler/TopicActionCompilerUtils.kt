@@ -2,6 +2,7 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInStorageCondition
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.data.kernel.compiler.use
 import com.matrdata.watchmen.data.kernel.schema.TopicSchema
 import com.matrdata.watchmen.model.admin.FindBy
@@ -11,7 +12,6 @@ import com.matrdata.watchmen.model.admin.PipelineActionType
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInStorageMappingFactor
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.utils.throwIfNull2
 import com.matrdata.watchmen.utils.throwIfNullOrEmpty2
 

@@ -1,8 +1,8 @@
 plugins {
-    id("java")
+	id("java")
 }
 
 dependencies {
-    implementation(project(":watchmen-utilities"))
-    implementation(project(":watchmen-model"))
+	implementation(project(":watchmen-utilities"))
+	implementation(project(":watchmen-model"))
 }

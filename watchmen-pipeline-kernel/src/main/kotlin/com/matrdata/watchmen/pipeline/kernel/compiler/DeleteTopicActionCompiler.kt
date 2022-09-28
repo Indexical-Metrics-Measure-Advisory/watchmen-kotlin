@@ -1,11 +1,11 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteRowAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteRowsAction
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledDeleteTopicAction
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.pipeline.kernel.utils.askTopicSchema
 import com.matrdata.watchmen.utils.handTo
 

@@ -1,9 +1,9 @@
 package com.matrdata.watchmen.pipeline.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledAction
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.utils.throwIfNull
 
 interface PipelineActionCompiler<T : PipelineActionType, A : PipelineAction<T>, CA : CompiledAction<T, A>> :

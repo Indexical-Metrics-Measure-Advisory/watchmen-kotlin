@@ -1,6 +1,7 @@
 package com.matrdata.watchmen.pipeline.kernel.compiled
 
 import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryConstantParameter
+import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 
 class CompiledAlarmAction(
