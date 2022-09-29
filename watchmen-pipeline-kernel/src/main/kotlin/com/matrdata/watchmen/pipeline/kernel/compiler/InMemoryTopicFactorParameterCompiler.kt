@@ -5,7 +5,6 @@ import com.matrdata.watchmen.data.kernel.utils.askFactorById
 import com.matrdata.watchmen.data.kernel.utils.askTopicSchemaById
 import com.matrdata.watchmen.model.common.TopicFactorParameter
 import com.matrdata.watchmen.pipeline.kernel.PipelineKernelException
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryTopicFactorParameter
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.utils.throwIfBlank2
@@ -15,7 +14,7 @@ import com.matrdata.watchmen.utils.throwIfNull2
  * in-memory topic factor parameter compiler
  */
 class InMemoryTopicFactorParameterCompiler private constructor(private val parameter: TopicFactorParameter) :
-	InMemoryParameterCompiler<TopicFactorParameter>, Compiler<CompiledInMemoryParameter<TopicFactorParameter>> {
+	InMemoryParameterCompiler<TopicFactorParameter> {
 	companion object {
 		fun of(parameter: TopicFactorParameter): InMemoryTopicFactorParameterCompiler {
 			return InMemoryTopicFactorParameterCompiler(parameter)

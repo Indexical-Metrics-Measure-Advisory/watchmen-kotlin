@@ -4,14 +4,13 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.FactorType
 import com.matrdata.watchmen.model.common.ComputedParameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryComputedParameter
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
 /**
  * in-memory computed parameter compiler
  */
 class InMemoryComputedParameterCompiler private constructor(private val parameter: ComputedParameter) :
-	InMemoryParameterCompiler<ComputedParameter>, Compiler<CompiledInMemoryParameter<ComputedParameter>> {
+	InMemoryParameterCompiler<ComputedParameter> {
 	companion object {
 		fun of(parameter: ComputedParameter): InMemoryComputedParameterCompiler {
 			return InMemoryComputedParameterCompiler(parameter)

@@ -4,14 +4,13 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.FactorType
 import com.matrdata.watchmen.model.common.ConstantParameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryConstantParameter
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
 /**
  * in-memory constant parameter compiler
  */
 class InMemoryConstantParameterCompiler private constructor(private val parameter: ConstantParameter) :
-	InMemoryParameterCompiler<ConstantParameter>, Compiler<CompiledInMemoryParameter<ConstantParameter>> {
+	InMemoryParameterCompiler<ConstantParameter> {
 	companion object {
 		fun of(parameter: ConstantParameter): InMemoryConstantParameterCompiler {
 			return InMemoryConstantParameterCompiler(parameter)
