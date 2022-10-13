@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compiler
+package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.DualExpression
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
 import com.matrdata.watchmen.model.common.SingleExpression
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryExpression
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryExpression
 
 /**
  * in-memory expression compiler

@@ -5,7 +5,8 @@ import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledCopyToMemoryAction
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
+import com.matrdata.watchmen.data.kernel.compiler.inMemory
 import com.matrdata.watchmen.utils.handTo
 
 class CopyToMemoryActionCompiler(

@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compiled
+package com.matrdata.watchmen.data.kernel.compiled
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.data.kernel.DataKernelException
+import com.matrdata.watchmen.data.kernel.runnable.RuntimeVariables
 import com.matrdata.watchmen.model.common.Expression
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.model.common.ParameterExpressionOperator
-import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 import com.matrdata.watchmen.utils.throwIfNull2
 
 /**
@@ -21,7 +21,7 @@ class CompiledInMemoryExpression constructor(
 			DataKernelException("Operator of expression[$expression] cannot be null.")
 		}
 
-	override fun test(variables: PipelineVariables, principal: Principal): Boolean {
+	override fun test(variables: RuntimeVariables, principal: Principal): Boolean {
 		TODO("Not yet implemented")
 	}
 }

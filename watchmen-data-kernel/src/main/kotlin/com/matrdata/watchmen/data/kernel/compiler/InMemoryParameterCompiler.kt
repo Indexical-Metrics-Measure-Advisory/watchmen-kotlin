@@ -1,11 +1,11 @@
-package com.matrdata.watchmen.pipeline.kernel.compiler
+package com.matrdata.watchmen.data.kernel.compiler
 
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.ComputedParameter
 import com.matrdata.watchmen.model.common.ConstantParameter
 import com.matrdata.watchmen.model.common.Parameter
 import com.matrdata.watchmen.model.common.TopicFactorParameter
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryParameter
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryParameter
 import com.matrdata.watchmen.utils.throwIfNull
 
 sealed interface InMemoryParameterCompiler<P : Parameter> : Compiler<CompiledInMemoryParameter<P>> {

@@ -1,7 +1,7 @@
 package com.matrdata.watchmen.data.kernel.compiled
 
 import com.matrdata.watchmen.auth.Principal
-import com.matrdata.watchmen.data.kernel.runnable.RunnableContext
+import com.matrdata.watchmen.data.kernel.runnable.RuntimeVariables
 import com.matrdata.watchmen.model.common.ConstantParameter
 
 /**
@@ -10,7 +10,7 @@ import com.matrdata.watchmen.model.common.ConstantParameter
 class CompiledInStorageConstantParameter constructor(
 	val parameter: ConstantParameter
 ) : CompiledInStorageParameter<ConstantParameter> {
-	override fun value(variables: RunnableContext, principal: Principal): Any? {
+	override fun value(variables: RuntimeVariables, principal: Principal): Any? {
 		TODO("Not yet implemented")
 	}
 }

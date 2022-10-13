@@ -5,7 +5,8 @@ import com.matrdata.watchmen.data.kernel.compiled.CompiledVariables
 import com.matrdata.watchmen.model.admin.*
 import com.matrdata.watchmen.model.common.ConstantParameter
 import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledAlarmAction
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryConstantParameter
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryConstantParameter
+import com.matrdata.watchmen.data.kernel.compiler.InMemoryConstantParameterCompiler
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.utils.handTo
 

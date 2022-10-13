@@ -1,12 +1,18 @@
 package com.matrdata.watchmen.pipeline.kernel.runnable
 
 import com.matrdata.watchmen.data.kernel.DataKernelException
-import com.matrdata.watchmen.data.kernel.runnable.RunnableContext
+import com.matrdata.watchmen.data.kernel.runnable.RuntimeVariables
+import com.matrdata.watchmen.utils.handTo
 import com.matrdata.watchmen.utils.throwIfNullOrEmpty2
 
 class PipelineVariables(
 	private val previousData: Map<String, Any?>?, private val currentData: Map<String, Any?>?
-) : RunnableContext() {
+) : RuntimeVariables() {
+	companion object {
+		const val FROM_PREVIOUS: String = "&old"
+		const val FROM_PREVIOUS_PREFIX: String = "${FROM_PREVIOUS}."
+	}
+
 	fun getPreviousData(): Map<String, Any?>? = this.previousData
 	fun getCurrentData(): Map<String, Any?>? = this.currentData
 
@@ -30,39 +36,38 @@ class PipelineVariables(
 		return this.currentData?.let { this.findFrom(this.currentData, names) }
 	}
 
-	/**
-	 * find value from current data, name supports splitting by dot.
-	 *
-	 */
-	fun findFromCurrent(name: String): Any? {
-		val names = name.split(".")
-		return this.findFromCurrent(names)
-	}
-
-	fun findFromPrevious(names: List<String>): Any? {
+	private fun findFromPrevious(names: List<String>): Any? {
 		return this.previousData?.let { this.findFrom(this.previousData, names) }
 	}
 
 	override fun find(name: String): Any? {
-		if (map.containsKey(name)) {
-			return map[name]
-		}
+		if (name.startsWith(FROM_PREVIOUS_PREFIX)) {
+			return name.split(".")
+				.handTo { it.slice(1..it.size) }
+				.throwIfNullOrEmpty2 {
+					return DataKernelException("Variable name[${name}] not declared.")
+				}.handTo { names -> this.findFromPrevious(names as List<String>) }
+		} else {
+			if (map.containsKey(name)) {
+				return map[name]
+			}
 
-		// split name with "."
-		val names = name.split(".")
-		if (names.size == 1) {
-			// cannot be split, try to retrieve from current data
+			// split name with "."
+			val names = name.split(".")
+			if (names.size == 1) {
+				// cannot be split, try to retrieve from current data
+				return this.findFromCurrent(names)
+			}
+
+			// check if first part is existing in map
+			if (map.containsKey(names[0])) {
+				// true, try to retrieve from map
+				return this.findFrom(map, names)
+			}
+
+			// still not in map, try to retrieve from current data
 			return this.findFromCurrent(names)
 		}
-
-		// check if first part is existing in map
-		if (map.containsKey(names[0])) {
-			// true, try to retrieve from map
-			return this.findFrom(map, names)
-		}
-
-		// still not in map, try to retrieve from current data
-		return this.findFromCurrent(names)
 	}
 
 	override fun put(name: String, value: Any?): PipelineVariables {

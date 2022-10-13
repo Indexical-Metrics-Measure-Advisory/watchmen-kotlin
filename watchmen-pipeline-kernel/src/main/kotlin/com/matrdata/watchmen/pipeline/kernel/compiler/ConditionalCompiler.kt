@@ -3,7 +3,8 @@ package com.matrdata.watchmen.pipeline.kernel.compiler
 import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.common.Condition
 import com.matrdata.watchmen.model.common.Conditional
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.data.kernel.compiled.CompiledInMemoryCondition
+import com.matrdata.watchmen.data.kernel.compiler.inMemory
 import com.matrdata.watchmen.pipeline.kernel.compiled.PrerequisiteTest
 import com.matrdata.watchmen.pipeline.kernel.runnable.PipelineVariables
 
