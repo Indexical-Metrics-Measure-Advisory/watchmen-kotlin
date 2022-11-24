@@ -49,7 +49,7 @@ class PipelineTaskBuilder {
 	fun traceBy(traceId: PipelineTriggerTraceId) = apply { this.traceId = traceId }
 
 	/**
-	 * set principal who invoke this pipeline, and returns runtime context
+	 * set principal who invoke this pipeline, and returns task
 	 */
 	fun by(principal: Principal): PipelineTask {
 		// at least one of previous/current data is not null, otherwise raise exception

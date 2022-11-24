@@ -21,19 +21,19 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 			),
 			MappingFactor(
 				source = ParameterUtils.buildSingleArgumentComputedParameter(
-					topicRuleResult, "processDate", ParameterComputeType.YEAR_OF
+					topicRuleResult, "processDate", RegularParameterComputeType.YEAR_OF
 				),
 				factorId = TopicUtils.findFactorByName(topicDaily, "year")!!.factorId
 			),
 			MappingFactor(
 				source = ParameterUtils.buildSingleArgumentComputedParameter(
-					topicRuleResult, "processDate", ParameterComputeType.MONTH_OF
+					topicRuleResult, "processDate", RegularParameterComputeType.MONTH_OF
 				),
 				factorId = TopicUtils.findFactorByName(topicDaily, "month")!!.factorId
 			),
 			MappingFactor(
 				source = ParameterUtils.buildSingleArgumentComputedParameter(
-					topicRuleResult, "processDate", ParameterComputeType.DAY_OF_MONTH
+					topicRuleResult, "processDate", RegularParameterComputeType.DAY_OF_MONTH
 				),
 				factorId = TopicUtils.findFactorByName(topicDaily, "day")!!.factorId
 			),
@@ -42,9 +42,9 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 				factorId = TopicUtils.findFactorByName(topicDaily, "processDate")!!.factorId
 			),
 			MappingFactor(
-				source = ComputedParameter(
+				source = CaseThenParameter(
 					parameters = listOf(
-						ConstantParameter(
+						ConditionalConstantParameter(
 							conditional = true,
 							on = Joint(
 								jointType = ParameterJointType.AND,
@@ -54,13 +54,13 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 											topicRuleResult, "detected"
 										),
 										operator = DualParameterExpressionOperator.EQUALS,
-										right = ConstantParameter(value = "true")
+										right = RegularConstantParameter(value = "true")
 									)
 								)
 							),
 							value = "1"
 						),
-						ConstantParameter(value = "0")
+						ConditionalConstantParameter(conditional = false, on = null, value = "0")
 					)
 				),
 				factorId = TopicUtils.findFactorByName(topicDaily, "count")!!.factorId
@@ -86,21 +86,21 @@ fun createInsertOrMergeDetectedRuleToDaily(topicRuleResult: Topic, topicDaily: T
 				),
 				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
-						topicRuleResult, "processDate", ParameterComputeType.YEAR_OF
+						topicRuleResult, "processDate", RegularParameterComputeType.YEAR_OF
 					),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "year")
 				),
 				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
-						topicRuleResult, "processDate", ParameterComputeType.MONTH_OF
+						topicRuleResult, "processDate", RegularParameterComputeType.MONTH_OF
 					),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "month")
 				),
 				DualExpression(
 					left = ParameterUtils.buildSingleArgumentComputedParameter(
-						topicRuleResult, "processDate", ParameterComputeType.DAY_OF_MONTH
+						topicRuleResult, "processDate", RegularParameterComputeType.DAY_OF_MONTH
 					),
 					operator = DualParameterExpressionOperator.EQUALS,
 					right = ParameterUtils.buildTopicFactorParameter(topicDaily, "day")

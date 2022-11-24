@@ -5,4 +5,5 @@ plugins {
 dependencies {
 	api(project(":watchmen-auth"))
 	api(project(":watchmen-storage"))
+	api(project(":watchmen-meta"))
 }

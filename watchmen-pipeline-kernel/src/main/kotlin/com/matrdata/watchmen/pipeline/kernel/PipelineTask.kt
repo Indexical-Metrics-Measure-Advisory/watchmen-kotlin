@@ -4,8 +4,6 @@ import com.matrdata.watchmen.auth.Principal
 import com.matrdata.watchmen.model.admin.Pipeline
 import com.matrdata.watchmen.model.common.PipelineTriggerTraceId
 import com.matrdata.watchmen.model.common.TopicDataId
-import com.matrdata.watchmen.pipeline.kernel.compiled.CompiledPipeline
-import com.matrdata.watchmen.pipeline.kernel.compiler.use
 
 class PipelineTask(
 	private val pipeline: Pipeline,
@@ -17,27 +15,7 @@ class PipelineTask(
 		const val UNKNOWN_SYNONYM_DATA_ID: TopicDataId = -1
 	}
 
-	fun run(storages: TopicStorages, handleMonitorLog: PipelineMonitorLogHandle): List<PipelineTask> {
-		return this.askCompiledPipeline()
-			.runnable()
-			.use(this.principal)
-			.use(storages)
-			.use(handleMonitorLog)
-			.traceBy(this.traceId)
-			.dataId(this.dataId)
-			.run(previous = this.previousData, current = this.currentData)
-	}
-
-	private fun askCompiledPipelineFromCache(): CompiledPipeline? {
+	fun run(handleMonitorLog: PipelineMonitorLogHandle): List<PipelineTask> {
 		TODO("Not yet implemented")
-	}
-
-	private fun putCompiledPipelineIntoCache(compiled: CompiledPipeline) {
-		TODO("Not yet implemented")
-	}
-
-	private fun askCompiledPipeline(): CompiledPipeline {
-		return this.askCompiledPipelineFromCache()
-			?: this.pipeline.use(this.principal).compile().also { this.putCompiledPipelineIntoCache(it) }
 	}
 }
